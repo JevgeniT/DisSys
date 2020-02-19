@@ -1,0 +1,8 @@
+C:\Users\admin\RiderProjects\icd0009-2019s\BookIt\Domain\bin\Debug\netstandard2.1\Domain.deps.json
+C:\Users\admin\RiderProjects\icd0009-2019s\BookIt\Domain\bin\Debug\netstandard2.1\Domain.dll
+C:\Users\admin\RiderProjects\icd0009-2019s\BookIt\Domain\bin\Debug\netstandard2.1\Domain.pdb
+C:\Users\admin\RiderProjects\icd0009-2019s\BookIt\Domain\obj\Debug\netstandard2.1\Domain.csprojAssemblyReference.cache
+C:\Users\admin\RiderProjects\icd0009-2019s\BookIt\Domain\obj\Debug\netstandard2.1\Domain.AssemblyInfoInputs.cache
+C:\Users\admin\RiderProjects\icd0009-2019s\BookIt\Domain\obj\Debug\netstandard2.1\Domain.AssemblyInfo.cs
+C:\Users\admin\RiderProjects\icd0009-2019s\BookIt\Domain\obj\Debug\netstandard2.1\Domain.dll
+C:\Users\admin\RiderProjects\icd0009-2019s\BookIt\Domain\obj\Debug\netstandard2.1\Domain.pdb
