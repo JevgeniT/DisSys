@@ -1,10 +1,10 @@
 ﻿{
   "version": "1.0.0",
   "restore": {
-    "projectUniqueName": "C:\\Users\\admin\\RiderProjects\\icd0009-2019s\\BookIt\\Domain\\Domain.csproj",
+    "projectUniqueName": "C:\\Users\\admin\\RiderProjects\\icd0009-2019s\\DisSys\\Domain\\Domain.csproj",
     "projectName": "Domain",
-    "projectPath": "C:\\Users\\admin\\RiderProjects\\icd0009-2019s\\BookIt\\Domain\\Domain.csproj",
-    "outputPath": "C:\\Users\\admin\\RiderProjects\\icd0009-2019s\\BookIt\\Domain\\obj\\",
+    "projectPath": "C:\\Users\\admin\\RiderProjects\\icd0009-2019s\\DisSys\\Domain\\Domain.csproj",
+    "outputPath": "C:\\Users\\admin\\RiderProjects\\icd0009-2019s\\DisSys\\Domain\\obj\\",
     "projectStyle": "PackageReference",
     "originalTargetFrameworks": [
       "netstandard2.1"

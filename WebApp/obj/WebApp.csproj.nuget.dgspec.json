@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\admin\\RiderProjects\\icd0009-2019s\\BookIt\\WebApp\\WebApp.csproj": {}
+    "C:\\Users\\admin\\RiderProjects\\icd0009-2019s\\DisSys\\WebApp\\WebApp.csproj": {}
   },
   "projects": {
-    "C:\\Users\\admin\\RiderProjects\\icd0009-2019s\\BookIt\\WebApp\\WebApp.csproj": {
+    "C:\\Users\\admin\\RiderProjects\\icd0009-2019s\\DisSys\\WebApp\\WebApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\admin\\RiderProjects\\icd0009-2019s\\BookIt\\WebApp\\WebApp.csproj",
+        "projectUniqueName": "C:\\Users\\admin\\RiderProjects\\icd0009-2019s\\DisSys\\WebApp\\WebApp.csproj",
         "projectName": "WebApp",
-        "projectPath": "C:\\Users\\admin\\RiderProjects\\icd0009-2019s\\BookIt\\WebApp\\WebApp.csproj",
+        "projectPath": "C:\\Users\\admin\\RiderProjects\\icd0009-2019s\\DisSys\\WebApp\\WebApp.csproj",
         "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\admin\\RiderProjects\\icd0009-2019s\\BookIt\\WebApp\\obj\\",
+        "outputPath": "C:\\Users\\admin\\RiderProjects\\icd0009-2019s\\DisSys\\WebApp\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config"

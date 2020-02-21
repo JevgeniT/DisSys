@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\admin\\RiderProjects\\icd0009-2019s\\BookIt\\Domain\\Domain.csproj",
+      "projectUniqueName": "C:\\Users\\admin\\RiderProjects\\icd0009-2019s\\DisSys\\Domain\\Domain.csproj",
       "projectName": "Domain",
-      "projectPath": "C:\\Users\\admin\\RiderProjects\\icd0009-2019s\\BookIt\\Domain\\Domain.csproj",
+      "projectPath": "C:\\Users\\admin\\RiderProjects\\icd0009-2019s\\DisSys\\Domain\\Domain.csproj",
       "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\admin\\RiderProjects\\icd0009-2019s\\BookIt\\Domain\\obj\\",
+      "outputPath": "C:\\Users\\admin\\RiderProjects\\icd0009-2019s\\DisSys\\Domain\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config"
