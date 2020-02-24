@@ -1,0 +1,14 @@
+﻿
+namespace Domain
+{
+    public class Invoice
+    {
+        public int InvoiceId { get; set; }
+
+        public Reservation? Reservation { get; set; }
+
+        public Guest Guest { get; set; }
+        
+        
+    }
+}                            
