@@ -1,8 +1,9 @@
-﻿namespace Domain
+﻿using DAL.Base;
+
+namespace Domain
 {
-    public class Facility
+    public class Facility : DomainEntity
     {
-        public int FacilityId { get; set; }
 
         public string FacilityName { get; set; }
 

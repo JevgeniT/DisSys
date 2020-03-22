@@ -16,8 +16,15 @@
                 @Html.DisplayNameFor(model => model.PropertyName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Location)
+                @Html.DisplayNameFor(model => model.PropertyLocation)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PropertyLocation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PropertyRooms)
+            </th>
+           
             <th></th>
         </tr>
     </thead>
@@ -28,12 +35,25 @@
                 @Html.DisplayFor(modelItem => item.PropertyName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Location.LocationId)
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+             <td>
+                @Html.DisplayFor(modelItem => item.PropertyLocation.City)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.PropertyId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.PropertyId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.PropertyId">Delete</a>
+             @foreach (var room in item.PropertyRooms)
+             {
+                 <li>
+                     @room.RoomName
+                 </li>
+             }
+                
+            </td>
+          
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
 }

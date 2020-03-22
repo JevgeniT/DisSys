@@ -1,14 +1,24 @@
-﻿namespace Domain
+﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
+using DAL.Base;
+
+namespace Domain
 {
-    public class Room
+    public class Room : DomainEntity
     {
-        public int RoomId { get; set; }
 
         public string RoomName { get; set; }
-
         public int RoomCapacity { get; set; }
+        public int RoomSize { get; set; }
 
+        [ForeignKey(nameof(RoomPropertyId))]
+        public int RoomPropertyId { get; set; }
         
+        public Property? RoomProperty { get; set; }
         
+        public enum BedType
+        {
+            Large, Single, Double 
+        }
     }
 }

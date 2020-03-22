@@ -1,13 +1,17 @@
 ﻿
+using System;
+using DAL.Base;
+
 namespace Domain
 {
-    public class Invoice
+    public class Invoice: DomainEntity 
     {
-        public int InvoiceId { get; set; }
 
-        public Reservation? Reservation { get; set; }
+        public Reservation Reservation { get; set; }
 
         public Guest Guest { get; set; }
+
+        public DateTime MadeAt { get; set; } = DateTime.Now;
         
         
     }

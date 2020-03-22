@@ -1,12 +1,23 @@
-﻿namespace Domain
-{
-    public class Property
-    {
-        public int PropertyId { get; set; }
-        public string PropertyName { get; set; }
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using DAL.Base;
 
-        public int LocationId { get; set; }
-        public Location Location { get; set; }
+namespace Domain
+{
+    public class Property: DomainEntity 
+    {
+        public string PropertyName { get; set; }
+  
+        public string Address { get; set; }
+
+        
+        [ForeignKey(nameof(PropertyLocation))]
+        public int PropertyLocationId { get; set; }
+        public Location? PropertyLocation { get; set; }
+
+        
+        [InverseProperty(nameof(Room.RoomProperty))]
+        public ICollection<Room>? PropertyRooms { get; set; }
         
         
         

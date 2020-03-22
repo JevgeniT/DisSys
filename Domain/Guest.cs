@@ -1,16 +1,16 @@
-﻿namespace Domain
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using DAL.Base;
+
+namespace Domain
 {
-    public class Guest
+    public class Guest: DomainEntity 
     {
-        public int GuestId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+
+        [InverseProperty(nameof(Reservation.ReservedBy))]
         
+        public ICollection<Reservation>? GuestReservations { get; set; }
     }
 }
-
-// dotnet aspnet-codegenerator controller -name ReviewController  -actions -m Review  -dc AppDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
-// dotnet aspnet-codegenerator controller -name RoomFacilitiesController  -actions -m RoomFacilities  -dc AppDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
-// dotnet aspnet-codegenerator controller -name RoomPoliciesController  -actions -m RoomPolicies  -dc AppDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
-//
-//

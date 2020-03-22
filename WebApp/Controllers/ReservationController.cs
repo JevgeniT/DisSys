@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using DAL.App.EF;
 using Domain;
 
 namespace WebApp.Controllers
@@ -21,7 +22,8 @@ namespace WebApp.Controllers
         // GET: Reservation
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Reservation.ToListAsync());
+            var appDbContext = _context.Reservations.Include(r => r.ReservedBy);
+            return View(await appDbContext.ToListAsync());
         }
 
         // GET: Reservation/Details/5
@@ -32,8 +34,9 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var reservation = await _context.Reservation
-                .FirstOrDefaultAsync(m => m.ReservationId == id);
+            var reservation = await _context.Reservations
+                .Include(r => r.ReservedBy)
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (reservation == null)
             {
                 return NotFound();
@@ -45,6 +48,9 @@ namespace WebApp.Controllers
         // GET: Reservation/Create
         public IActionResult Create()
         {
+            ViewData["PropertyId"] = new SelectList(_context.Properties, "Id", "PropertyName");
+            // Property property = new Property().id;
+            ViewData["GuestReservationsId"] = new SelectList(_context.Guests, "Id", "FirstName");
             return View();
         }
 
@@ -53,14 +59,19 @@ namespace WebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ReservationId,ReservationNumber,CheckIn,CheckOut")] Reservation reservation)
+        public async Task<IActionResult> Create([Bind("ReservationNumber,CheckIn,CheckInDate,CheckOutDate," +
+                                                      "PropertyId,GuestReservationsId,CreatedBy,CreatedAt,DeletedBy,DeletedAt,Id")] Reservation reservation)
         {
+         
             if (ModelState.IsValid)
             {
                 _context.Add(reservation);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["GuestReservationsId"] = new SelectList(_context.Guests, "Id", "FirstName", reservation.GuestReservationsId);
+            ViewData["PropertyId"] = new SelectList(_context.Properties, "Id", "PropertyName", reservation.PropertyId);
+
             return View(reservation);
         }
 
@@ -72,11 +83,12 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var reservation = await _context.Reservation.FindAsync(id);
+            var reservation = await _context.Reservations.FindAsync(id);
             if (reservation == null)
             {
                 return NotFound();
             }
+            ViewData["GuestReservationsId"] = new SelectList(_context.Guests, "Id", "FirstName", reservation.GuestReservationsId);
             return View(reservation);
         }
 
@@ -85,9 +97,9 @@ namespace WebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ReservationId,ReservationNumber,CheckIn,CheckOut")] Reservation reservation)
+        public async Task<IActionResult> Edit(int id, [Bind("ReservationNumber,MadeAt,CheckIn,CheckInDate,CheckOutDate,GuestReservationsId,CreatedBy,CreatedAt,DeletedBy,DeletedAt,Id")] Reservation reservation)
         {
-            if (id != reservation.ReservationId)
+            if (id != reservation.Id)
             {
                 return NotFound();
             }
@@ -101,7 +113,7 @@ namespace WebApp.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ReservationExists(reservation.ReservationId))
+                    if (!ReservationExists(reservation.Id))
                     {
                         return NotFound();
                     }
@@ -112,6 +124,7 @@ namespace WebApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["GuestReservationsId"] = new SelectList(_context.Guests, "Id", "FirstName", reservation.GuestReservationsId);
             return View(reservation);
         }
 
@@ -123,8 +136,9 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var reservation = await _context.Reservation
-                .FirstOrDefaultAsync(m => m.ReservationId == id);
+            var reservation = await _context.Reservations
+                .Include(r => r.ReservedBy)
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (reservation == null)
             {
                 return NotFound();
@@ -138,15 +152,15 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var reservation = await _context.Reservation.FindAsync(id);
-            _context.Reservation.Remove(reservation);
+            var reservation = await _context.Reservations.FindAsync(id);
+            _context.Reservations.Remove(reservation);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ReservationExists(int id)
         {
-            return _context.Reservation.Any(e => e.ReservationId == id);
+            return _context.Reservations.Any(e => e.Id == id);
         }
     }
 }

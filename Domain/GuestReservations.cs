@@ -1,15 +1,14 @@
-﻿namespace Domain
+﻿using DAL.Base;
+
+namespace Domain
 {
-    public class GuestReservations
+    public class GuestReservations : DomainEntity
     {
-        public int GuestReservationsId { get; set; }
 
-        public int GuestId { get; set; }
-
-        public Guest? Guest { get; set; }
-
+         public Guest Guest { get; set; }
+        
         public int ReservationId { get; set; }
-        public Reservation? Reservation { get; set; }
+        public Reservation Reservation { get; set; }
         
     }
 }

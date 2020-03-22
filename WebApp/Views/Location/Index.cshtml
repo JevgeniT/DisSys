@@ -18,8 +18,18 @@
             <th>
                 @Html.DisplayNameFor(model => model.City)
             </th>
+           
             <th>
-                @Html.DisplayNameFor(model => model.Address)
+                @Html.DisplayNameFor(model => model.CreatedBy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DeletedBy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DeletedAt)
             </th>
             <th></th>
         </tr>
@@ -33,13 +43,23 @@
             <td>
                 @Html.DisplayFor(modelItem => item.City)
             </td>
+          
             <td>
-                @Html.DisplayFor(modelItem => item.Address)
+                @Html.DisplayFor(modelItem => item.CreatedBy)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.LocationId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.LocationId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.LocationId">Delete</a>
+                @Html.DisplayFor(modelItem => item.CreatedAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DeletedBy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DeletedAt)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
 }

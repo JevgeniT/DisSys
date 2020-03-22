@@ -1,8 +1,81 @@
-﻿@{
+﻿﻿@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+
+ <div id="booking" class="section">
+     <div class="section-center">
+         <div class="container">
+             <div class="row">
+                 <div class="booking-form">
+                  @using (Html.BeginForm("Find", "Home"))
+                  { 
+                      <div class="col-md-8">
+                          <div class="form-group">
+                              <input name="search" type="text" class="form-control"  placeholder="Enter Address, zip, city or airport" />
+                              <span class="form-label">Destination</span>
+                              @* <input type="submit" class="submit-btn" /> *@
+                          </div>
+                      </div>
+                      <div class="col-md-4">
+                          <div class="form-btn">
+                              @* <button class="submit-btn">Check availability</button> *@
+                              <input type="submit" value="search" class="submit-btn"/>
+                                 
+
+                          </div>
+                      </div>
+                  }
+                     @* <form method="get"> *@
+                     @*     *@
+                     @*             <input class="form-control" placeholder="Enter Address, zip, city or airport"> *@
+                     @*            *@
+                     @*    *@
+                         @* <div class="col-md-2"> *@
+                         @*     <div class="form-group"> *@
+                         @*         <select class="form-control"> *@
+                         @*             <option>1</option> *@
+                         @*             <option>2</option> *@
+                         @*             <option>3</option> *@
+                         @*         </select> *@
+                         @*         <span class="select-arrow"></span> *@
+                         @*         <span class="form-label">Guests</span> *@
+                         @*     </div> *@
+                         @* </div> *@
+                         @* <div class="col-md-2"> *@
+                         @*     <div class="form-group"> *@
+                         @*         <select class="form-control"> *@
+                         @*             <option>0</option> *@
+                         @*             <option>1</option> *@
+                         @*             <option>2</option> *@
+                         @*         </select> *@
+                         @*         <span class="select-arrow"></span> *@
+                         @*         <span class="form-label">Children</span> *@
+                         @*     </div> *@
+                         @* </div> *@
+                         @* <div class="col-md-4"> *@
+                         @*     <div class="form-group"> *@
+                         @*         <input class="form-control" type="date" required> *@
+                         @*         <span class="form-label">Check In</span> *@
+                         @*     </div> *@
+                         @* </div> *@
+                         @* <div class="col-md-4"> *@
+                         @*     <div class="form-group"> *@
+                         @*         <input class="form-control" type="date" required> *@
+                         @*         <span class="form-label">Check out</span> *@
+                         @*     </div> *@
+                         @* </div> *@
+                         @* <div class="col-md-4"> *@
+                         @*     <div class="form-btn"> *@
+                         @*         $1$ <button class="submit-btn">Check availability</button> #1# *@
+                         @*                 <input type="submit" value="search" class="submit-btn"/> *@
+                         @*          *@
+                         @* *@
+                         @*     </div> *@
+                         @* </div> *@
+                     @* </form> *@
+                 </div>
+             </div>
+         </div>
+     </div>
+ </div>

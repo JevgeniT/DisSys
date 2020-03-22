@@ -1,9 +1,14 @@
-﻿namespace Domain
-{
-    public class Policy
-    {
-        public int PolicyId { get; set; }
+﻿using DAL.Base;
 
+namespace Domain
+{
+    public class Policy : DomainEntity
+    {
         public string PolicyName { get; set; }
+
+        public int PrepaymentBefore { get; set; }
+
+        public int CancellationBefore { get; set; }
+
     }
 }

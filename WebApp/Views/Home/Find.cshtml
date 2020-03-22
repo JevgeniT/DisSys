@@ -1,0 +1,25 @@
+﻿@model IEnumerable<Domain.Location>
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<div class="container">
+    @foreach (var l in Model)    
+       {
+           <div class="row">
+           @foreach (var x in l.LocationProperties)
+           {
+               <div class="col">
+                 <div class="card" style="width: 10rem;">
+                     <img src="https://via.placeholder.com/75" class="card-img-top" alt="...">
+                     <div class="card-body">
+                         <p class="card-text">@x.PropertyName</p>
+                     </div>
+                 </div>
+                </div>
+           }
+           </div> 
+       }
+</div>

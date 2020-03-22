@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using DAL.App.EF;
 using Domain;
 
 namespace WebApp.Controllers
@@ -21,7 +22,7 @@ namespace WebApp.Controllers
         // GET: Location
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Location.ToListAsync());
+            return View(await _context.Locations.ToListAsync());
         }
 
         // GET: Location/Details/5
@@ -32,8 +33,8 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var location = await _context.Location
-                .FirstOrDefaultAsync(m => m.LocationId == id);
+            var location = await _context.Locations
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (location == null)
             {
                 return NotFound();
@@ -53,7 +54,7 @@ namespace WebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("LocationId,Country,City,Address")] Location location)
+        public async Task<IActionResult> Create([Bind("Country,City,Address,CreatedBy,CreatedAt,DeletedBy,DeletedAt,Id")] Location location)
         {
             if (ModelState.IsValid)
             {
@@ -72,7 +73,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var location = await _context.Location.FindAsync(id);
+            var location = await _context.Locations.FindAsync(id);
             if (location == null)
             {
                 return NotFound();
@@ -85,9 +86,9 @@ namespace WebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("LocationId,Country,City,Address")] Location location)
+        public async Task<IActionResult> Edit(int id, [Bind("Country,City,Address,CreatedBy,CreatedAt,DeletedBy,DeletedAt,Id")] Location location)
         {
-            if (id != location.LocationId)
+            if (id != location.Id)
             {
                 return NotFound();
             }
@@ -101,7 +102,7 @@ namespace WebApp.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!LocationExists(location.LocationId))
+                    if (!LocationExists(location.Id))
                     {
                         return NotFound();
                     }
@@ -123,8 +124,8 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var location = await _context.Location
-                .FirstOrDefaultAsync(m => m.LocationId == id);
+            var location = await _context.Locations
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (location == null)
             {
                 return NotFound();
@@ -138,15 +139,15 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var location = await _context.Location.FindAsync(id);
-            _context.Location.Remove(location);
+            var location = await _context.Locations.FindAsync(id);
+            _context.Locations.Remove(location);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool LocationExists(int id)
         {
-            return _context.Location.Any(e => e.LocationId == id);
+            return _context.Locations.Any(e => e.Id == id);
         }
     }
 }

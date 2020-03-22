@@ -1,8 +1,9 @@
-﻿namespace Domain
+﻿using DAL.Base;
+
+namespace Domain
 {
-    public class Review
+    public class Review : DomainEntity
     {
-        public int ReviewId { get; set; }
 
         public Reservation Reservation { get; set; }
 

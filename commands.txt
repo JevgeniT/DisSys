@@ -1,0 +1,27 @@
+
+dotnet aspnet-codegenerator controller -name ReviewController  -actions -m Review  -dc AppDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
+dotnet aspnet-codegenerator controller -name RoomFacilitiesController  -actions -m RoomFacilities  -dc AppDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
+dotnet aspnet-codegenerator controller -name RoomController  -actions -m Room  -dc AppDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
+dotnet aspnet-codegenerator controller -name GuestController  -actions -m Guest  -dc AppDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
+
+dotnet aspnet-codegenerator controller -name ReservationController  -actions -m Reservation  -dc AppDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
+
+dotnet aspnet-codegenerator controller -name LocationController  -actions -m Location  -dc AppDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
+dotnet aspnet-codegenerator controller -name PropertyController  -actions -m Property  -dc AppDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
+
+
+dotnet ef migrations add Init --project DAL.App.EF --startup-project WebApp
+
+dotnet ef migrations remove --project DAL.App.EF --startup-project WebApp
+
+
+dotnet ef database update 0 --project DAL.App.EF --startup-project WebApp
+
+dotnet ef database update --project DAL.App.EF --startup-project WebApp
+
+
+
+   string messages = string.Join("; ", ModelState.Values
+                .SelectMany(x => x.Errors)
+                .Select(x => x.ErrorMessage));
+            Console.WriteLine(messages);

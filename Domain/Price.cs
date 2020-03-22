@@ -1,9 +1,12 @@
-﻿namespace Domain
-{
-    public class Price
-    {
-        public int PriceId { get; set; }
+﻿using DAL.Base;
 
-        public int Aprice { get; set; }
+namespace Domain
+{
+    public class Price : DomainEntity
+    {
+
+        public decimal Total { get; set; }
+        
+        
     }
 }

@@ -1,37 +1,45 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+﻿﻿using System.Linq;
 using System.Threading.Tasks;
+using DAL.App.EF;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using WebApp.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebApp.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private AppDbContext _db;
+        public string Search { get; set; } = "";
+        public HomeController(AppDbContext db)
         {
-            _logger = logger;
+            _db = db;
         }
 
-        public IActionResult Index()
+        public  IActionResult Index()
         {
+
+           
+
             return View();
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public async Task <IActionResult> Find (string? search)
         {
-            return View(new ErrorViewModel {RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier});
+            Search = search;
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                search = search.ToLower().Trim();
+                var result = _db.Locations
+                    .Include(location => location.LocationProperties)
+                    .Where(location => location.City.ToLower().Contains(search)).ToListAsync();
+
+                return View(await result);
+            }
+            
+            return RedirectToAction("Index");
+          
         }
     }
 }

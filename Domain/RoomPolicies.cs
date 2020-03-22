@@ -1,8 +1,9 @@
-﻿namespace Domain
+﻿using DAL.Base;
+
+namespace Domain
 {
-    public class RoomPolicies
+    public class RoomPolicies : DomainEntity
     {
-        public int RoomPoliciesId { get; set; }
 
         public int RoomId { get; set; }
         public Room? Room { get; set; }
