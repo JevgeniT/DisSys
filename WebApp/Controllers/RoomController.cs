@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Contracts.DAL.App;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,17 +13,17 @@ namespace WebApp.Controllers
 {
     public class RoomController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUnitOfWork _uow;
 
-        public RoomController(AppDbContext context)
+        public RoomController(IAppUnitOfWork uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: Room
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Rooms.ToListAsync());
+            return View(await _uow.Rooms.AllAsync());
         }
 
         // GET: Room/Details/5
@@ -33,8 +34,8 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var room = await _context.Rooms
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var room = await _uow.Rooms
+                .FirstOrDefaultAsync(id.Value);
             if (room == null)
             {
                 return NotFound();
@@ -46,7 +47,7 @@ namespace WebApp.Controllers
         // GET: Room/Create
         public IActionResult Create()
         {
-             ViewData["RoomPropertyId"] = new SelectList(_context.Properties, "Id", "PropertyName");
+             ViewData["RoomPropertyId"] = new SelectList(_uow.Properties.All(), "Id", "PropertyName");
  
             return View();
         }
@@ -65,11 +66,11 @@ namespace WebApp.Controllers
             // Console.WriteLine(room.PropertyRoom);
             if (ModelState.IsValid)
             {
-                _context.Add(room);
-                await _context.SaveChangesAsync();
+                _uow.Rooms.Add(room);
+                await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RoomPropertyId"] = new SelectList(_context.Properties, "Id", "PropertyName", room.RoomPropertyId);
+            ViewData["RoomPropertyId"] = new SelectList(_uow.Properties.All(), "Id", "PropertyName", room.RoomPropertyId);
 
             return View(room);
         }
@@ -82,7 +83,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var room = await _context.Rooms.FindAsync(id);
+            var room = await _uow.Rooms.FindAsync(id);
             if (room == null)
             {
                 return NotFound();
@@ -106,12 +107,12 @@ namespace WebApp.Controllers
             {
                 try
                 {
-                    _context.Update(room);
-                    await _context.SaveChangesAsync();
+                    _uow.Rooms.Update(room);
+                    await _uow.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!RoomExists(room.Id))
+                    if (! await  _uow.Rooms.ExistsAsync(room.Id))
                     {
                         return NotFound();
                     }
@@ -133,8 +134,8 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var room = await _context.Rooms
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var room = await _uow.Rooms
+                .FirstOrDefaultAsync(id.Value);
             if (room == null)
             {
                 return NotFound();
@@ -148,15 +149,12 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var room = await _context.Rooms.FindAsync(id);
-            _context.Rooms.Remove(room);
-            await _context.SaveChangesAsync();
+            var room = await _uow.Rooms.FindAsync(id);
+            _uow.Rooms.Remove(room);
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool RoomExists(int id)
-        {
-            return _context.Rooms.Any(e => e.Id == id);
-        }
+        
     }
 }

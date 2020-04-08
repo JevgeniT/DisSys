@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Contracts.DAL.App;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,17 +13,17 @@ namespace WebApp.Controllers
 {
     public class LocationController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUnitOfWork _uow;
 
-        public LocationController(AppDbContext context)
+        public LocationController(IAppUnitOfWork uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         // GET: Location
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Locations.ToListAsync());
+            return View(await _uow.Locations.AllAsync());
         }
 
         // GET: Location/Details/5
@@ -33,8 +34,8 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var location = await _context.Locations
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var location = await _uow.Locations
+                .FirstOrDefaultAsync(id.Value);
             if (location == null)
             {
                 return NotFound();
@@ -50,16 +51,14 @@ namespace WebApp.Controllers
         }
 
         // POST: Location/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Country,City,Address,CreatedBy,CreatedAt,DeletedBy,DeletedAt,Id")] Location location)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(location);
-                await _context.SaveChangesAsync();
+                _uow.Locations.Add(location);
+                await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(location);
@@ -73,7 +72,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var location = await _context.Locations.FindAsync(id);
+            var location = await _uow.Locations.FindAsync(id);
             if (location == null)
             {
                 return NotFound();
@@ -82,8 +81,6 @@ namespace WebApp.Controllers
         }
 
         // POST: Location/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Country,City,Address,CreatedBy,CreatedAt,DeletedBy,DeletedAt,Id")] Location location)
@@ -97,12 +94,12 @@ namespace WebApp.Controllers
             {
                 try
                 {
-                    _context.Update(location);
-                    await _context.SaveChangesAsync();
+                    _uow.Locations.Update(location);
+                    await _uow.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!LocationExists(location.Id))
+                    if (!await _uow.Locations.ExistsAsync(location.Id))
                     {
                         return NotFound();
                     }
@@ -124,8 +121,8 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var location = await _context.Locations
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var location = await _uow.Locations
+                .FirstOrDefaultAsync(id.Value);
             if (location == null)
             {
                 return NotFound();
@@ -139,15 +136,12 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var location = await _context.Locations.FindAsync(id);
-            _context.Locations.Remove(location);
-            await _context.SaveChangesAsync();
+            var location = await _uow.Locations.FindAsync(id);
+            _uow.Locations.Remove(location);
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool LocationExists(int id)
-        {
-            return _context.Locations.Any(e => e.Id == id);
-        }
+      
     }
 }

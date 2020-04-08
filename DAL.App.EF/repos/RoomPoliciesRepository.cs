@@ -9,52 +9,52 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.App.EF
 {
-    public class RoomRepository : BaseRepository<Room>,  IRoomRepository
+    public class RoomPoliciesRepository : EFBaseRepository<RoomPolicies,AppDbContext>,  IRoomPoliciesRepository
     {
-        public RoomRepository(DbContext dbContext) : base(dbContext)
+        public RoomPoliciesRepository(AppDbContext dbContext) : base(dbContext)
         {
         }
 
  
 
-        public IEnumerable<Room> All()
+        public IEnumerable<RoomPolicies> All()
         {
             return   RepoDbSet.ToList();
         }
 
-        public override async Task<IEnumerable<Room>> AllAsync()
+        public override async Task<IEnumerable<RoomPolicies>> AllAsync()
         {
             return await RepoDbSet.ToListAsync();
         }
 
-        public override Room Find(params object[] id)
+        public override RoomPolicies Find(params object[] id)
         {
             return RepoDbSet.Find(id);
         }
 
-        public override async Task<Room> FindAsync(params object[] id)
+        public override async Task<RoomPolicies> FindAsync(params object[] id)
         {
             return await RepoDbSet.FindAsync(id);
 
         }
 
-        public override Room Add(Room entity)
+        public override RoomPolicies Add(RoomPolicies entity)
         {
             return RepoDbSet.Add(entity).Entity;
         }
 
-        public override Room Update(Room entity)
+        public override RoomPolicies Update(RoomPolicies entity)
         {
             return RepoDbSet.Update(entity).Entity;
 
         }
 
-        public override Room Remove(Room entity)
+        public override RoomPolicies Remove(RoomPolicies entity)
         {
             return RepoDbSet.Remove(entity).Entity;
         }
 
-        public override Room Remove(params object[] id)
+        public override RoomPolicies Remove(params object[] id)
         {
             return RepoDbSet.Remove(Find(id)).Entity;
         }

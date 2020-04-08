@@ -1,4 +1,5 @@
-﻿using Domain;
+﻿using System.Linq;
+using Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL.App.EF
@@ -26,6 +27,18 @@ namespace DAL.App.EF
    //15 entities     
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options) { }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+            
+            foreach (var relationship in builder.Model
+                .GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+            {
+                relationship.DeleteBehavior = DeleteBehavior.Restrict;
+            }
+
+        }
 
     }
 }

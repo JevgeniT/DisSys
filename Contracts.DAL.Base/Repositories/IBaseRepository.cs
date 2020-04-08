@@ -11,9 +11,12 @@ namespace Contracts.DAL.Base.Repositories
     }
 
 
-    public interface IBaseRepository<TEntity, Tkey>
-        where TEntity: class, IDomainEntity<Tkey>,new()
-        where Tkey: struct, IComparable
+    public interface IBaseRepository<TEntity, TKey>
+        where TEntity: class, IDomainEntity<TKey>,new()
+//        where TKey: struct, IComparable
+        where TKey : struct, IEquatable<TKey>
+
+
 
     {
 

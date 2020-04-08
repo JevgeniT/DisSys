@@ -8,8 +8,11 @@ namespace Contracts.DAL.Base
     }
     
     
-    public interface IDomainEntity<Tkey> : IDomainBaseEntity<Tkey>, IDomainEntityMetadata
-            where Tkey : struct, IComparable 
+    public interface IDomainEntity<TKey> : IDomainBaseEntity<TKey>, IDomainEntityMetadata
+            //where TKey : struct, IComparable
+        where TKey : struct, IEquatable<TKey>
+
+
     {
     
     }

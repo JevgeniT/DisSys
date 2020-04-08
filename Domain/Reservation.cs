@@ -11,9 +11,9 @@ namespace Domain
 
         public int ReservationNumber { get; set; }
 
-        public DateTime MadeAt { get; set; } = DateTime.Now;
+        // public DateTime MadeAt { get; set; } = DateTime.Now;
         //approx
-        public DateTime CheckIn { get; set; }
+        // public DateTime CheckIn { get; set; }
 
         public DateTime CheckInDate{ get; set; }
        

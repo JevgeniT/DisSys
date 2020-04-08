@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Contracts.DAL.App;
+using Contracts.DAL.App.Repositories;
 using DAL.App.EF;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -28,15 +30,31 @@ namespace WebApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlite(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<AppDbContext>();
+            //services.AddScoped<IPropertyRepository, PropertyRepository>();
+            services.AddScoped<IAppUnitOfWork, AppUnitOfWork>();
+
+
             services.AddControllersWithViews();     
            services.AddRazorPages();
 
-            services.AddDbContext<AppDbContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("AppDbContext")));
+        //    services.AddDbContext<AppDbContext>(options =>
+          //          options.UseSqlServer(Configuration.GetConnectionString("AppDbContext")));
+          services.AddCors(options =>
+          {
+              options.AddPolicy("CorsAllowAll",
+                  builder =>
+                  {
+                      builder.AllowAnyOrigin();
+                      builder.AllowAnyHeader();
+                      builder.AllowAnyMethod();
+                  });
+          });
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

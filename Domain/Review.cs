@@ -1,4 +1,5 @@
-﻿using DAL.Base;
+﻿using System;
+using DAL.Base;
 
 namespace Domain
 {
@@ -8,8 +9,11 @@ namespace Domain
         public Reservation Reservation { get; set; }
 
         public int Score { get; set; }
-        
-        
-        
+
+        public Guest Guest { get; set; }
+
+        public string? Comment { get; set; }
+
+        public Property Property { get; set; }
     }
 }

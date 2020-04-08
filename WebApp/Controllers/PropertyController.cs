@@ -1,7 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Contracts.DAL.App;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,19 +12,21 @@ namespace WebApp.Controllers
 {
     public class PropertyController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IAppUnitOfWork _uow;
 
-        public PropertyController(AppDbContext context)
+        public PropertyController(IAppUnitOfWork context)
         {
-            _context = context;
+            _uow = context;
         }
 
         // GET: Property
         public async Task<IActionResult> Index()
         {
-            var appDbContext =
-                _context.Properties.Include(property=> property.PropertyLocation).Include(property => property.PropertyRooms);
-            return View(await appDbContext.ToListAsync());
+            var appDbContext = _uow.Properties.AllAsync();
+            
+            
+                // _uow.Properties.Include(property=> property.PropertyLocation).Include(property => property.PropertyRooms);
+            return View(await appDbContext);
         }
 
         // GET: Property/Details/5
@@ -35,9 +37,9 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var @property = await _context.Properties
-                .Include(property=> property.PropertyLocation)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var @property = await _uow.Properties.FirstOrDefaultAsync(id.Value);
+                // .Include(p=> p.PropertyLocation)
+                // .FirstOrDefaultAsync(m => m.Id == id);
             if (@property == null)
             {
                 return NotFound();
@@ -49,7 +51,7 @@ namespace WebApp.Controllers
         // GET: Property/Create
         public IActionResult Create()
         {
-            ViewData["PropertyLocationId"] = new SelectList(_context.Locations, "Id", "City");
+            ViewData["PropertyLocationId"] = new SelectList(_uow.Locations.All(), "Id", "City");
             return View();
         }
 
@@ -66,11 +68,11 @@ namespace WebApp.Controllers
             Console.WriteLine(messages);
             if (ModelState.IsValid)
             {
-                _context.Add(@property);
-                await _context.SaveChangesAsync();
+                _uow.Properties.Add(@property);
+                await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PropertyLocationId"] = new SelectList(_context.Locations, "Id", "City", @property.PropertyLocationId);
+            ViewData["PropertyLocationId"] = new SelectList(_uow.Locations.All(), "Id", "City", @property.PropertyLocationId);
             return View(@property);
         }
 
@@ -82,12 +84,12 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var @property = await _context.Properties.FindAsync(id);
+            var @property = await _uow.Properties.FindAsync(id);
             if (@property == null)
             {
                 return NotFound();
             }
-            ViewData["PropertyLocationId"] = new SelectList(_context.Locations, "Id", "City", @property.PropertyLocationId);
+            ViewData["PropertyLocationId"] = new SelectList(_uow.Locations.All(), "Id", "City", @property.PropertyLocationId);
             return View(@property);
         }
 
@@ -105,12 +107,12 @@ namespace WebApp.Controllers
             {
                 try
                 {
-                    _context.Update(@property);
-                    await _context.SaveChangesAsync();
+                    _uow.Properties.Update(@property);
+                    await _uow.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PropertyExists(@property.Id))
+                    if (!await _uow.Properties.ExistsAsync(property.Id))
                     {
                         return NotFound();
                     }
@@ -121,7 +123,7 @@ namespace WebApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PropertyLocationId"] = new SelectList(_context.Locations, "Id", "City", @property.PropertyLocationId);
+            ViewData["PropertyLocationId"] = new SelectList(_uow.Locations.All(), "Id", "City", @property.PropertyLocationId);
             return View(@property);
         }
 
@@ -133,9 +135,9 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var @property = await _context.Properties
-                .Include(property=> property.PropertyLocation)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var @property = await _uow.Properties.FindAsync(id.Value);
+                // .Include(property=> property.PropertyLocation)
+                // .FirstOrDefaultAsync(m => m.Id == id);
             if (@property == null)
             {
                 return NotFound();
@@ -149,15 +151,15 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var @property = await _context.Properties.FindAsync(id);
-            _context.Properties.Remove(@property);
-            await _context.SaveChangesAsync();
+            var @property = await _uow.Properties.FindAsync(id);
+            _uow.Properties.Remove(@property);
+            await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool PropertyExists(int id)
-        {
-            return _context.Properties.Any(e => e.Id == id);
-        }
+        // private bool PropertyExists(int id)
+        // {
+        //     return _uow.Properties.ExistsAsync(id);
+        // }
     }
 }

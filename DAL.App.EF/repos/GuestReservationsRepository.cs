@@ -9,52 +9,52 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.App.EF
 {
-    public class PriceRepository : BaseRepository<Price>,  IPriceRepository
+    public class GuestReservationsRepository : EFBaseRepository<GuestReservations,AppDbContext>,  IGuestReservationsRepository
     {
-        public PriceRepository(DbContext dbContext) : base(dbContext)
+        public GuestReservationsRepository(AppDbContext dbContext) : base(dbContext)
         {
         }
 
  
 
-        public IEnumerable<Price> All()
+        public IEnumerable<GuestReservations> All()
         {
             return   RepoDbSet.ToList();
         }
 
-        public override async Task<IEnumerable<Price>> AllAsync()
+        public override async Task<IEnumerable<GuestReservations>> AllAsync()
         {
             return await RepoDbSet.ToListAsync();
         }
 
-        public override Price Find(params object[] id)
+        public override GuestReservations Find(params object[] id)
         {
             return RepoDbSet.Find(id);
         }
 
-        public override async Task<Price> FindAsync(params object[] id)
+        public override async Task<GuestReservations> FindAsync(params object[] id)
         {
             return await RepoDbSet.FindAsync(id);
 
         }
 
-        public override Price Add(Price entity)
+        public override GuestReservations Add(GuestReservations entity)
         {
             return RepoDbSet.Add(entity).Entity;
         }
 
-        public override Price Update(Price entity)
+        public override GuestReservations Update(GuestReservations entity)
         {
             return RepoDbSet.Update(entity).Entity;
 
         }
 
-        public override Price Remove(Price entity)
+        public override GuestReservations Remove(GuestReservations entity)
         {
             return RepoDbSet.Remove(entity).Entity;
         }
 
-        public override Price Remove(params object[] id)
+        public override GuestReservations Remove(params object[] id)
         {
             return RepoDbSet.Remove(Find(id)).Entity;
         }

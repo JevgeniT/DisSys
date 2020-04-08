@@ -15,12 +15,12 @@
             <th>
                 @Html.DisplayNameFor(model => model.ReservationNumber)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MadeAt)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CheckIn)
-            </th>
+            @* <th> *@
+            @*     @Html.DisplayNameFor(model => model.MadeAt) *@
+            @* </th> *@
+            @* <th> *@
+            @*     @Html.DisplayNameFor(model => model.CheckIn) *@
+            @* </th> *@
             <th>
                 @Html.DisplayNameFor(model => model.CheckInDate)
             </th>
@@ -30,18 +30,18 @@
             <th>
                 @Html.DisplayNameFor(model => model.ReservedBy)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedBy)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedAt)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DeletedBy)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DeletedAt)
-            </th>
+            @* <th> *@
+            @*     @Html.DisplayNameFor(model => model.CreatedBy) *@
+            @* </th> *@
+            @* <th> *@
+            @*     @Html.DisplayNameFor(model => model.CreatedAt) *@
+            @* </th> *@
+            @* <th> *@
+            @*     @Html.DisplayNameFor(model => model.DeletedBy) *@
+            @* </th> *@
+            @* <th> *@
+            @*     @Html.DisplayNameFor(model => model.DeletedAt) *@
+            @* </th> *@
             <th></th>
         </tr>
     </thead>
@@ -51,33 +51,33 @@
             <td>
                 @Html.DisplayFor(modelItem => item.ReservationNumber)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MadeAt)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CheckIn)
-            </td>
+            @* <td> *@
+            @*     @Html.DisplayFor(modelItem => item.MadeAt) *@
+            @* </td> *@
+            @* <td> *@
+            @*     @Html.DisplayFor(modelItem => item.CheckIn) *@
+            @* </td> *@
             <td>
                 @Html.DisplayFor(modelItem => item.CheckInDate)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CheckOutDate)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReservedBy.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedAt)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DeletedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DeletedAt)
-            </td>
+            @* <td> *@
+            @*     @Html.DisplayFor(modelItem => item.ReservedBy.FirstName) *@
+            @* </td> *@
+            @* <td> *@
+            @*     @Html.DisplayFor(modelItem => item.CreatedBy) *@
+            @* </td> *@
+            @* <td> *@
+            @*     @Html.DisplayFor(modelItem => item.CreatedAt) *@
+            @* </td> *@
+            @* <td> *@
+            @*     @Html.DisplayFor(modelItem => item.DeletedBy) *@
+            @* </td> *@
+            @* <td> *@
+            @*     @Html.DisplayFor(modelItem => item.DeletedAt) *@
+            @* </td> *@
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |

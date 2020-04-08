@@ -9,7 +9,7 @@ namespace Domain
 
         public string RoomName { get; set; }
         public int RoomCapacity { get; set; }
-        public int RoomSize { get; set; }
+        public int RoomSize { get; set; }  //m2
 
         [ForeignKey(nameof(RoomPropertyId))]
         public int RoomPropertyId { get; set; }

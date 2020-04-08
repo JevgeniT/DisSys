@@ -9,52 +9,52 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.App.EF
 {
-    public class GuestRepository : BaseRepository<Guest>,  IGuestRepository
+    public class RoomFacilitiesRepository : EFBaseRepository<RoomFacilities,AppDbContext>,  IRoomFacilitiesRepository
     {
-        public GuestRepository(DbContext dbContext) : base(dbContext)
+        public RoomFacilitiesRepository(AppDbContext dbContext) : base(dbContext)
         {
         }
 
  
 
-        public IEnumerable<Guest> All()
+        public IEnumerable<RoomFacilities> All()
         {
             return   RepoDbSet.ToList();
         }
 
-        public override async Task<IEnumerable<Guest>> AllAsync()
+        public override async Task<IEnumerable<RoomFacilities>> AllAsync()
         {
             return await RepoDbSet.ToListAsync();
         }
 
-        public override Guest Find(params object[] id)
+        public override RoomFacilities Find(params object[] id)
         {
             return RepoDbSet.Find(id);
         }
 
-        public override async Task<Guest> FindAsync(params object[] id)
+        public override async Task<RoomFacilities> FindAsync(params object[] id)
         {
             return await RepoDbSet.FindAsync(id);
 
         }
 
-        public override Guest Add(Guest entity)
+        public override RoomFacilities Add(RoomFacilities entity)
         {
             return RepoDbSet.Add(entity).Entity;
         }
 
-        public override Guest Update(Guest entity)
+        public override RoomFacilities Update(RoomFacilities entity)
         {
             return RepoDbSet.Update(entity).Entity;
 
         }
 
-        public override Guest Remove(Guest entity)
+        public override RoomFacilities Remove(RoomFacilities entity)
         {
             return RepoDbSet.Remove(entity).Entity;
         }
 
-        public override Guest Remove(params object[] id)
+        public override RoomFacilities Remove(params object[] id)
         {
             return RepoDbSet.Remove(Find(id)).Entity;
         }
