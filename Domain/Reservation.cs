@@ -2,33 +2,44 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using Contracts.DAL.Base;
 using DAL.Base;
+using Domain.Identity;
 
 namespace Domain
 {
-    public class Reservation : DomainEntity
+    
+    
+    public class Reservation : Reservation<int>, IDomainEntity
+    {
+    }
+    
+    public class Reservation<TKey> : DomainEntity<TKey>
+        where TKey : struct, IEquatable<TKey>
     {
 
-        public int ReservationNumber { get; set; }
+        public virtual int ReservationNumber { get; set; }
 
         // public DateTime MadeAt { get; set; } = DateTime.Now;
         //approx
         // public DateTime CheckIn { get; set; }
 
-        public DateTime CheckInDate{ get; set; }
-       
-        public DateTime CheckOutDate { get; set; }
+        public virtual DateTime CheckInDate{ get; set; }
         
+        public virtual DateTime CheckOutDate { get; set; }
+         
         // public ICollection<Room> Rooms { get; set; }
 
-        public int PropertyId { get; set; }        
+        public virtual int PropertyId { get; set; }        
         
         // public Property Property { get; set; }
 
         // public Extra Extra { get; set; }    
+        public virtual TKey AppUserId { get; set; }
+        public virtual AppUser? AppUser { get; set; }
 
         [ForeignKey(nameof(ReservedBy))]
-        public int GuestReservationsId { get; set; }
-        public Guest? ReservedBy { get; set; }
+        public virtual int GuestReservationsId { get; set; }
+        public virtual Guest? ReservedBy { get; set; }
     }
 }
