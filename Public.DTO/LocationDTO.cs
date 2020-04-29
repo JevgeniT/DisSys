@@ -5,7 +5,7 @@ namespace Public.DTO
 {
     public class LocationDTO
     {
-        public int Id { get; set; }
+        public int Guid { get; set; }
 
         public string Country { get; set; }
         

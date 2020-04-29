@@ -30,7 +30,7 @@ namespace WebApp.Controllers
         }
 
         // GET: Location/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
             {
@@ -68,7 +68,7 @@ namespace WebApp.Controllers
         }
 
         // GET: Location/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
             {
@@ -86,7 +86,7 @@ namespace WebApp.Controllers
         // POST: Location/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Country,City,Address,CreatedBy,CreatedAt,DeletedBy,DeletedAt,Id")] Location location)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Country,City,Address,CreatedBy,CreatedAt,DeletedBy,DeletedAt,Id")] Location location)
         {
             if (id != location.Id)
             {
@@ -117,7 +117,7 @@ namespace WebApp.Controllers
         }
 
         // GET: Location/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
             {
@@ -137,7 +137,7 @@ namespace WebApp.Controllers
         // POST: Location/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var location = await _uow.Locations.FindAsync(id);
             _uow.Locations.Remove(location);

@@ -6,9 +6,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - WebApp</title>
-    <link rel="stylesheet"  href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css"   asp-append-version="true" runat="server"/>
-    	<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" />
+     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+     @* <link rel="stylesheet" href="~/css/site.css"/> *@
+
+     <link rel="stylesheet" href="~/css/site.css"   asp-append-version="true" runat="server"/>
+    @*  <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" /> *@
     <link href="https://fonts.googleapis.com/css?family=Montserrat:300,600"   rel="stylesheet">
 
 </head>
@@ -22,7 +24,7 @@
                      <span class="navbar-toggler-icon"></span>
                  </button>
                  <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                     <partial name="_LoginPartial" />
+                   
                      <ul class="navbar-nav flex-grow-1">
                          <li class="nav-item">
                              <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
@@ -33,26 +35,27 @@
                          <li class="nav-item">
                              <a class="nav-link text-dark" asp-area="" asp-controller="Property" asp-action="Index">Properties</a>
                          </li>
+                         @* <li class="nav-item"> *@
+                         @*     <a class="nav-link text-dark" asp-area="" asp-controller="Guest" asp-action="Index">Guest</a> *@
+                         @* </li> *@
                          <li class="nav-item">
-                           <a class="nav-link text-dark" asp-area="" asp-controller="Guest" asp-action="Index">Guest</a>
-                      </li>
-                      <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Reservation" asp-action="Index">Reserv</a>
-                       </li>
-                        <li class="nav-item">
-                           <a class="nav-link text-dark" asp-area="" asp-controller="Room" asp-action="Index">Rooms</a>
-                      </li>
+                             <a class="nav-link text-dark" asp-area="" asp-controller="Reservation" asp-action="Index">Reserv</a>
+                         </li>
+                         <li class="nav-item">
+                             <a class="nav-link text-dark" asp-area="" asp-controller="Room" asp-action="Index">Rooms</a>
+                         </li>
+                          <partial name="_LoginPartial" />
                      </ul>
+                      
                  </div>
              </div>
          </nav>
      </header>
-     <div class="container-fluid ">
+     <div class="container ">
      <main role="main" class="pb-3">
-             @RenderBody()
+             @RenderBody() 
      </main>
      </div>
-@* *@
      <footer class="border-top footer text-muted">
          <div class="container">
          </div>

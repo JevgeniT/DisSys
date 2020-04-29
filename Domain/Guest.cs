@@ -9,7 +9,7 @@ namespace Domain
 {
     
     
-    public class Guest : Guest<int>, IDomainEntity
+    public class Guest : Guest<Guid>, IDomainEntity
     {
         
     }

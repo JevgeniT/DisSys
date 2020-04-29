@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Contracts.DAL.Base.Repositories;
@@ -8,15 +9,15 @@ namespace Contracts.DAL.App.Repositories
 {
  public interface IPropertyRepository : IBaseRepository<Property>
  {
-  Task<IEnumerable<Property>> AllAsync(int? userId = null);
-  Task<Property> FirstOrDefaultAsync(int id, int? userId = null);
+  Task<IEnumerable<Property>> AllAsync(Guid? userId = null);
+  Task<Property> FirstOrDefaultAsync(Guid id, Guid? userId = null);
 
-  Task<bool> ExistsAsync(int id, int? userId = null);
-  Task DeleteAsync(int id, int? userId = null);
+  Task<bool> ExistsAsync(Guid id, Guid? userId = null);
+  Task DeleteAsync(Guid id, Guid? userId = null);
         
   // DTO methods
-  Task<IEnumerable<PropertyDTO>> DTOAllAsync(int? userId = null);
-  Task<PropertyDTO> DTOFirstOrDefaultAsync(int id, int? userId = null);
+  Task<IEnumerable<PropertyDTO>> DTOAllAsync(Guid? userId = null);
+  Task<PropertyDTO> DTOFirstOrDefaultAsync(Guid id, Guid? userId = null);
 
   Task<Location> PropertyLocations();
 

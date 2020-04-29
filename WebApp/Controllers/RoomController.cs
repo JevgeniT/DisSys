@@ -30,7 +30,7 @@ namespace WebApp.Controllers
         }
 
         // GET: Room/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
             {
@@ -79,7 +79,7 @@ namespace WebApp.Controllers
         }
 
         // GET: Room/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
             {
@@ -99,7 +99,7 @@ namespace WebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("RoomName,RoomCapacity,RoomSize,RoomPropertyId,CreatedBy,CreatedAt,DeletedBy,DeletedAt,Id")] Room room)
+        public async Task<IActionResult> Edit(Guid id, [Bind("RoomName,RoomCapacity,RoomSize,RoomPropertyId,CreatedBy,CreatedAt,DeletedBy,DeletedAt,Id")] Room room)
         {
             if (id != room.Id)
             {
@@ -130,7 +130,7 @@ namespace WebApp.Controllers
         }
 
         // GET: Room/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
             {
@@ -150,7 +150,7 @@ namespace WebApp.Controllers
         // POST: Room/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var room = await _uow.Rooms.FindAsync(id);
             _uow.Rooms.Remove(room);

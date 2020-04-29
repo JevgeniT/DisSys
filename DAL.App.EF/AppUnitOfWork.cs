@@ -16,7 +16,7 @@ namespace DAL.App.EF
         public IPropertyRepository Properties =>
             GetRepository<IPropertyRepository>(() => new PropertyRepository(UOWDbContext));
         public IRoomRepository Rooms =>
-            GetRepository<IRoomRepository>(() => new RoomRepository(UOWDbContext));
+             GetRepository<IRoomRepository>(() => new RoomRepository(UOWDbContext));
 
         public IExtraRepository Extras => GetRepository<IExtraRepository>(() => new ExtraRepository(UOWDbContext));
         public IFacilityRepository Facilities => GetRepository<IFacilityRepository>(() => new FacilityRepository(UOWDbContext));

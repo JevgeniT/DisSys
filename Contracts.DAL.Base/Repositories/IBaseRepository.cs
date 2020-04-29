@@ -4,8 +4,8 @@ using System.Collections.Generic;
 
 namespace Contracts.DAL.Base.Repositories
 {
-    public interface IBaseRepository<TEntity>: IBaseRepository<TEntity, int>
-        where TEntity: class, IDomainEntity<int>, new()
+    public interface IBaseRepository<TEntity>: IBaseRepository<TEntity, Guid>
+        where TEntity: class, IDomainEntity<Guid>, new()
     {
         
     }

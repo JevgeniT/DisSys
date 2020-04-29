@@ -9,7 +9,7 @@ namespace WebApp.Controllers
     public class HomeController : Controller
     {
         private AppDbContext _db;
-        public string Search { get; set; } = "";
+        public string? Search { get; set; } = "";
         public HomeController(AppDbContext db)
         {
             _db = db;
@@ -17,9 +17,6 @@ namespace WebApp.Controllers
 
         public  IActionResult Index()
         {
-
-           
-
             return View();
         }
 

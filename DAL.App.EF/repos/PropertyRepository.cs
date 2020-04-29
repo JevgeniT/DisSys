@@ -1,4 +1,5 @@
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,7 +16,7 @@ namespace DAL.App.EF
         public PropertyRepository(AppDbContext dbContext) : base(dbContext)
         {
         }
-        public async Task<IEnumerable<Property>> AllAsync(int? userId = null)
+        public async Task<IEnumerable<Property>> AllAsync(Guid? userId = null)
         {
             if (userId == null)
             { }
@@ -23,7 +24,7 @@ namespace DAL.App.EF
             // return await RepoDbSet.Where(o => o.AppUserId == userId).ToListAsync();
         }
         
-        public async Task<Property> FirstOrDefaultAsync(int id, int? userId = null)
+        public async Task<Property> FirstOrDefaultAsync(Guid id, Guid? userId = null)
         {
             var query = RepoDbSet.Where(a => a.Id == id).AsQueryable();
             if (userId != null)
@@ -34,7 +35,7 @@ namespace DAL.App.EF
             return await query.FirstOrDefaultAsync();
         }
         
-        public async Task<bool> ExistsAsync(int id, int? userId = null)
+        public async Task<bool> ExistsAsync(Guid id, Guid? userId = null)
         {
             if (userId == null)
             {
@@ -44,7 +45,7 @@ namespace DAL.App.EF
             return await RepoDbSet.AnyAsync(a => a.Id == id && a.Id == userId);
         }
         
-        public async Task DeleteAsync(int id, int? userId = null)
+        public async Task DeleteAsync(Guid id, Guid? userId = null)
         {
             var owner = await FirstOrDefaultAsync(id, userId);
             base.Remove(owner);
@@ -52,12 +53,12 @@ namespace DAL.App.EF
         
         
         
-        public async Task<IEnumerable<PropertyDTO>> DTOAllAsync(int? userId = null)
+        public async Task<IEnumerable<PropertyDTO>> DTOAllAsync(Guid? userId = null)
         {
             throw new System.NotImplementedException();
         }
         
-        public async Task<PropertyDTO> DTOFirstOrDefaultAsync(int id, int? userId = null)
+        public async Task<PropertyDTO> DTOFirstOrDefaultAsync(Guid id, Guid? userId = null)
         {
             throw new System.NotImplementedException();
         }

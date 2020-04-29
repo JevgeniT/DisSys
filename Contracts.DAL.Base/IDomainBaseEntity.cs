@@ -2,7 +2,7 @@
 
 namespace Contracts.DAL.Base
 {
-    public interface IDomainBaseEntity : IDomainBaseEntity<int>
+    public interface IDomainBaseEntity : IDomainBaseEntity<Guid>
     {
     }
 

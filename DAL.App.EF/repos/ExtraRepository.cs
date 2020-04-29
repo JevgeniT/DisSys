@@ -1,4 +1,5 @@
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,7 +16,7 @@ namespace DAL.App.EF
         {
         }
 
-        public async Task<IEnumerable<Extra>> AllAsync(int? userId = null)
+        public async Task<IEnumerable<Extra>> AllAsync(Guid? userId = null)
         {
             if (userId == null)
             {
@@ -25,7 +26,7 @@ namespace DAL.App.EF
             // return await RepoDbSet.Where(o => o.AppUserId == userId).ToListAsync();
         }
         
-        public async Task<Extra> FirstOrDefaultAsync(int id, int? userId = null)
+        public async Task<Extra> FirstOrDefaultAsync(Guid id, Guid? userId = null)
         {
             var query = RepoDbSet.Where(a => a.Id == id).AsQueryable();
             if (userId != null)
@@ -36,7 +37,7 @@ namespace DAL.App.EF
             return await query.FirstOrDefaultAsync();
         }
         
-        public async Task<bool> ExistsAsync(int id, int? userId = null)
+        public async Task<bool> ExistsAsync(Guid id, Guid? userId = null)
         {
             if (userId == null)
             {
@@ -46,18 +47,18 @@ namespace DAL.App.EF
             return await RepoDbSet.AnyAsync(a => a.Id == id && a.Id == userId);
         }
         
-        public async Task DeleteAsync(int id, int? userId = null)
+        public async Task DeleteAsync(Guid id, Guid? userId = null)
         {
             var owner = await FirstOrDefaultAsync(id, userId);
             base.Remove(owner);
         }
         
-        public async Task<IEnumerable<Extra>> DTOAllAsync(int? userId = null)
+        public async Task<IEnumerable<Extra>> DTOAllAsync(Guid? userId = null)
         {
             throw new System.NotImplementedException();
         }
         
-        public async Task<Extra> DTOFirstOrDefaultAsync(int id, int? userId = null)
+        public async Task<Extra> DTOFirstOrDefaultAsync(Guid id, Guid? userId = null)
         {
             throw new System.NotImplementedException();
         }

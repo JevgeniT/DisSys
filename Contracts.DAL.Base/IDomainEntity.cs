@@ -2,9 +2,9 @@
 
 namespace Contracts.DAL.Base
 {
-    public interface IDomainEntity : IDomainEntity<int>
+    public interface IDomainEntity : IDomainEntity<Guid>
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
     }
     
     

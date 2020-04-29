@@ -12,7 +12,7 @@ namespace Domain
         public int RoomSize { get; set; }  //m2
 
         [ForeignKey(nameof(RoomPropertyId))]
-        public int RoomPropertyId { get; set; }
+        public Guid RoomPropertyId { get; set; }
         
         public Property? RoomProperty { get; set; }
         

@@ -4,13 +4,17 @@ using System.Threading;
 using System.Threading.Tasks;
 using Contracts.DAL.Base;
 using Domain;
+using Domain.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL.App.EF
 {
-    public class AppDbContext: DbContext
+    public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid >
     {
+        private IUserNameProvider _userNameProvider;
+
+
         //
         // public DbSet<Extra> Extras { get; set; }
         // public DbSet<Facility> Facilities { get; set; }
@@ -30,20 +34,23 @@ namespace DAL.App.EF
 
         
    //15 entities     
-        public AppDbContext(DbContextOptions<AppDbContext> options)
-            : base(options) { }
+        public AppDbContext(DbContextOptions<AppDbContext> options, IUserNameProvider userNameProvider)
+           : base(options)
+        {
+           _userNameProvider = userNameProvider;
+        }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            base.OnModelCreating(builder);
-            
-            foreach (var relationship in builder.Model
-                .GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
-            {
-                relationship.DeleteBehavior = DeleteBehavior.Restrict;
-            }
+           base.OnModelCreating(builder);
 
+           foreach (var relationship in builder.Model
+               .GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+           {
+               relationship.DeleteBehavior = DeleteBehavior.Restrict;
+           }
         }
+
 
     }
 }

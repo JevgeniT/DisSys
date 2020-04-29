@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Contracts.DAL.Base.Repositories;
@@ -8,15 +9,15 @@ namespace Contracts.DAL.App.Repositories
 {
  public interface IReservationRepository : IBaseRepository<Reservation>
  {
-  Task<IEnumerable<Reservation>> AllAsync(int? userId = null);
-  Task<Reservation> FirstOrDefaultAsync(int id, int? userId = null);
+  Task<IEnumerable<Reservation>> AllAsync(Guid? userId = null);
+  Task<Reservation> FirstOrDefaultAsync(Guid id, Guid? userId = null);
 
-  Task<bool> ExistsAsync(int id, int? userId = null);
-  Task DeleteAsync(int id, int? userId = null);
+  Task<bool> ExistsAsync(Guid id, Guid? userId = null);
+  Task DeleteAsync(Guid id, Guid? userId = null);
         
   // DTO methods
-  // Task<IEnumerable<ReservationDTO>> DTOAllAsync(int? userId = null);
-  // Task<ReservationDTO> DTOFirstOrDefaultAsync(int id, int? userId = null);
+  // Task<IEnumerable<ReservationDTO>> DTOAllAsync(Guid? userId = null);
+  // Task<ReservationDTO> DTOFirstOrDefaultAsync(Guid id, Guid? userId = null);
   
  }
 }

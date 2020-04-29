@@ -2,14 +2,14 @@
     ViewData["Title"] = "Home Page";
 }
 
-
- <div id="booking" class="section">
+ 
+  <div id="booking" class="section">
      <div class="section-center">
          <div class="container">
              <div class="row">
                  <div class="booking-form">
                   @using (Html.BeginForm("Find", "Home"))
-                  { 
+                  {
                       <div class="col-md-8">
                           <div class="form-group">
                               <input name="search" type="text" class="form-control"  placeholder="Enter Address, zip, city or airport" />
@@ -21,7 +21,7 @@
                           <div class="form-btn">
                               @* <button class="submit-btn">Check availability</button> *@
                               <input type="submit" value="search" class="submit-btn"/>
-                                 
+
 
                           </div>
                       </div>

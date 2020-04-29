@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Contracts.DAL.Base.Repositories;
@@ -8,14 +9,14 @@ namespace Contracts.DAL.App.Repositories
 {
  public interface IRoomRepository : IBaseRepository<Room>
  {
-  Task<IEnumerable<Room>> AllAsync(int? userId = null);
-  Task<Room> FirstOrDefaultAsync(int id, int? userId = null);
+  Task<IEnumerable<Room>> AllAsync(Guid? userId = null);
+  Task<Room> FirstOrDefaultAsync(Guid id, Guid? userId = null);
 
-  Task<bool> ExistsAsync(int id, int? userId = null);
-  Task DeleteAsync(int id, int? userId = null);
+  Task<bool> ExistsAsync(Guid id, Guid? userId = null);
+  Task DeleteAsync(Guid id, Guid? userId = null);
         
   // DTO methods
-  Task<IEnumerable<RoomDTO>> DTOAllAsync(int? userId = null);
-  Task<RoomDTO> DTOFirstOrDefaultAsync(int id, int? userId = null);
+  Task<IEnumerable<RoomDTO>> DTOAllAsync(Guid? userId = null);
+  Task<RoomDTO> DTOFirstOrDefaultAsync(Guid id, Guid? userId = null);
  }
 }

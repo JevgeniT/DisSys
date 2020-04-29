@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -28,7 +29,7 @@ namespace WebApp.ApiControllers
 
         // GET: api/Properties/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Property>> GetProperty(int id)
+        public async Task<ActionResult<Property>> GetProperty(Guid id)
         {
             var property = await _context.Properties.FindAsync(id);
 
@@ -44,7 +45,7 @@ namespace WebApp.ApiControllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutProperty(int id, Property property)
+        public async Task<IActionResult> PutProperty(Guid id, Property property)
         {
             if (id != property.Id)
             {
@@ -100,7 +101,7 @@ namespace WebApp.ApiControllers
             return property;
         }
 
-        private bool PropertyExists(int id)
+        private bool PropertyExists(Guid id)
         {
             return _context.Properties.Any(e => e.Id == id);
         }

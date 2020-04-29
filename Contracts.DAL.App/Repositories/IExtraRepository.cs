@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Contracts.DAL.Base.Repositories;
@@ -8,15 +9,15 @@ namespace Contracts.DAL.App.Repositories
 {
  public interface IExtraRepository : IBaseRepository<Extra>
  {
-  Task<IEnumerable<Extra>> AllAsync(int? userId = null);
-  Task<Extra> FirstOrDefaultAsync(int id, int? userId = null);
+  Task<IEnumerable<Extra>> AllAsync(Guid? userId = null);
+  Task<Extra> FirstOrDefaultAsync(Guid id, Guid? userId = null);
 
-  Task<bool> ExistsAsync(int id, int? userId = null);
-  Task DeleteAsync(int id, int? userId = null);
+  Task<bool> ExistsAsync(Guid id, Guid? userId = null);
+  Task DeleteAsync(Guid id, Guid? userId = null);
         
   // DTO methods
-  // Task<IEnumerable<ExtraDTO>> DTOAllAsync(int? userId = null);
-  // Task<ExtraDTO> DTOFirstOrDefaultAsync(int id, int? userId = null);
+  // Task<IEnumerable<ExtraDTO>> DTOAllAsync(Guid? userId = null);
+  // Task<ExtraDTO> DTOFirstOrDefaultAsync(Guid id, Guid? userId = null);
  }
  
 }

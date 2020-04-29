@@ -29,7 +29,7 @@ namespace WebApp.Controllers
         }
 
         // GET: Reservation/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
             {
@@ -78,7 +78,7 @@ namespace WebApp.Controllers
         }
 
         // GET: Reservation/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
             {
@@ -99,7 +99,7 @@ namespace WebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ReservationNumber,MadeAt,CheckIn,CheckInDate,CheckOutDate,GuestReservationsId,CreatedBy,CreatedAt,DeletedBy,DeletedAt,Id")] Reservation reservation)
+        public async Task<IActionResult> Edit(Guid id, [Bind("ReservationNumber,MadeAt,CheckIn,CheckInDate,CheckOutDate,GuestReservationsId,CreatedBy,CreatedAt,DeletedBy,DeletedAt,Id")] Reservation reservation)
         {
             if (id != reservation.Id)
             {
@@ -131,7 +131,7 @@ namespace WebApp.Controllers
         }
 
         // GET: Reservation/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
             {
@@ -160,7 +160,7 @@ namespace WebApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ReservationExists(int id)
+        private bool ReservationExists(Guid id)
         {
             return _context.Reservations.Any(e => e.Id == id);
         }

@@ -8,9 +8,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Base.EF.Repositories
 {
-    public class EFBaseRepository<TEntity,TDbContext>: BaseRepository<TEntity, int,TDbContext> , 
+    public class EFBaseRepository<TEntity,TDbContext>: BaseRepository<TEntity, Guid,TDbContext> , 
         IBaseRepository<TEntity>
-        where TEntity : class, IDomainEntity<int>, new()
+        where TEntity : class, IDomainEntity<Guid>, new()
         where TDbContext:DbContext
     {
         public EFBaseRepository(TDbContext dbContext) : base(dbContext)

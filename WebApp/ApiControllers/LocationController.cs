@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -28,7 +29,7 @@ namespace WebApp.ApiControllers
 
         // GET: api/Locations/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Location>> GetLocation(int id)
+        public async Task<ActionResult<Location>> GetLocation(Guid id)
         {
             var location = await _context.Locations.FindAsync(id);
 
@@ -44,7 +45,7 @@ namespace WebApp.ApiControllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutLocation(int id, Location location)
+        public async Task<IActionResult> PutLocation(Guid id, Location location)
         {
             if (id != location.Id)
             {
@@ -100,7 +101,7 @@ namespace WebApp.ApiControllers
             return location;
         }
 
-        private bool LocationExists(int id)
+        private bool LocationExists(Guid id)
         {
             return _context.Locations.Any(e => e.Id == id);
         }

@@ -10,7 +10,7 @@ namespace Domain
 {
     
     
-    public class Reservation : Reservation<int>, IDomainEntity
+    public class Reservation : Reservation<Guid>, IDomainEntity
     {
     }
     
@@ -18,7 +18,7 @@ namespace Domain
         where TKey : struct, IEquatable<TKey>
     {
 
-        public virtual int ReservationNumber { get; set; }
+        public virtual Guid ReservationNumber { get; set; }
 
         // public DateTime MadeAt { get; set; } = DateTime.Now;
         //approx
@@ -30,7 +30,7 @@ namespace Domain
          
         // public ICollection<Room> Rooms { get; set; }
 
-        public virtual int PropertyId { get; set; }        
+        public virtual Guid PropertyId { get; set; }        
         
         // public Property Property { get; set; }
 
@@ -39,7 +39,7 @@ namespace Domain
         public virtual AppUser? AppUser { get; set; }
 
         [ForeignKey(nameof(ReservedBy))]
-        public virtual int GuestReservationsId { get; set; }
+        public virtual Guid GuestReservationsId { get; set; }
         public virtual Guest? ReservedBy { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using DAL.Base;
 
@@ -12,7 +13,7 @@ namespace Domain
 
         
         [ForeignKey(nameof(PropertyLocation))]
-        public int PropertyLocationId { get; set; }
+        public Guid PropertyLocationId { get; set; }
         public Location? PropertyLocation { get; set; }
 
         
