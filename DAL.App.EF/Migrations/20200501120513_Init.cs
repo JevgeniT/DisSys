@@ -206,7 +206,8 @@ namespace DAL.App.EF.Migrations
                     ChangedAt = table.Column<DateTime>(nullable: false),
                     PropertyName = table.Column<string>(nullable: false),
                     Address = table.Column<string>(nullable: false),
-                    PropertyLocationId = table.Column<Guid>(nullable: false)
+                    PropertyLocationId = table.Column<Guid>(nullable: false),
+                    Type = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {

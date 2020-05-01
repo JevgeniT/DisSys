@@ -11,8 +11,8 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.Controllers
 {
-    [Authorize]
-
+    // [Authorize]
+    // [Authorize(Roles = "host")]
     public class PropertyController : Controller
     {
         private readonly IAppUnitOfWork _uow;
@@ -55,6 +55,10 @@ namespace WebApp.Controllers
         public IActionResult Create()
         {
             ViewData["PropertyLocationId"] = new SelectList(_uow.Locations.All(), "Id", "City");
+            ViewData["PropertyType"] = new SelectList(Enum.GetNames(typeof(PropertyType)));
+            
+            
+
             return View();
         }
 

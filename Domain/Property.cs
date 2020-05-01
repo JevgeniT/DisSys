@@ -19,8 +19,13 @@ namespace Domain
         
         [InverseProperty(nameof(Room.RoomProperty))]
         public ICollection<Room>? PropertyRooms { get; set; }
+
+        public PropertyType Type { get; set; }
         
-        
-        
+    }
+
+    public enum PropertyType
+    {
+        Hotel,Hostel, Apartments 
     }
 }

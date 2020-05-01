@@ -1,6 +1,8 @@
-﻿﻿using System.Linq;
+﻿﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using DAL.App.EF;
+using Domain.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,6 +27,10 @@ namespace WebApp.Controllers
         {
             Search = search;
 
+            
+            AppUser user  = new AppUser();
+
+            Console.WriteLine(user.Email);
             if (!string.IsNullOrWhiteSpace(search))
             {
                 search = search.ToLower().Trim();

@@ -55,6 +55,7 @@ namespace WebApp
 
 
             services.AddIdentity<AppUser, AppRole>()
+                // .AddRoles<IdentityRole>()
                 .AddDefaultUI()
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();

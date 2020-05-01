@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace WebApp.Controllers
 {
     [Authorize]
+    [Authorize(Roles = "host")]
 
     public class LocationController : Controller
     {

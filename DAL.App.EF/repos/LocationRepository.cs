@@ -16,58 +16,6 @@ namespace DAL.App.EF.repos
         {
         }
         
-        //
-        // public IEnumerable<Location> All()
-        // {
-        //     return   RepoDbSet.ToList();
-        // }
-        //
-        // public override async Task<IEnumerable<Location>> AllAsync()
-        // {
-        //     return await RepoDbSet.ToListAsync();
-        // }
-        //
-        // public override Location Find(params object[] id)
-        // {
-        //     return RepoDbSet.Find(id);
-        // }
-        //
-        // public override async Task<Location> FindAsync(params object[] id)
-        // {
-        //     return await RepoDbSet.FindAsync(id);
-        //
-        // }
-        //
-        // public override Location Add(Location entity)
-        // {
-        //     return RepoDbSet.Add(entity).Entity;
-        // }
-        //
-        // public override Location Update(Location entity)
-        // {
-        //     return RepoDbSet.Update(entity).Entity;
-        //
-        // }
-        //
-        // public override Location Remove(Location entity)
-        // {
-        //     return RepoDbSet.Remove(entity).Entity;
-        // }
-        //
-        // public override Location Remove(params object[] id)
-        // {
-        //     return RepoDbSet.Remove(Find(id)).Entity;
-        // }
-        //
-        // public override Guid SaveChanges()
-        // {
-        //     throw new System.NotImplementedException();
-        // }
-        //
-        // public override  Task<Guid> SaveChangesAsync()
-        // {
-        //     throw new System.NotImplementedException();
-        // }
         public async Task<IEnumerable<Location>> AllAsync(Guid? userId = null)
         {
             if (userId == null)

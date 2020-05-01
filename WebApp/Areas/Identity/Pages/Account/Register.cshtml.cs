@@ -22,17 +22,20 @@ namespace WebApp.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<AppUser> _signInManager;
         private readonly UserManager<AppUser> _userManager;
+        public  readonly RoleManager<AppRole> _roleManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
 
         public RegisterModel(
             UserManager<AppUser> userManager,
+            RoleManager<AppRole> roleManager,
             SignInManager<AppUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
             _logger = logger;
             _emailSender = emailSender;
         }
@@ -73,14 +76,16 @@ namespace WebApp.Areas.Identity.Pages.Account
             public string ConfirmPassword { get; set; } = default!;
         }
 
-        public async Task OnGetAsync(string? returnUrl = null)
-        {
+        public async Task OnGetAsync(string? returnUrl = null, string? fragment = null)
+        { 
+            Console.WriteLine(fragment);
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
         public async Task<IActionResult> OnPostAsync(string? returnUrl = null)
         {
+           
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
@@ -94,8 +99,25 @@ namespace WebApp.Areas.Identity.Pages.Account
                     Email = Input.Email
                 };
 
+                AppRole hostRole = new AppRole();
+                hostRole.Name = "host";
+                AppRole guestRole = new AppRole();
+                guestRole.Name = "guest";
+                await _roleManager.CreateAsync(guestRole);    
+                await _roleManager.CreateAsync(hostRole);
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
+                if (user.Email.Contains("host"))
+                {
+                     await _userManager.AddToRoleAsync(user,"host");
+                }else if (user.Email.Contains("guest"))
+                {
+                    await _userManager.AddToRoleAsync(user,"guest");
+
+                }
+               
+                 
+
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
