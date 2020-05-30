@@ -1,35 +1,39 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Contracts.DAL.App;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DAL.App.EF;
 using Domain;
+using Domain.Identity;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+ 
 
 namespace WebApp.Controllers
 {
-    // [Authorize]
-    // [Authorize(Roles = "host")]
+    [Authorize]
+    [Authorize(Roles = "host")]
     public class PropertyController : Controller
     {
-        private readonly IAppUnitOfWork _uow;
-
-        public PropertyController(IAppUnitOfWork context)
+        private readonly AppDbContext _uow;
+        private readonly UserManager<AppUser> _userManager;
+        public PropertyController(AppDbContext context, UserManager<AppUser> userManager)
         {
             _uow = context;
+            _userManager = userManager;
         }
 
         // GET: Property
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _uow.Properties.AllAsync();
+            var property = _uow.Properties.Include(property1 => property1.PropertyRooms).ToList();
             
             
                 // _uow.Properties.Include(property=> property.PropertyLocation).Include(property => property.PropertyRooms);
-            return View(await appDbContext);
+            return View( property  );
         }
 
         // GET: Property/Details/5
@@ -40,7 +44,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var @property = await _uow.Properties.FirstOrDefaultAsync(id.Value);
+            var @property =   _uow.Properties.Find(id.Value);
                 // .Include(p=> p.PropertyLocation)
                 // .FirstOrDefaultAsync(m => m.Id == id);
             if (@property == null)
@@ -54,7 +58,8 @@ namespace WebApp.Controllers
         // GET: Property/Create
         public IActionResult Create()
         {
-            ViewData["PropertyLocationId"] = new SelectList(_uow.Locations.All(), "Id", "City");
+          
+            
             ViewData["PropertyType"] = new SelectList(Enum.GetNames(typeof(PropertyType)));
             
             
@@ -67,19 +72,22 @@ namespace WebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PropertyName,Address, PropertyLocationId,CreatedBy,CreatedAt,DeletedBy,DeletedAt,Id")] Property @property)
+        public async Task<IActionResult> Create([Bind("PropertyName,Address, PropertyLocation,CreatedBy,CreatedAt,DeletedBy,DeletedAt,Id")] Property @property)
         {
-            string messages = string.Join("; ", ModelState.Values
-                .SelectMany(x => x.Errors)
-                .Select(x => x.ErrorMessage));
-            Console.WriteLine(messages);
+             
+            
+            var userId = _userManager.FindByNameAsync(HttpContext.User.Identity.Name);
+                            // string[] location = property.PropertyLocationId.ToString().Split(",");
+            
             if (ModelState.IsValid)
             {
+                
+                property.AppUserId = userId.Result.Id;
                 _uow.Properties.Add(@property);
                 await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PropertyLocationId"] = new SelectList(_uow.Locations.All(), "Id", "City", @property.PropertyLocationId);
+            // ViewData["PropertyLocationId"] = new SelectList(_uow.Locations, "Id", "City", @property.PropertyLocationId);
             return View(@property);
         }
 
@@ -96,7 +104,7 @@ namespace WebApp.Controllers
             {
                 return NotFound();
             }
-            ViewData["PropertyLocationId"] = new SelectList(_uow.Locations.All(), "Id", "City", @property.PropertyLocationId);
+            // ViewData["PropertyLocationId"] = new SelectList(_uow.Locations, "Id", "City", @property.PropertyLocationId);
             return View(@property);
         }
 
@@ -119,18 +127,18 @@ namespace WebApp.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!await _uow.Properties.ExistsAsync(property.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    // if (!await _uow.Properties.Find(property.Id))
+                    // {
+                    //     return NotFound();
+                    // }
+                    // else
+                    // {
+                    //     throw;
+                    // }
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PropertyLocationId"] = new SelectList(_uow.Locations.All(), "Id", "City", @property.PropertyLocationId);
+            // ViewData["PropertyLocationId"] = new SelectList(_uow.Locations, "Id", "City", @property.PropertyLocationId);
             return View(@property);
         }
 

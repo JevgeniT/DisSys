@@ -5,8 +5,7 @@ namespace Contracts.DAL.App
 {
     public interface IAppUnitOfWork: IBaseUnitOfWork
     {
-        ILocationRepository Locations { get; }
-        IPropertyRepository Properties { get; }
+         IPropertyRepository Properties { get; }
         IRoomRepository Rooms { get; }
  
         IExtraRepository Extras { get; }

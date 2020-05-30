@@ -7,7 +7,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DAL.App.EF;
 using Domain;
+using Domain.Identity;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace WebApp.Controllers
 {
@@ -15,16 +17,19 @@ namespace WebApp.Controllers
     public class ReservationController : Controller
     {
         private readonly AppDbContext _context;
-
-        public ReservationController(AppDbContext context)
+        public UserManager<AppUser> _userManager { get; set; }
+        public ReservationController(AppDbContext context, UserManager<AppUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Reservation
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.Reservations.Include(r => r.ReservedBy);
+            var userId = _userManager.FindByNameAsync(HttpContext.User.Identity.Name).Result.Id;
+
+            var appDbContext = _context.Reservations.Where(reservation => reservation.AppUserId == userId);
             return View(await appDbContext.ToListAsync());
         }
 
@@ -35,9 +40,9 @@ namespace WebApp.Controllers
             {
                 return NotFound();
             }
-
+             
             var reservation = await _context.Reservations
-                .Include(r => r.ReservedBy)
+                .Include(r => r.AppUserId)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (reservation == null)
             {
@@ -51,6 +56,7 @@ namespace WebApp.Controllers
         public IActionResult Create()
         {
             ViewData["PropertyId"] = new SelectList(_context.Properties, "Id", "PropertyName");
+            ViewData["RoomId"] = new SelectList(_context.Rooms,"Id","RoomName");
             // Property property = new Property().id;
             ViewData["GuestReservationsId"] = new SelectList(_context.Guests, "Id", "FirstName");
             return View();
@@ -62,16 +68,27 @@ namespace WebApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ReservationNumber,CheckIn,CheckInDate,CheckOutDate," +
-                                                      "PropertyId,GuestReservationsId,CreatedBy,CreatedAt,DeletedBy,DeletedAt,Id")] Reservation reservation)
+                                                      "PropertyId,DeletedAt,Id,RoomId")]
+                                                        Reservation reservation)
         {
          
             if (ModelState.IsValid)
             {
-                _context.Add(reservation);
-                await _context.SaveChangesAsync();
+                var userId = _userManager.FindByNameAsync(HttpContext.User.Identity.Name).Result.Id;
+                reservation.AppUserId = userId;
+                
+                 _context.Add(reservation);
+                 await _context.SaveChangesAsync();
+
+                  // _context.GuestReservations.Add(new GuestReservations
+                  //   {GuestId = userId, ReservationId = reservation.Id});
+                  await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["GuestReservationsId"] = new SelectList(_context.Guests, "Id", "FirstName", reservation.GuestReservationsId);
+            ViewData["RoomId"] = new SelectList(_context.Rooms,"Id","RoomName");
+
+         
             ViewData["PropertyId"] = new SelectList(_context.Properties, "Id", "PropertyName", reservation.PropertyId);
 
             return View(reservation);
@@ -90,7 +107,6 @@ namespace WebApp.Controllers
             {
                 return NotFound();
             }
-            ViewData["GuestReservationsId"] = new SelectList(_context.Guests, "Id", "FirstName", reservation.GuestReservationsId);
             return View(reservation);
         }
 
@@ -126,8 +142,7 @@ namespace WebApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["GuestReservationsId"] = new SelectList(_context.Guests, "Id", "FirstName", reservation.GuestReservationsId);
-            return View(reservation);
+             return View(reservation);
         }
 
         // GET: Reservation/Delete/5
@@ -139,7 +154,7 @@ namespace WebApp.Controllers
             }
 
             var reservation = await _context.Reservations
-                .Include(r => r.ReservedBy)
+                .Include(r => r.AppUserId)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (reservation == null)
             {

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Contracts.DAL.App.Repositories;
+using DAL.Base.EF.Mappers;
 using DAL.Base.EF.Repositories;
 using Domain;
 using Microsoft.EntityFrameworkCore;
@@ -11,9 +12,9 @@ using Public.DTO;
 
 namespace DAL.App.EF
 {
-    public class RoomRepository : EFBaseRepository<Room,AppDbContext>,  IRoomRepository
+    public class RoomRepository : EFBaseRepository<AppDbContext,Room,Room>,  IRoomRepository
     {
-        public RoomRepository(AppDbContext dbContext) : base(dbContext)
+        public RoomRepository(AppDbContext dbContext) :base(dbContext, new BaseDALMapper<Room, Room>())
         {
         }
         public async Task<IEnumerable<Room>> AllAsync(Guid? userId = null)

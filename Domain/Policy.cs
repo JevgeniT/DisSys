@@ -1,8 +1,10 @@
-﻿using DAL.Base;
+﻿using System;
+using Contracts.DAL.Base;
+using DAL.Base;
 
 namespace Domain
 {
-    public class Policy : DomainEntity
+    public class Policy : IDomainEntityBaseMetadata
     {
         public string PolicyName { get; set; }
 
@@ -10,5 +12,6 @@ namespace Domain
 
         public int CancellationBefore { get; set; }
 
+        public Guid Id { get; set; }
     }
 }

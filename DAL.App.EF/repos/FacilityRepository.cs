@@ -4,15 +4,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Contracts.DAL.App.Repositories;
+using DAL.Base.EF.Mappers;
 using DAL.Base.EF.Repositories;
 using Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL.App.EF
 {
-    public class FacilityRepository : EFBaseRepository<Facility,AppDbContext>,  IFacilityRepository
+    public class FacilityRepository : EFBaseRepository<AppDbContext,Facility,Facility>,  IFacilityRepository
     {
-        public FacilityRepository(AppDbContext dbContext) : base(dbContext)
+        public FacilityRepository(AppDbContext dbContext) :  base(dbContext, new BaseDALMapper<Facility, Facility>())
         {
         }
 

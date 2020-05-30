@@ -1,8 +1,11 @@
+using System;
+
 namespace Public.DTO
 {
     public class PropertyDTO
     {
-        public int Guid { get; set; }
+        
+        public Guid Guid { get; set; }
         public string PropertyName { get; set; }
   
         public string Address { get; set; }

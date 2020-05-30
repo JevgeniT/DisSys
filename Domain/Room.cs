@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using Contracts.DAL.Base;
 using DAL.Base;
 
 namespace Domain
 {
-    public class Room : DomainEntity
+    public class Room : IDomainEntityBaseMetadata
     {
 
         public string RoomName { get; set; }
@@ -16,9 +18,13 @@ namespace Domain
         
         public Property? RoomProperty { get; set; }
         
+        public ICollection<RoomAvailability>? RoomAvailabilities { get; set; }
+        
         public enum BedType
         {
             Large, Single, Double 
         }
+
+        public Guid Id { get; set; }
     }
 }

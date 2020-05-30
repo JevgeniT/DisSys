@@ -3,15 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Contracts.DAL.App.Repositories;
+using DAL.Base.EF.Mappers;
 using DAL.Base.EF.Repositories;
 using Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL.App.EF
 {
-    public class RoomFacilitiesRepository : EFBaseRepository<RoomFacilities,AppDbContext>,  IRoomFacilitiesRepository
+    public class RoomFacilitiesRepository : EFBaseRepository<AppDbContext,RoomFacilities,RoomFacilities>,  IRoomFacilitiesRepository
     {
-        public RoomFacilitiesRepository(AppDbContext dbContext) : base(dbContext)
+        public RoomFacilitiesRepository(AppDbContext dbContext) : 
+            base(dbContext, new BaseDALMapper<RoomFacilities, RoomFacilities>())
         {
         }
 
@@ -59,14 +61,6 @@ namespace DAL.App.EF
             return RepoDbSet.Remove(Find(id)).Entity;
         }
 
-        public override int SaveChanges()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override  Task<int> SaveChangesAsync()
-        {
-            throw new System.NotImplementedException();
-        }
+      
     }
 }

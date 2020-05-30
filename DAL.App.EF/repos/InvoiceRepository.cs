@@ -4,15 +4,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Contracts.DAL.App.Repositories;
+using DAL.Base.EF.Mappers;
 using DAL.Base.EF.Repositories;
 using Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL.App.EF
 {
-    public class InvoiceRepository : EFBaseRepository<Invoice,AppDbContext>,  IInvoiceRepository
+    public class InvoiceRepository : EFBaseRepository<AppDbContext,Invoice,Invoice>,  IInvoiceRepository
     {
-        public InvoiceRepository(AppDbContext dbContext) : base(dbContext)
+        public InvoiceRepository(AppDbContext dbContext) : base(dbContext, new BaseDALMapper<Invoice, Invoice>())
         {
         }
 

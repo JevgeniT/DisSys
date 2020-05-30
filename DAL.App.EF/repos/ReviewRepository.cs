@@ -4,15 +4,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Contracts.DAL.App.Repositories;
+using DAL.Base.EF.Mappers;
 using DAL.Base.EF.Repositories;
 using Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL.App.EF
 {
-    public class ReviewRepository : EFBaseRepository<Review,AppDbContext>,  IReviewRepository
+    public class ReviewRepository : EFBaseRepository<AppDbContext,Review,Review>,  IReviewRepository
     {
-        public ReviewRepository(AppDbContext dbContext) : base(dbContext)
+        public ReviewRepository(AppDbContext dbContext) : base(dbContext, new BaseDALMapper<Review, Review>())
         {
         }
 

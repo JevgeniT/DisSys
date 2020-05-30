@@ -4,15 +4,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Contracts.DAL.App.Repositories;
+using DAL.Base.EF.Mappers;
 using DAL.Base.EF.Repositories;
 using Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL.App.EF
 {
-    public class ReservationRepository : EFBaseRepository<Reservation,AppDbContext>,  IReservationRepository
+    public class ReservationRepository : EFBaseRepository<AppDbContext,Reservation,Reservation>,  IReservationRepository
     {
-        public ReservationRepository(AppDbContext dbContext) : base(dbContext)
+        public ReservationRepository(AppDbContext dbContext) : base(dbContext, new BaseDALMapper<Reservation, Reservation>())
         {
         }
 

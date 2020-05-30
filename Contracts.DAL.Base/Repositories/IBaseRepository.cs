@@ -1,46 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
-  using System.Threading.Tasks;
+ using System.Threading.Tasks;
 
 namespace Contracts.DAL.Base.Repositories
 {
-    public interface IBaseRepository<TEntity>: IBaseRepository<TEntity, Guid>
-        where TEntity: class, IDomainEntity<Guid>, new()
+    public interface IBaseRepository<TDALEntity> : IBaseRepository<Guid, TDALEntity>
+        where TDALEntity : class, IDomainBaseEntity<Guid>, new() 
     {
-        
     }
 
-
-    public interface IBaseRepository<TEntity, TKey>
-        where TEntity: class, IDomainEntity<TKey>,new()
-//        where TKey: struct, IComparable
-        where TKey : struct, IEquatable<TKey>
-
-
-
+    public interface IBaseRepository<TKey, TDALEntity>
+        where TDALEntity : class, IDomainBaseEntity<TKey>, new() 
+        where TKey : IEquatable<TKey>
     {
+        // crud
+        IEnumerable<TDALEntity> All();
+        Task<IEnumerable<TDALEntity>> AllAsync();
 
-        IEnumerable<TEntity> All();
-        
-        Task<IEnumerable<TEntity>> AllAsync();
-        //
-        // IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>>? filter = null);
-        // Task<IEnumerable<TEntity>>GetAsync(Expression<Func<TEntity,bool>>? filter =null);
-            
-        TEntity Find(params object[] id);
-        Task<TEntity> FindAsync(params object[] id);
-
-        TEntity Add(TEntity entity);
-
-        TEntity Update( TEntity entity);
-
-        TEntity Remove(TEntity entity);
-        
-        TEntity Remove(params object[] id);
-
-        int SaveChanges();
-        
-        Task<int> SaveChangesAsync();
-
+        TDALEntity Find(params object[] id);
+        Task<TDALEntity> FindAsync(params object[] id);
+        TDALEntity Add(TDALEntity entity);
+        TDALEntity Update(TDALEntity entity);
+        TDALEntity Remove(TDALEntity entity);
+        TDALEntity Remove(params object[] id);
     }
 }

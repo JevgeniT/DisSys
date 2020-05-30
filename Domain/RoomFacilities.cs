@@ -1,9 +1,10 @@
 ﻿using System;
+using Contracts.DAL.Base;
 using DAL.Base;
 
 namespace Domain
 {
-    public class RoomFacilities : DomainEntity
+    public class RoomFacilities : IDomainEntityBaseMetadata
     {
 
         public Guid FacilityId { get; set; }
@@ -11,7 +12,8 @@ namespace Domain
         
         public Guid RoomId { get; set; }
         public Room? Room { get; set; }
-        
-        
+
+
+        public Guid Id { get; set; }
     }
 }

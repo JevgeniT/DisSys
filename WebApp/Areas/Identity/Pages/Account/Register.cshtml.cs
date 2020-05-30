@@ -25,6 +25,7 @@ namespace WebApp.Areas.Identity.Pages.Account
         public  readonly RoleManager<AppRole> _roleManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private bool isHost = false;
 
         public RegisterModel(
             UserManager<AppUser> userManager,
@@ -101,6 +102,7 @@ namespace WebApp.Areas.Identity.Pages.Account
 
                 AppRole hostRole = new AppRole();
                 hostRole.Name = "host";
+                
                 AppRole guestRole = new AppRole();
                 guestRole.Name = "guest";
                 await _roleManager.CreateAsync(guestRole);    
@@ -109,7 +111,8 @@ namespace WebApp.Areas.Identity.Pages.Account
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (user.Email.Contains("host"))
                 {
-                     await _userManager.AddToRoleAsync(user,"host");
+                     await _userManager.AddToRoleAsync(user,"host");     
+                      
                 }else if (user.Email.Contains("guest"))
                 {
                     await _userManager.AddToRoleAsync(user,"guest");
