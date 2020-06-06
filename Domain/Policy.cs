@@ -6,12 +6,19 @@ namespace Domain
 {
     public class Policy : IDomainEntityBaseMetadata
     {
-        public string PolicyName { get; set; }
+        public Guid Id { get; set; }
+        
+        public PolicyName PolicyName { get; set; }
 
         public int PrepaymentBefore { get; set; }
 
         public int CancellationBefore { get; set; }
 
-        public Guid Id { get; set; }
+    }
+
+
+    public enum PolicyName
+    {
+        NonRefundable, General, Flexible
     }
 }

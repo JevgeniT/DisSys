@@ -45,7 +45,7 @@ namespace WebApp.ApiControllers
         
         {
             Console.WriteLine(true);
-            return await _context.Availabilities.Where(a => a.start == from && a.end == to).FirstAsync();
+            return await _context.Availabilities.Where(a => a.From == from && a.To == to).FirstAsync();
         }
     }
 }

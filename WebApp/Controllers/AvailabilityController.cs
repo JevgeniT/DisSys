@@ -23,16 +23,14 @@ namespace WebApp.Controllers
         // GET: Availability
         public async Task<IActionResult> Index()
         {
-              
+           
             return View(await _context.Availabilities.ToListAsync());
         }
 
         [HttpGet]
          public async Task<ActionResult<IEnumerable<Availability>>> GetProperties()
         {
-            var dates = JsonConvert.SerializeObject( _context.Availabilities.ToListAsync());
-            Console.WriteLine(_context.Availabilities.ToListAsync());
-            return await _context.Availabilities.ToListAsync();
+              return await _context.Availabilities.ToListAsync();
         }
         
         // GET: Availability/Details/5
@@ -66,7 +64,7 @@ namespace WebApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,start,end, PropertyRoomId, Price")] Availability availability)
+        public async Task<IActionResult> Create([Bind("Id, From , To, PropertyRoomId, PricePerNight")] Availability availability)
         {
             if (ModelState.IsValid)
             {
@@ -74,8 +72,8 @@ namespace WebApp.Controllers
                 _context.Add(availability);
                 await _context.SaveChangesAsync();
 
-                _context.RoomAvailabilities.Add(new RoomAvailability()
-                    {RoomId = availability.PropertyRoomId, AvailabilityId = availability.Id});
+                // _context.RoomAvailabilities.Add(new RoomAvailability()
+                //     {RoomId = availability.PropertyRoomId, AvailabilityId = availability.Id});
                 await _context.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));
@@ -101,9 +99,7 @@ namespace WebApp.Controllers
             return View(availability);
         }
 
-        // POST: Availability/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, [Bind("Id,From,To")] Availability availability)

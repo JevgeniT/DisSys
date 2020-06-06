@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
  using Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Public.DTO;
+using Room = BLL.App.DTO.Room;
 
 namespace WebApp.ApiControllers
 {
@@ -16,7 +18,7 @@ namespace WebApp.ApiControllers
     [ApiVersion( "1.0" )]
     [Produces("application/json")]
     [Route("api/v{version:apiVersion}/[controller]")]
-    // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class PropertyController : ControllerBase
     {
         private readonly IAppBLL _bll;
@@ -26,7 +28,6 @@ namespace WebApp.ApiControllers
             _bll = bll;
         }
 
-        // GET: api/property
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Property>>> GetProperties()
         {
@@ -37,22 +38,47 @@ namespace WebApp.ApiControllers
                     Address = bllEntity.Address,
                     PropertyLocation = bllEntity.PropertyLocation,
                     PropertyName = bllEntity.PropertyName,
+                    AppUserId = bllEntity.AppUserId
                 }) ;
             
             return Ok(properties);
         }
 
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("find")]
+        
+        public async Task<ActionResult<IEnumerable<Property>>> FindProperties(SearchDTO search)
+        {
+            Console.WriteLine(search);
+             var found = _bll.Properties.FindAsync(search);
+             
+             // var rooms = await _bll.PropertyRoomsService.FindAsync(id);
+             // Console.WriteLine(found.Result.Count());
+             
+             var properties = (await found)
+                .Select(bllEntity => new Property()
+                {
+                    Id = bllEntity.Id,
+                    Address = bllEntity.Address,
+                    PropertyLocation = bllEntity.PropertyLocation,
+                    PropertyName = bllEntity.PropertyName,
+                    // PropertyRooms =  bllEntity.PropertyRooms
+                    // AppUserId = bllEntity.AppUserId
+                }) ;
+            
+            return Ok(properties);
+        }
         // GET: api/Properties/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Property>> GetProperty(Guid id)
         {
-            var property = await _bll.Properties.FirstOrDefaultAsync(id,User.UserGuidId());
-
+            var property = await _bll.Properties.FirstOrDefaultAsync(id);
+           
             if (property == null)
             {
                 return NotFound();
             }
-
             return Ok(property);
         }
 

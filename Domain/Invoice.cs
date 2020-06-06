@@ -2,19 +2,35 @@
 using System;
 using Contracts.DAL.Base;
 using DAL.Base;
+using Domain.Identity;
 
 namespace Domain
 {
-    public class Invoice: IDomainEntityBaseMetadata 
+    public class Invoice: Invoice<Guid, AppUser>, IDomainEntity
     {
-
-        public Reservation Reservation { get; set; }
-
-        public Guest Guest { get; set; }
-
-        public DateTime MadeAt { get; set; } = DateTime.Now;
-
-
-        public Guid Id { get; set; }
     }
+
+
+    public class Invoice<TKey, TUser> : DomainEntityBaseMetadata<TKey>, IDomainEntityUser<TKey, TUser>
+        where TKey : IEquatable<TKey>
+        where TUser : AppUser<TKey>
+    {
+        
+        
+        public TKey AppUserId { get; set; }
+        public TUser? AppUser { get; set; }
+
+        public bool IsPaid { get; set; }
+
+        public decimal TotalPrice { get; set; }
+        
+        public Guid ResrvationId { get; set; }
+        
+        public Reservation Reservation { get; set; }
+        
+        public DateTime CreatedAt { get; set; } 
+        
+        
+    }
+    
 }                            

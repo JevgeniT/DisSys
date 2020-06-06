@@ -6,6 +6,8 @@ namespace Contracts.BLL.Base.Mappers
     {
         TOutObject Map(TInObject inObject);
 
+        TInObject Map(TOutObject outObject);
+
         TMapOutObject Map<TMapInObject, TMapOutObject>(TMapInObject inObject)
             where TMapOutObject : class, new()
             where TMapInObject : class, new();

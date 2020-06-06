@@ -12,22 +12,18 @@ using Public.DTO;
 
 namespace DAL.App.EF
 {
-    public class RoomRepository : EFBaseRepository<AppDbContext,Room,Room>,  IRoomRepository
+    public class RoomRepository : EFBaseRepository<AppDbContext,Room, DAL.App.DTO.Room>,  IRoomRepository
     {
-        public RoomRepository(AppDbContext dbContext) :base(dbContext, new BaseDALMapper<Room, Room>())
+        public RoomRepository(AppDbContext dbContext) :base(dbContext, new BaseDALMapper<Room, DAL.App.DTO.Room>())
         {
         }
-        public async Task<IEnumerable<Room>> AllAsync(Guid? userId = null)
+        public async Task<IEnumerable<DAL.App.DTO.Room>> AllAsync(Guid? userId = null)
         {
-            if (userId == null)
-            {
-                // base is not actually needed, using it for clarity
-            }
+             
             return await base.AllAsync();
-            // return await RepoDbSet.Where(o => o.AppUserId == userId).ToListAsync();
-        }
+         }
         
-        public async Task<Room> FirstOrDefaultAsync(Guid id, Guid? userId = null)
+        public async Task<DAL.App.DTO.Room> FirstOrDefaultAsync(Guid id, Guid? userId = null)
         {
             var query = RepoDbSet.Where(a => a.Id == id).AsQueryable();
             if (userId != null)
@@ -35,7 +31,7 @@ namespace DAL.App.EF
                 query = query.Where(a => a.Id == userId);
             }
 
-            return await query.FirstOrDefaultAsync();
+            return Mapper.Map(await query.FirstOrDefaultAsync());
         }
         
         public async Task<bool> ExistsAsync(Guid id, Guid? userId = null)

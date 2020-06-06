@@ -14,6 +14,7 @@ namespace DAL.Base.EF.Mappers
 
         public BaseDALMapper()
         {
+            
             _mapper = new MapperConfiguration(config =>
             {
                 config.CreateMap<TInObject, TOutObject>();
@@ -22,6 +23,8 @@ namespace DAL.Base.EF.Mappers
 
             // 
         }
+        
+        
 
         public TOutObject Map(TInObject inObject)
         {

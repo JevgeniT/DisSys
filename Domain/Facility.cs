@@ -7,8 +7,13 @@ namespace Domain
     public class Facility : IDomainEntityBaseMetadata
     {
 
-        public string FacilityName { get; set; }
+        public string Name { get; set; }
 
         public Guid Id { get; set; }
+
+         
     }
+    
+    
+    
 }

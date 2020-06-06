@@ -29,11 +29,11 @@ namespace WebApp.Controllers
         // GET: Property
         public async Task<IActionResult> Index()
         {
-            var property = _uow.Properties.Include(property1 => property1.PropertyRooms).ToList();
+            var property = _uow.Properties.Include(property1 => property1.PropertyRooms).ToListAsync();
             
             
                 // _uow.Properties.Include(property=> property.PropertyLocation).Include(property => property.PropertyRooms);
-            return View( property  );
+            return View( await property  );
         }
 
         // GET: Property/Details/5
@@ -171,10 +171,7 @@ namespace WebApp.Controllers
             await _uow.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
-        // private bool PropertyExists(int id)
-        // {
-        //     return _uow.Properties.ExistsAsync(id);
-        // }
+ 
     }
 }
+// dotnet aspnet-codegenerator controller -name ReservationController  -m Reservation  -actions -dc AppDbContext -outDir ApiControllers -api --useAsyncActions  -f

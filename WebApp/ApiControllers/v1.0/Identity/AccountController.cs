@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Domain.Identity;
 using Extensions;
@@ -6,6 +8,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Public.DTO;
+using Public.DTO.Identity;
 
 namespace WebApp.ApiControllers._1._0.Identity
 {
@@ -18,22 +22,27 @@ namespace WebApp.ApiControllers._1._0.Identity
         private readonly UserManager<AppUser> _userManager;
         private readonly ILogger<AccountController> _logger;
         private readonly SignInManager<AppUser> _signInManager;
+        private readonly RoleManager<AppRole> _roleManager;
+
 
         public AccountController(IConfiguration configuration, UserManager<AppUser> userManager,
-            ILogger<AccountController> logger, SignInManager<AppUser> signInManager)
+            ILogger<AccountController> logger, SignInManager<AppUser> signInManager, RoleManager<AppRole> roleManager)
         {
             _configuration = configuration;
             _userManager = userManager;
             _logger = logger;
             _signInManager = signInManager;
+            _roleManager = roleManager;
         }
 
         [HttpPost]
         public async Task<ActionResult<string>> Login([FromBody] LoginDTO model)
         {
 
-            Console.WriteLine("TEst ");
-            var appUser = await _userManager.FindByEmailAsync(model.Email);
+             var appUser = await _userManager.FindByEmailAsync(model.Email);
+
+             Console.WriteLine(appUser.Id + " Db GUID" );
+             
             if (appUser == null)
             {
                 _logger.LogInformation($"Web-Api login. User {model.Email} not found!");
@@ -49,7 +58,7 @@ namespace WebApp.ApiControllers._1._0.Identity
                     _configuration["JWT:Issuer"],
                     _configuration.GetValue<int>("JWT:ExpirationInDays")
                 );
-                _logger.LogInformation($"Token generated for user {model.Email}");
+                _logger.LogInformation($"Token generated for user {model.Email} ");
                 return Ok(new {token = jwt, status = "Logged in"});
             }
 
@@ -59,23 +68,63 @@ namespace WebApp.ApiControllers._1._0.Identity
 
 
         [HttpPost]
-        public async Task<ActionResult<string>> Register([FromBody] RegisterDTO model)
+        public async Task<ActionResult<string>> Register([FromBody] RegisterDTO dto)
         {
-            throw new NotImplementedException();
+            var appUser = await _userManager.FindByEmailAsync(dto.Email);
+            if (appUser != null)
+            {
+                _logger.LogInformation($"WebApi register. User {dto.Email} already registered!");
+                return NotFound(new MessageDTO("User already registered!"));
+            }
+            
+            appUser = new AppUser()
+            {
+                Email = dto.Email,
+                UserName = dto.Email,
+                FirstName = dto.FirstName,
+                LastName = dto.LastName,
+            };
+
+            var role = dto.IsHost ? "host" : "guest";
+          
+            
+            var result = await _userManager.CreateAsync(appUser, dto.Password);
+            
+            if (result.Succeeded)
+            {
+                _logger.LogInformation($"User {appUser.Email} created a new account as {role}.");
+                await _userManager.AddToRoleAsync(appUser, role);
+                
+                var user = await _userManager.FindByEmailAsync(appUser.Email);
+                if (user != null)
+                {
+                    var claimsPrincipal = await _signInManager.CreateUserPrincipalAsync(user);
+                    var jwt = IdentityExtensions.GenerateJWT(
+                        claimsPrincipal.Claims
+                            .Append(new Claim(ClaimTypes.GivenName, appUser.FirstName))
+                            .Append(new Claim(ClaimTypes.Surname, appUser.LastName)),
+                        _configuration["JWT:SigningKey"],
+                        _configuration["JWT:Issuer"],
+                        _configuration.GetValue<int>("JWT:ExpirationInDays")
+                    );
+                    _logger.LogInformation($"WebApi register. User {user.Email} logged in.");
+                    return Ok(new JwtResponseDTO()
+                    {
+                        Token = jwt, Status = $"User {user.Email} created and logged in.",
+                        FirstName = appUser.FirstName, LastName = appUser.LastName
+                    });
+                }
+
+                _logger.LogInformation($"User {appUser.Email} not found after creation!");
+                return BadRequest(new MessageDTO("User not found after creation!"));
+            }
+
+            var errors = result.Errors.Select(error => error.Description).ToList();
+            return BadRequest(new MessageDTO() {Messages = errors});
+
         }
 
-        public class LoginDTO
-        {
-            public string Email { get; set; } = default!;
-            public string Password { get; set; } = default!;
-        }
-
-        public class RegisterDTO
-        {
-            public string Email { get; set; } = default!;
-            public string Password { get; set; } = default!;
-            public string FirstName { get; set; } = default!;
-            public string LastName { get; set; } = default!;
-        }
+        
+ 
     }
 }

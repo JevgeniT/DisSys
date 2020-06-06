@@ -25,19 +25,27 @@ namespace DAL.App.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<decimal>("Price")
+                    b.Property<DateTime>("From")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsUsed")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("PricePerNight")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<Guid>("PropertyRoomId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("end")
-                        .HasColumnType("datetime2");
+                    b.Property<Guid?>("RoomId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("start")
+                    b.Property<DateTime>("To")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("RoomId");
 
                     b.ToTable("Availabilities");
                 });
@@ -48,12 +56,12 @@ namespace DAL.App.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ExtraName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<Guid>("FacilityId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -68,49 +76,18 @@ namespace DAL.App.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("FacilityName")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("PropertyRoomsId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("PropertyRoomsId");
 
                     b.ToTable("Facilities");
-                });
-
-            modelBuilder.Entity("Domain.Guest", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("AppUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("ChangedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ChangedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AppUserId");
-
-                    b.ToTable("Guests");
                 });
 
             modelBuilder.Entity("Domain.Identity.AppRole", b =>
@@ -223,18 +200,36 @@ namespace DAL.App.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("GuestId")
+                    b.Property<Guid>("AppUserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("MadeAt")
+                    b.Property<DateTime>("ChangedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("ChangedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsPaid")
+                        .HasColumnType("bit");
 
                     b.Property<Guid>("ReservationId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("ResrvationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(18,2)");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("GuestId");
+                    b.HasIndex("AppUserId");
 
                     b.HasIndex("ReservationId");
 
@@ -250,9 +245,8 @@ namespace DAL.App.EF.Migrations
                     b.Property<int>("CancellationBefore")
                         .HasColumnType("int");
 
-                    b.Property<string>("PolicyName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("PolicyName")
+                        .HasColumnType("int");
 
                     b.Property<int>("PrepaymentBefore")
                         .HasColumnType("int");
@@ -260,20 +254,6 @@ namespace DAL.App.EF.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Policies");
-                });
-
-            modelBuilder.Entity("Domain.Price", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<decimal>("Total")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Price");
                 });
 
             modelBuilder.Entity("Domain.Property", b =>
@@ -309,8 +289,9 @@ namespace DAL.App.EF.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -319,11 +300,38 @@ namespace DAL.App.EF.Migrations
                     b.ToTable("Properties");
                 });
 
+            modelBuilder.Entity("Domain.PropertyRooms", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("PropertyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("RoomId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PropertyId");
+
+                    b.HasIndex("RoomId");
+
+                    b.ToTable("PropertyRooms");
+                });
+
             modelBuilder.Entity("Domain.Reservation", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Adults")
+                        .HasColumnType("int");
 
                     b.Property<Guid>("AppUserId")
                         .HasColumnType("uniqueidentifier");
@@ -340,17 +348,28 @@ namespace DAL.App.EF.Migrations
                     b.Property<DateTime>("CheckOutDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("Children")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsCancelled")
+                        .HasColumnType("bit");
+
                     b.Property<Guid>("PropertyId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("PropertyRoomId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("ReservationNumber")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<Guid>("RoomId")
                         .HasColumnType("uniqueidentifier");
@@ -386,9 +405,6 @@ namespace DAL.App.EF.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("GuestId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("PropertyId")
                         .HasColumnType("uniqueidentifier");
 
@@ -402,8 +418,6 @@ namespace DAL.App.EF.Migrations
 
                     b.HasIndex("AppUserId");
 
-                    b.HasIndex("GuestId");
-
                     b.HasIndex("PropertyId");
 
                     b.HasIndex("ReservationId");
@@ -415,6 +429,9 @@ namespace DAL.App.EF.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AvailabilityId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("ReservationId")
@@ -442,27 +459,6 @@ namespace DAL.App.EF.Migrations
                     b.ToTable("Rooms");
                 });
 
-            modelBuilder.Entity("Domain.RoomAvailability", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("AvailabilityId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("RoomId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AvailabilityId");
-
-                    b.HasIndex("RoomId");
-
-                    b.ToTable("RoomAvailabilities");
-                });
-
             modelBuilder.Entity("Domain.RoomFacilities", b =>
                 {
                     b.Property<Guid>("Id")
@@ -472,14 +468,14 @@ namespace DAL.App.EF.Migrations
                     b.Property<Guid>("FacilityId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("RoomId")
+                    b.Property<Guid>("PropertyRoomsId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.HasIndex("FacilityId");
 
-                    b.HasIndex("RoomId");
+                    b.HasIndex("PropertyRoomsId");
 
                     b.ToTable("RoomFacilities");
                 });
@@ -493,14 +489,17 @@ namespace DAL.App.EF.Migrations
                     b.Property<Guid>("PolicyId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("RoomId")
+                    b.Property<Guid?>("PropertyRoomsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("PropertyRoomsRoomId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.HasIndex("PolicyId");
 
-                    b.HasIndex("RoomId");
+                    b.HasIndex("PropertyRoomsId");
 
                     b.ToTable("RoomPolicies");
                 });
@@ -606,6 +605,14 @@ namespace DAL.App.EF.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Domain.Availability", b =>
+                {
+                    b.HasOne("Domain.Room", null)
+                        .WithMany("Availabilities")
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
             modelBuilder.Entity("Domain.Extra", b =>
                 {
                     b.HasOne("Domain.Facility", "Facility")
@@ -615,20 +622,19 @@ namespace DAL.App.EF.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Domain.Guest", b =>
+            modelBuilder.Entity("Domain.Facility", b =>
                 {
-                    b.HasOne("Domain.Identity.AppUser", "AppUser")
-                        .WithMany()
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                    b.HasOne("Domain.PropertyRooms", null)
+                        .WithMany("RoomFacilities")
+                        .HasForeignKey("PropertyRoomsId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Domain.Invoice", b =>
                 {
-                    b.HasOne("Domain.Guest", "Guest")
+                    b.HasOne("Domain.Identity.AppUser", "AppUser")
                         .WithMany()
-                        .HasForeignKey("GuestId")
+                        .HasForeignKey("AppUserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -648,6 +654,21 @@ namespace DAL.App.EF.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Domain.PropertyRooms", b =>
+                {
+                    b.HasOne("Domain.Property", "Property")
+                        .WithMany()
+                        .HasForeignKey("PropertyId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Room", "Room")
+                        .WithMany()
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Domain.Reservation", b =>
                 {
                     b.HasOne("Domain.Identity.AppUser", "AppUser")
@@ -662,12 +683,6 @@ namespace DAL.App.EF.Migrations
                     b.HasOne("Domain.Identity.AppUser", "AppUser")
                         .WithMany()
                         .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Guest", "Guest")
-                        .WithMany()
-                        .HasForeignKey("GuestId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -698,21 +713,6 @@ namespace DAL.App.EF.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Domain.RoomAvailability", b =>
-                {
-                    b.HasOne("Domain.Availability", "Availability")
-                        .WithMany()
-                        .HasForeignKey("AvailabilityId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Room", "Room")
-                        .WithMany("RoomAvailabilities")
-                        .HasForeignKey("RoomId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Domain.RoomFacilities", b =>
                 {
                     b.HasOne("Domain.Facility", "Facility")
@@ -721,9 +721,9 @@ namespace DAL.App.EF.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Domain.Room", "Room")
+                    b.HasOne("Domain.PropertyRooms", "PropertyRooms")
                         .WithMany()
-                        .HasForeignKey("RoomId")
+                        .HasForeignKey("PropertyRoomsId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
@@ -736,11 +736,10 @@ namespace DAL.App.EF.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Domain.Room", "Room")
+                    b.HasOne("Domain.PropertyRooms", "PropertyRooms")
                         .WithMany()
-                        .HasForeignKey("RoomId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .HasForeignKey("PropertyRoomsId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>

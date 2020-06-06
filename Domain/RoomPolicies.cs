@@ -7,8 +7,8 @@ namespace Domain
     public class RoomPolicies : IDomainEntityBaseMetadata
     {
 
-        public Guid RoomId { get; set; }
-        public Room? Room { get; set; }
+        public Guid PropertyRoomsRoomId { get; set; }
+        public PropertyRooms? PropertyRooms { get; set; }
 
         public Guid PolicyId { get; set; }
         public Policy? Policy { get; set; }

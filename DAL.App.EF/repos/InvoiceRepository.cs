@@ -1,32 +1,27 @@
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Contracts.DAL.App.Repositories;
+using DAL.App.DTO;
 using DAL.Base.EF.Mappers;
 using DAL.Base.EF.Repositories;
-using Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL.App.EF
 {
-    public class InvoiceRepository : EFBaseRepository<AppDbContext,Invoice,Invoice>,  IInvoiceRepository
+    public class InvoiceRepository : EFBaseRepository<AppDbContext,Domain.Invoice,DAL.App.DTO.Invoice>,  IInvoiceRepository
     {
-        public InvoiceRepository(AppDbContext dbContext) : base(dbContext, new BaseDALMapper<Invoice, Invoice>())
+        public InvoiceRepository(AppDbContext dbContext) : base(dbContext, new BaseDALMapper<Domain.Invoice, DAL.App.DTO.Invoice>())
         {
         }
 
  
         public async Task<IEnumerable<Invoice>> AllAsync(Guid? userId = null)
         {
-            if (userId == null)
-            {
-                // base is not actually needed, using it for clarity
-            }
+             
             return await base.AllAsync();
-            // return await RepoDbSet.Where(o => o.AppUserId == userId).ToListAsync();
-        }
+         }
         
         public async Task<Invoice> FirstOrDefaultAsync(Guid id, Guid? userId = null)
         {
@@ -36,7 +31,8 @@ namespace DAL.App.EF
                 query = query.Where(a => a.Id == userId);
             }
 
-            return await query.FirstOrDefaultAsync();
+            return Mapper.Map(await query.FirstOrDefaultAsync());
+
         }
         
         public async Task<bool> ExistsAsync(Guid id, Guid? userId = null)
@@ -55,14 +51,6 @@ namespace DAL.App.EF
             base.Remove(owner);
         }
         
-        public async Task<IEnumerable<Invoice>> DTOAllAsync(Guid? userId = null)
-        {
-            throw new System.NotImplementedException();
-        }
-        
-        public async Task<Invoice> DTOFirstOrDefaultAsync(Guid id, Guid? userId = null)
-        {
-            throw new System.NotImplementedException();
-        }
+         
     }
 }

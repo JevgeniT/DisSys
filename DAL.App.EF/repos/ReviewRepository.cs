@@ -11,14 +11,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.App.EF
 {
-    public class ReviewRepository : EFBaseRepository<AppDbContext,Review,Review>,  IReviewRepository
+    public class ReviewRepository : EFBaseRepository<AppDbContext,Review, DAL.App.DTO.Review>,  IReviewRepository
     {
-        public ReviewRepository(AppDbContext dbContext) : base(dbContext, new BaseDALMapper<Review, Review>())
+        public ReviewRepository(AppDbContext dbContext) : base(dbContext, new BaseDALMapper<Review, DAL.App.DTO.Review>())
         {
         }
 
  
-        public async Task<IEnumerable<Review>> AllAsync(Guid? userId = null)
+        public async Task<IEnumerable<DAL.App.DTO.Review>> AllAsync(Guid? userId = null)
         {
             if (userId == null)
             {
@@ -28,7 +28,7 @@ namespace DAL.App.EF
             // return await RepoDbSet.Where(o => o.AppUserId == userId).ToListAsync();
         }
         
-        public async Task<Review> FirstOrDefaultAsync(Guid id, Guid? userId = null)
+        public async Task<DAL.App.DTO.Review> FirstOrDefaultAsync(Guid id, Guid? userId = null)
         {
             var query = RepoDbSet.Where(a => a.Id == id).AsQueryable();
             if (userId != null)
@@ -36,7 +36,7 @@ namespace DAL.App.EF
                 query = query.Where(a => a.Id == userId);
             }
 
-            return await query.FirstOrDefaultAsync();
+            return Mapper.Map(await query.FirstOrDefaultAsync());
         }
         
         public async Task<bool> ExistsAsync(Guid id, Guid? userId = null)

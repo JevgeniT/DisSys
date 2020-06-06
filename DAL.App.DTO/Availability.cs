@@ -1,5 +1,5 @@
 using System;
-  using Contracts.DAL.Base;
+using Contracts.DAL.Base;
  
 namespace DAL.App.DTO
 {
@@ -17,7 +17,8 @@ namespace DAL.App.DTO
  
         public DateTime end { get; set; }
 
-
+        public decimal PricePerNight { get; set; }
+        
         public Guid? RoomId { get; set; }
 
     }

@@ -11,9 +11,10 @@ namespace DAL.App.DTO
         where TKey: IEquatable<TKey>
     {
     
-        public string ExtraName { get; set; }
+        public string Name { get; set; }
 
         public Guid FacilityId { get; set; }
+        
         public Facility? Facility { get; set; }
 
 

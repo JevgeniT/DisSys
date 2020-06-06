@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using BLL.App.DTO.Identity;
-using Contracts.DAL.Base;
+ using Contracts.DAL.Base;
 using DAL.App.DTO;
-using DAL.App.DTO.Identity;
-
+ 
 namespace BLL.App.DTO
 {
     public class  Property: Property<Guid>, IDomainBaseEntity
@@ -17,7 +15,6 @@ namespace BLL.App.DTO
     {
         public TKey Id { get; set; } = default!;
         
-      
         public string PropertyName { get; set; }
   
         public string Address { get; set; }
@@ -26,7 +23,7 @@ namespace BLL.App.DTO
 
         
         [InverseProperty(nameof(Room.RoomProperty))]
-        public ICollection<Room>? PropertyRooms { get; set; }
+        public ICollection<BLL.App.DTO.Room>? PropertyRooms { get; set; }
 
         public PropertyType Type { get; set; }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using Contracts.DAL.Base;
 using DAL.Base;
 using Domain.Identity;
@@ -12,16 +13,25 @@ namespace Domain
         where TKey : IEquatable<TKey>
         where TUser : AppUser<TKey>
     {
-    public Reservation Reservation { get; set; }
-
+     
+        [Range(0,10)]
         public int Score { get; set; }
 
-        public Guest Guest { get; set; }
+        public Guid ReservationId { get; set; }
+        
+        public Reservation Reservation { get; set; }
 
         public string? Comment { get; set; }
-
+        
+        public DateTime CreatedAt { get; set; }
+        
+        public Guid PropertyId { get; set; }
+        
         public Property Property { get; set; }
+        
         public TKey AppUserId { get; set; }
+        
         public TUser? AppUser { get; set; }
+        
     }
 }

@@ -11,24 +11,21 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.App.EF
 {
-    public class PolicyRepository : EFBaseRepository<AppDbContext,Policy,Policy>,  IPolicyRepository
+    public class PolicyRepository : EFBaseRepository<AppDbContext,Policy, DAL.App.DTO.Policy>,  IPolicyRepository
     {
-        public PolicyRepository(AppDbContext dbContext) : base(dbContext, new BaseDALMapper<Policy, Policy>())
+        public PolicyRepository(AppDbContext dbContext) : base(dbContext, new BaseDALMapper<Policy, DAL.App.DTO.Policy>())
         {
         }
 
  
-        public async Task<IEnumerable<Policy>> AllAsync(Guid? userId = null)
+        public async Task<IEnumerable<DAL.App.DTO.Policy>> AllAsync(Guid? userId = null)
         {
-            if (userId == null)
-            {
-                // base is not actually needed, using it for clarity
-            }
+            
             return await base.AllAsync();
-            // return await RepoDbSet.Where(o => o.AppUserId == userId).ToListAsync();
+         
         }
         
-        public async Task<Policy> FirstOrDefaultAsync(Guid id, Guid? userId = null)
+        public async Task<DAL.App.DTO.Policy> FirstOrDefaultAsync(Guid id, Guid? userId = null)
         {
             var query = RepoDbSet.Where(a => a.Id == id).AsQueryable();
             if (userId != null)
@@ -36,7 +33,7 @@ namespace DAL.App.EF
                 query = query.Where(a => a.Id == userId);
             }
 
-            return await query.FirstOrDefaultAsync();
+            return Mapper.Map(await query.FirstOrDefaultAsync());
         }
         
         public async Task<bool> ExistsAsync(Guid id, Guid? userId = null)

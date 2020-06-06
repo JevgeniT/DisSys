@@ -18,7 +18,7 @@ namespace Domain
         where TKey : struct, IEquatable<TKey>
             where TUser : AppUser<TKey>
     {
-
+        
         public virtual int ReservationNumber { get; set; }
 
         // public DateTime MadeAt { get; set; } = DateTime.Now;
@@ -29,17 +29,23 @@ namespace Domain
         
         public virtual DateTime CheckOutDate { get; set; }
 
+        public Guid PropertyRoomId { get; set; }
+
         public Guid RoomId { get; set; }
-        
         public ICollection<Room>? Rooms { get; set; }
 
-        public virtual Guid PropertyId { get; set; }        
-        
+        public virtual Guid PropertyId { get; set; }
+
+        public bool IsCancelled { get; set; } = false;
         // public Property Property { get; set; }
 
         // public Extra Extra { get; set; }    
         public virtual TKey AppUserId { get; set; }
         public virtual TUser? AppUser { get; set; }
+
+        public int Adults { get; set; }
+        
+        public int Children { get; set; }
 
         // [ForeignKey(nameof(ReservedBy))]
         // public virtual Guid GuestId { get; set; }

@@ -11,23 +11,20 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.App.EF
 {
-    public class FacilityRepository : EFBaseRepository<AppDbContext,Facility,Facility>,  IFacilityRepository
+    public class FacilityRepository : EFBaseRepository<AppDbContext,Facility ,DAL.App.DTO.Facility>,  IFacilityRepository
     {
-        public FacilityRepository(AppDbContext dbContext) :  base(dbContext, new BaseDALMapper<Facility, Facility>())
+        public FacilityRepository(AppDbContext dbContext) :  base(dbContext, new BaseDALMapper<Facility, DAL.App.DTO.Facility>())
         {
         }
 
-        public async Task<IEnumerable<Facility>> AllAsync(Guid? userId = null)
+        public async Task<IEnumerable<DAL.App.DTO.Facility>> AllAsync(Guid? userId = null)
         {
-            if (userId == null)
-            {
-                // base is not actually needed, using it for clarity
-            }
+            
             return await base.AllAsync();
-            // return await RepoDbSet.Where(o => o.AppUserId == userId).ToListAsync();
+            
         }
         
-        public async Task<Facility> FirstOrDefaultAsync(Guid id, Guid? userId = null)
+        public async Task<DAL.App.DTO.Facility> FirstOrDefaultAsync(Guid id, Guid? userId = null)
         {
             var query = RepoDbSet.Where(a => a.Id == id).AsQueryable();
             if (userId != null)
@@ -35,7 +32,7 @@ namespace DAL.App.EF
                 query = query.Where(a => a.Id == userId);
             }
 
-            return await query.FirstOrDefaultAsync();
+            return Mapper.Map(await query.FirstOrDefaultAsync());
         }
         
         public async Task<bool> ExistsAsync(Guid id, Guid? userId = null)

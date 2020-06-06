@@ -5,23 +5,27 @@ namespace Contracts.DAL.App
 {
     public interface IAppUnitOfWork: IBaseUnitOfWork
     {
-         IPropertyRepository Properties { get; }
+        IPropertyRepository Properties { get; }
         IRoomRepository Rooms { get; }
  
+        IAvailabilityRepository Availabilities { get; }
         IExtraRepository Extras { get; }
 
         IFacilityRepository Facilities { get; }
-        IPriceRepository Prices { get; }
         IReviewRepository Reviews { get; }
         IInvoiceRepository Invoices { get; }
         IReservationRepository Reservations { get; }
 
         IPolicyRepository Policies { get; }
-
-
-
-
-
         
+        IPropertyRoomsRepository PropertyRooms { get; }
+
+        IRoomFacilitiesRepository RoomFacilities { get; }
+
+
+
+
+
+
     }
 }

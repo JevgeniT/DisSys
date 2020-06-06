@@ -2,12 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Contracts.BLL.App;
 using Contracts.DAL.App;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using DAL.App.EF;
-using Domain;
+using BLL.App.DTO;
+
 using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.Controllers
@@ -16,9 +17,9 @@ namespace WebApp.Controllers
 
     public class RoomController : Controller
     {
-        private readonly IAppUnitOfWork _uow;
+        private readonly IAppBLL _uow;
 
-        public RoomController(IAppUnitOfWork uow)
+        public RoomController(IAppBLL uow)
         {
             _uow = uow;
         }
@@ -62,15 +63,14 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("RoomName,RoomCapacity,RoomSize,RoomPropertyId,CreatedBy,CreatedAt,DeletedBy,DeletedAt,Id")] Room room)
         {
-            string messages = string.Join("; ", ModelState.Values
-                .SelectMany(x => x.Errors)
-                .Select(x => x.ErrorMessage));
-            Console.WriteLine(messages);
-            // Console.WriteLine(room.PropertyRoom);
+     
             if (ModelState.IsValid)
             {
                 _uow.Rooms.Add(room);
                 await _uow.SaveChangesAsync();
+                // _uow.PropertyRoomsService.Add(new PropertyRooms(){RoomId = room.Id,PropertyId = room.RoomPropertyId});
+                // await _uow.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
             ViewData["RoomPropertyId"] = new SelectList(_uow.Properties.All(), "Id", "PropertyName", room.RoomPropertyId);
@@ -161,3 +161,5 @@ namespace WebApp.Controllers
         
     }
 }
+// dotnet aspnet-codegenerator controller -name FacilitiesController  -actions -m Domain.Facility  -dc AppDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
+// dotnet aspnet-codegenerator controller -name RoomFacilitiesController  -actions -m Domain.RoomFacilities  -dc AppDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f

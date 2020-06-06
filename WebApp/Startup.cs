@@ -59,13 +59,13 @@ namespace WebApp
                     builder =>
                     {
                         builder.WithOrigins("https://localhost:5001/api/v1.0/date",
-                            "http://localhost:63343");
+                            "http://localhost:8080");
                     });
             });
             
             services.AddCors(options => options.AddPolicy("ApiCorsPolicy", builder =>
             {
-                builder.WithOrigins("https://localhost:5001/api/v1.0/date").AllowAnyMethod().AllowAnyHeader();
+                builder.WithOrigins("https://localhost:8080/api").AllowAnyMethod().AllowAnyHeader();
             }));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddApiVersioning(options =>
@@ -104,7 +104,7 @@ namespace WebApp
  
           services.AddCors(options =>
           {
-              options.AddPolicy("CorsAllowAll",
+              options.AddPolicy("CorsPolicy",
                   builder =>
                   {
                       builder.AllowAnyOrigin();
@@ -166,7 +166,7 @@ namespace WebApp
 
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseCors("ApiCorsPolicy");
+            app.UseCors("CorsPolicy");
             app.UseCors(
                 options => options.WithOrigins("https://localhost:5001/api/v1.0/date").AllowAnyMethod()
             );

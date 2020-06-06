@@ -5,6 +5,7 @@ namespace Contracts.DAL.Base.Mappers
         where TInObject : class
     {
         TOutObject Map(TInObject inObject);
+ 
 
         TMapOutObject Map<TMapInObject, TMapOutObject>(TMapInObject inObject)
             where TMapOutObject : class, new()

@@ -17,8 +17,11 @@ namespace Domain
         public Guid RoomPropertyId { get; set; }
         
         public Property? RoomProperty { get; set; }
-        
-        public ICollection<RoomAvailability>? RoomAvailabilities { get; set; }
+
+        public Guid AvailabilityId { get; set; }
+
+        public ICollection<Availability>? Availabilities { get; set; }
+        // public ICollection<RoomAvailability>? RoomAvailabilities { get; set; }
         
         public enum BedType
         {

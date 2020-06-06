@@ -23,8 +23,7 @@ namespace DAL.App.DTO
         
         public Property? RoomProperty { get; set; }
         
-        public ICollection<RoomAvailability>? RoomAvailabilities { get; set; }
-        
+         
         public enum BedType
         {
             Large, Single, Double 

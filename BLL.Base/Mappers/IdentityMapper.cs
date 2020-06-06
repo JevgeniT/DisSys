@@ -12,6 +12,11 @@ namespace BLL.Base.Mappers
             return inObject as TOutObject ?? default!;
         }
 
+        public TInObject Map(TOutObject outObject)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public TMapOutObject Map<TMapInObject, TMapOutObject>(TMapInObject inObject) 
             where TMapInObject : class, new() 
             where TMapOutObject : class, new()

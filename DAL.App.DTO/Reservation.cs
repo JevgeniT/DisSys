@@ -39,9 +39,6 @@ namespace DAL.App.DTO
         // public Extra Extra { get; set; }    
         public virtual TKey AppUserId { get; set; }
  
-        // [ForeignKey(nameof(ReservedBy))]
-        // public virtual Guid GuestId { get; set; }
-        // public virtual Guest? ReservedBy { get; set; }
         public TKey Id { get; set; }
     }
 }

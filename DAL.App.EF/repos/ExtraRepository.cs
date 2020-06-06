@@ -1,4 +1,3 @@
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,24 +10,20 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.App.EF
 {
-    public class ExtraRepository : EFBaseRepository<AppDbContext,Extra,Extra>,  IExtraRepository
+    public class ExtraRepository : EFBaseRepository<AppDbContext,Extra, DAL.App.DTO.Extra>,  IExtraRepository
     {
-        public ExtraRepository(AppDbContext dbContext) : base(dbContext, new BaseDALMapper<Extra, Extra>())
+        public ExtraRepository(AppDbContext dbContext) : base(dbContext, new BaseDALMapper<Extra, DAL.App.DTO.Extra>())
         {
         }
 
 
-        public async Task<IEnumerable<Extra>> AllAsync(Guid? userId = null)
+        public async Task<IEnumerable<DAL.App.DTO.Extra>> AllAsync(Guid? userId = null)
         {
-            if (userId == null)
-            {
-                // base is not actually needed, using it for clarity
-            }
+             
             return await base.AllAsync();
-            // return await RepoDbSet.Where(o => o.AppUserId == userId).ToListAsync();
-        }
+         }
         
-        public async Task<Extra> FirstOrDefaultAsync(Guid id, Guid? userId = null)
+        public async Task<DAL.App.DTO.Extra> FirstOrDefaultAsync(Guid id, Guid? userId = null)
         {
             var query = RepoDbSet.Where(a => a.Id == id).AsQueryable();
             if (userId != null)
@@ -36,7 +31,7 @@ namespace DAL.App.EF
                 query = query.Where(a => a.Id == userId);
             }
 
-            return await query.FirstOrDefaultAsync();
+            return Mapper.Map(await query.FirstOrDefaultAsync());
         }
         
         public async Task<bool> ExistsAsync(Guid id, Guid? userId = null)

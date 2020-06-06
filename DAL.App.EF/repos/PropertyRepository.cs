@@ -1,9 +1,10 @@
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Contracts.DAL.App.Repositories;
+using DAL.App.EF.Mappers;
 using DAL.Base.EF.Mappers;
 using DAL.Base.EF.Repositories;
 using Domain;
@@ -12,10 +13,11 @@ using Public.DTO;
 
 namespace DAL.App.EF
 {
-    public class PropertyRepository : EFBaseRepository<AppDbContext, Property, DAL.App.DTO.Property>,  IPropertyRepository
+    public class PropertyRepository :
+        EFBaseRepository<AppDbContext, Property, DAL.App.DTO.Property>,  IPropertyRepository
     {
         public PropertyRepository(AppDbContext dbContext) :
-            base(dbContext, new BaseDALMapper<Property, DAL.App.DTO.Property>())
+            base(dbContext, new DALMapper<Property, DAL.App.DTO.Property>())
         {
         }
 
@@ -26,20 +28,41 @@ namespace DAL.App.EF
                 return await base.AllAsync();
             }
             
-            return (await RepoDbSet.Where(o => o.AppUserId == userId)
+            return (await RepoDbSet.Where(o => o.AppUserId == userId).Include(property => property.PropertyRooms)
                 .ToListAsync()).Select(domainEntity => Mapper.Map(domainEntity));
 
         }
-        
+ 
+        public  async Task<IEnumerable<DAL.App.DTO.Property>> FindAsync(SearchDTO? param)
+        {
+            
+            return (await RepoDbSet
+                
+                .Where(o => o.PropertyLocation.Contains(param.Input) 
+                            || o.PropertyName.Contains(param.Input)).Include(p=>p.PropertyRooms)
+                            
+                .ToListAsync()).Select(domainEntity => Mapper.Map(domainEntity));
+            
+            // return (await RepoDbSet.Include(property => property.PropertyRooms)
+            //     .ThenInclude(room => room.Availabilities)
+            //     .Where(o => o.PropertyLocation.Contains(param.Input) 
+            //                 || o.PropertyName.Contains(param.Input)
+            //                 && o.PropertyRooms.Any(room => room.RoomCapacity>=param.Adults
+            //                                                && room.Availabilities.Any(a => a.From >= param.From)))
+            //     .ToListAsync()).Select(domainEntity => Mapper.Map(domainEntity));
+        }
+
         public async Task<DAL.App.DTO.Property> FirstOrDefaultAsync(Guid id, Guid? userId = null)
         {
-            var query = RepoDbSet.Where(a => a.Id == id).AsQueryable();
+            var query = RepoDbSet.Where(a => a.Id == id).Include(property => property.PropertyRooms).AsQueryable();
+            Console.WriteLine(query.FirstOrDefault().PropertyName);
+            Console.WriteLine(query.FirstOrDefault().PropertyRooms.Count);
+
             if (userId != null)
             {
                 query = query.Where(a => a.Id == userId);
             }
-
-            return Mapper.Map(await query.FirstOrDefaultAsync());
+             return Mapper.Map(await query.FirstOrDefaultAsync());
         }
 
       

@@ -1,9 +1,7 @@
 @model Domain.Availability
-
 @{
     ViewData["Title"] = "Create";
 }
-
 <h1>Create</h1>
 <h4>Availability</h4>
 <hr />
@@ -12,23 +10,23 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="start" class="control-label"></label>
-                <input asp-for="start" class="form-control" />
-                <span asp-validation-for="start" class="text-danger"></span>
+                <label asp-for="From" class="control-label"></label>
+                <input asp-for="From" class="form-control" />
+                <span asp-validation-for="From" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="end" class="control-label"></label>
-                <input asp-for="end" class="form-control" />
-                <span asp-validation-for="end" class="text-danger"></span>
+                <label asp-for="To" class="control-label"></label>
+                <input asp-for="To" class="form-control" />
+                <span asp-validation-for="To" class="text-danger"></span>
             </div>
             <div class="form-group">
                   <label asp-for=PropertyRoomId class="control-label"></label>
                   <select asp-for="PropertyRoomId" class ="form-control" asp-items="ViewBag.PropertyRoomId"></select>
             </div>
               <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
+                <label asp-for="PricePerNight" class="control-label"></label>
+                <input asp-for="PricePerNight" class="form-control" />
+                <span asp-validation-for="PricePerNight" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
