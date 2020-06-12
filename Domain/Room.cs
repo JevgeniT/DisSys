@@ -9,7 +9,7 @@ namespace Domain
     public class Room : IDomainEntityBaseMetadata
     {
 
-        public string RoomName { get; set; }
+        public string? RoomName { get; set; }
         public int RoomCapacity { get; set; }
         public int RoomSize { get; set; }  //m2
 
@@ -29,5 +29,10 @@ namespace Domain
         }
 
         public Guid Id { get; set; }
+
+        public override string ToString()
+        {
+            return $"{RoomName}";
+        }
     }
 }

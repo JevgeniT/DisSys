@@ -9,7 +9,7 @@ namespace Domain
 
         public Guid FacilityId { get; set; }
         
-        public Facility Facility { get; set; }
+        public Facility? Facility { get; set; }
         
         public Guid PropertyRoomsId { get; set; }
         public PropertyRooms? PropertyRooms { get; set; }

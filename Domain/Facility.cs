@@ -7,7 +7,7 @@ namespace Domain
     public class Facility : IDomainEntityBaseMetadata
     {
 
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         public Guid Id { get; set; }
 

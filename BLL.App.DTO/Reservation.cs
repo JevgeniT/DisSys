@@ -37,8 +37,8 @@ namespace BLL.App.DTO
         // public Property Property { get; set; }
 
         // public Extra Extra { get; set; }    
-        public virtual TKey AppUserId { get; set; }
+        public virtual TKey AppUserId { get; set; }= default!;
  
-        public TKey Id { get; set; }
+        public TKey Id { get; set; }= default!;
     }
 }

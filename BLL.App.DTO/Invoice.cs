@@ -12,7 +12,7 @@ namespace BLL.App.DTO
     public class Invoice<TKey> : IDomainBaseEntity<TKey>
         where TKey: IEquatable<TKey>
     {
-        public Reservation Reservation { get; set; }
+        public Reservation? Reservation { get; set; }
 
         public TKey AppUserId { get; set; } = default!;
         public AppUser<TKey>? AppUser { get; set; }

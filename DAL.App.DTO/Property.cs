@@ -15,11 +15,11 @@ namespace DAL.App.DTO
     {
         public TKey Id { get; set; } = default!;
 
-        public string PropertyName { get; set; }
+        public string? PropertyName { get; set; }
   
-        public string Address { get; set; }
+        public string? Address { get; set; }
         
-        public string PropertyLocation { get; set; }
+        public string? PropertyLocation { get; set; }
 
         
         [InverseProperty(nameof(Room.RoomProperty))]
@@ -27,8 +27,13 @@ namespace DAL.App.DTO
 
         public PropertyType Type { get; set; }
 
-        public TKey AppUserId { get; set; }
+        public TKey AppUserId { get; set; }= default!;
         public AppUser<TKey>? AppUser { get; set; }
+
+        public override string ToString()
+        {
+            return $"PropertyName: {PropertyName}, PropertyRooms: {PropertyRooms}";
+        }
     }
 
     public enum PropertyType

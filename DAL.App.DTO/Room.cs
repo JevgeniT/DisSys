@@ -14,7 +14,7 @@ namespace DAL.App.DTO
     {
         public TKey Id { get; set; } = default!;
 
-        public virtual string RoomName { get; set; }
+        public virtual string? RoomName { get; set; }
         public virtual int RoomCapacity { get; set; }
         public virtual int RoomSize { get; set; }  //m2
 
@@ -29,5 +29,9 @@ namespace DAL.App.DTO
             Large, Single, Double 
         }
 
-     }
+        public override string ToString()
+        {
+            return $"RoomName: {RoomName}";
+        }
+    }
 }

@@ -11,7 +11,7 @@ namespace DAL.App.DTO
     public class Review<TKey> : IDomainBaseEntity<TKey>
         where TKey: IEquatable<TKey>
     {
-        public TKey Id { get; set; }
+        public TKey Id { get; set; }= default!;
         
         [Range(0,10)]
         public virtual int Score { get; set; }
@@ -22,9 +22,9 @@ namespace DAL.App.DTO
         
         public virtual Guid PropertyId { get; set; }
         
-        public virtual Property Property { get; set; }
+        public virtual Property? Property { get; set; }
         
-        public virtual TKey AppUserId { get; set; }
+        public virtual TKey AppUserId { get; set; }= default!;
         
      }
     

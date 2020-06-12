@@ -7,7 +7,7 @@ namespace Domain
     public class Extra : IDomainEntityBaseMetadata
     {
  
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         public Guid FacilityId { get; set; }
         

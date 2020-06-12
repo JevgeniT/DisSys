@@ -12,7 +12,7 @@ namespace BLL.App.DTO
     {
         public TKey Id { get; set; } = default!;
         
-        public TKey AppUserId { get; set; }
+        public TKey AppUserId { get; set; } = default!;
         
         public virtual Identity.AppUser<TKey>? AppUser { get; set; }
         public virtual DateTime From { get; set; }

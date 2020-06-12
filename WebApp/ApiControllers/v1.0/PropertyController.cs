@@ -1,7 +1,10 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using BLL.Base.Mappers;
 using Contracts.BLL.App;
 using DAL.App.DTO;
 using Microsoft.AspNetCore.Mvc;
@@ -22,23 +25,25 @@ namespace WebApp.ApiControllers
     public class PropertyController : ControllerBase
     {
         private readonly IAppBLL _bll;
-
+ 
         public PropertyController(IAppBLL bll)
         {
             _bll = bll;
-        }
+         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Property>>> GetProperties()
         {
             var properties = (await _bll.Properties.AllAsync(User.UserGuidId()))
-                .Select(bllEntity => new Property()
+                .Select(bllEntity => new PropertyDTO()
                 {
                     Id = bllEntity.Id,
                     Address = bllEntity.Address,
                     PropertyLocation = bllEntity.PropertyLocation,
                     PropertyName = bllEntity.PropertyName,
-                    AppUserId = bllEntity.AppUserId
+                    Rooms = bllEntity.PropertyRooms.Select(room => new RoomDTO()
+                    {RoomName = room.RoomName, RoomCapacity = room.RoomCapacity, RoomSize = room. RoomSize} ).ToList(),
+                  
                 }) ;
             
             return Ok(properties);
@@ -50,7 +55,7 @@ namespace WebApp.ApiControllers
         
         public async Task<ActionResult<IEnumerable<Property>>> FindProperties(SearchDTO search)
         {
-            Console.WriteLine(search);
+             
              var found = _bll.Properties.FindAsync(search);
              
              // var rooms = await _bll.PropertyRoomsService.FindAsync(id);

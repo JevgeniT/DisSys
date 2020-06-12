@@ -23,7 +23,7 @@ namespace BLL.App.Services
        
         public async  Task<IEnumerable<Property>> AllAsync(Guid? userId = null)
         {
-           return (await ServiceRepository.AllAsync(userId)).Select( dalEntity => Mapper.Map(dalEntity) );
+            return (await ServiceRepository.AllAsync(userId)).Select(dalEntity => Mapper.Map(dalEntity));
         }
 
         public async Task<IEnumerable<Property>> FindAsync(SearchDTO? search)

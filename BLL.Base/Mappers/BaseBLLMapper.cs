@@ -19,12 +19,10 @@ namespace BLL.Base.Mappers
                 config.CreateMap<TInObject, TOutObject>();
                 config.CreateMap<TOutObject, TInObject>();
                 config.CreateMap<Room, DAL.App.DTO.Room>();
-                
-                config.CreateMap<DAL.App.DTO.Property, Property>().ForMember(property => property.PropertyRooms, opt=>opt.Ignore());;
+                config.CreateMap<BLL.App.DTO.Room, DAL.App.DTO.Room>();
+                config.CreateMap<DAL.App.DTO.Room, BLL.App.DTO.Room>();
 
-                // config.CreateMap<Domain.Property, DAL.App.DTO.Property>().ForMember(property => property.PropertyRooms, opt=>opt.Ignore());
-
-
+                config.CreateMap<DAL.App.DTO.Property, BLL.App.DTO.Property>();
             }).CreateMapper();
     }
 

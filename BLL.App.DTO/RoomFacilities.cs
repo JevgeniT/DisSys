@@ -13,7 +13,7 @@ namespace BLL.App.DTO
         public TKey Id { get; set; } = default!;
 
         public Guid FacilityId { get; set; }
-        public Facility Facility { get; set; }
+        public Facility? Facility { get; set; }
         
         public Guid RoomId { get; set; }
         public Room? Room { get; set; }

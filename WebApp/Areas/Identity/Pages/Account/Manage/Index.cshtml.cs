@@ -16,7 +16,7 @@ namespace WebApp.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly RoleManager<AppRole> _roleManager;
-        private readonly AppDbContext _context;
+        private readonly AppDbContext? _context;
         public IndexModel(
             UserManager<AppUser> userManager,
             RoleManager<AppRole> roleManager,
@@ -28,19 +28,19 @@ namespace WebApp.Areas.Identity.Pages.Account.Manage
             _roleManager = roleManager;
         }
 
-        public string Username { get; set; }
+        public string? Username { get; set; }
 
         [TempData]
-        public string StatusMessage { get; set; }
+        public string? StatusMessage { get; set; }
 
         [BindProperty]
-        public InputModel Input { get; set; }
+        public InputModel Input { get; set; }= default!;
 
         public class InputModel
         {
             [Phone]
             [Display(Name = "Phone number")]
-            public string PhoneNumber { get; set; }
+            public string? PhoneNumber { get; set; }
         }
 
         private async Task LoadAsync(AppUser user)

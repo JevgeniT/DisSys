@@ -31,6 +31,7 @@ namespace DAL.App.EF
             return (await RepoDbSet.Where(o => o.AppUserId == userId).Include(property => property.PropertyRooms)
                 .ToListAsync()).Select(domainEntity => Mapper.Map(domainEntity));
 
+ 
         }
  
         public  async Task<IEnumerable<DAL.App.DTO.Property>> FindAsync(SearchDTO? param)
@@ -38,8 +39,8 @@ namespace DAL.App.EF
             
             return (await RepoDbSet
                 
-                .Where(o => o.PropertyLocation.Contains(param.Input) 
-                            || o.PropertyName.Contains(param.Input)).Include(p=>p.PropertyRooms)
+                .Where(o => o.PropertyLocation!.Contains(param!.Input) 
+                            || o.PropertyName!.Contains(param.Input)).Include(p=>p.PropertyRooms)
                             
                 .ToListAsync()).Select(domainEntity => Mapper.Map(domainEntity));
             
@@ -55,14 +56,12 @@ namespace DAL.App.EF
         public async Task<DAL.App.DTO.Property> FirstOrDefaultAsync(Guid id, Guid? userId = null)
         {
             var query = RepoDbSet.Where(a => a.Id == id).Include(property => property.PropertyRooms).AsQueryable();
-            Console.WriteLine(query.FirstOrDefault().PropertyName);
-            Console.WriteLine(query.FirstOrDefault().PropertyRooms.Count);
-
+  
             if (userId != null)
             {
                 query = query.Where(a => a.Id == userId);
             }
-             return Mapper.Map(await query.FirstOrDefaultAsync());
+            return Mapper.Map(await query.FirstOrDefaultAsync());
         }
 
       

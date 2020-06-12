@@ -19,7 +19,7 @@ namespace Domain
 
         public Guid ReservationId { get; set; }
         
-        public Reservation Reservation { get; set; }
+        public Reservation? Reservation { get; set; }
 
         public string? Comment { get; set; }
         
@@ -27,9 +27,9 @@ namespace Domain
         
         public Guid PropertyId { get; set; }
         
-        public Property Property { get; set; }
+        public Property? Property { get; set; }
         
-        public TKey AppUserId { get; set; }
+        public TKey AppUserId { get; set; }= default!;
         
         public TUser? AppUser { get; set; }
         

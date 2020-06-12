@@ -15,9 +15,9 @@ namespace Domain
         where TKey : IEquatable<TKey>
         where TUser : AppUser<TKey>
     {
-        
-        
-        public TKey AppUserId { get; set; }
+
+
+        public TKey AppUserId { get; set; } = default!;
         public TUser? AppUser { get; set; }
 
         public bool IsPaid { get; set; }
@@ -26,7 +26,7 @@ namespace Domain
         
         public Guid ResrvationId { get; set; }
         
-        public Reservation Reservation { get; set; }
+        public Reservation? Reservation { get; set; }
         
         public DateTime CreatedAt { get; set; } 
         

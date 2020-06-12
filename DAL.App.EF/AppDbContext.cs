@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -32,7 +32,7 @@ namespace DAL.App.EF
  
 
         
-         public AppDbContext(DbContextOptions<AppDbContext> options, IUserNameProvider userNameProvider)
+         public AppDbContext(DbContextOptions<AppDbContext>? options, IUserNameProvider? userNameProvider)
            : base(options)
         {
            _userNameProvider = userNameProvider;
