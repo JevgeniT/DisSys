@@ -19,12 +19,9 @@ using Contracts.DAL.App;
         public IInvoiceService Invoices => GetService<IInvoiceService>(() => new InvoiceService(UnitOfWork));
         public IRoomService Rooms => GetService<IRoomService>(() => new RoomService(UnitOfWork));
         public IReservationService Reservations => GetService<IReservationService>(() => new ReservationService(UnitOfWork));
-
-
         public IFacilityService Facilities => GetService<IFacilityService>(() => new FacilityService(UnitOfWork));
         public IPolicyService Policies => GetService<IPolicyService>(() => new PolicyService(UnitOfWork));
         public IRoomFacilitiesService RoomFacilities => GetService<IRoomFacilitiesService>(() => new RoomFacilitiesService(UnitOfWork));
-        public IPropertyRoomsService PropertyRoomsService => GetService<IPropertyRoomsService>(() => new PropertyRoomsService(UnitOfWork));
         public IReviewService Reviews => GetService<IReviewService>(() => new ReviewService(UnitOfWork));
         public IAvailabilityService Availabilities=> GetService<IAvailabilityService>(() => new AvailabilityService(UnitOfWork));
     }

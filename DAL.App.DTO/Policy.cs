@@ -13,11 +13,11 @@ namespace DAL.App.DTO
     {
         public TKey Id { get; set; } = default!;
 
-        public virtual string? Title { get; set; }
+        public string? Name { get; set; }
 
-        public virtual int PrepaymentBefore { get; set; }
+        public int PrepaymentBefore { get; set; }
 
-        public virtual int CancellationBefore { get; set; }
+        public int CancellationBefore { get; set; }
 
  
     }

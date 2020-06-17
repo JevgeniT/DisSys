@@ -51,7 +51,7 @@ namespace WebApp.Controllers
         // GET: Room/Create
         public IActionResult Create()
         {
-             ViewData["RoomPropertyId"] = new SelectList(_uow.Properties.All(), "Id", "PropertyName");
+             ViewData["PropertyId"] = new SelectList(_uow.Properties.All(), "Id", "PropertyName");
  
             return View();
         }
@@ -61,7 +61,7 @@ namespace WebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RoomName,RoomCapacity,RoomSize,RoomPropertyId,CreatedBy,CreatedAt,DeletedBy,DeletedAt,Id")] Room room)
+        public async Task<IActionResult> Create([Bind("RoomName,RoomCapacity,RoomSize,PropertyId, Description,CreatedAt,DeletedBy,DeletedAt,Id")] Room room)
         {
      
             if (ModelState.IsValid)
@@ -73,8 +73,11 @@ namespace WebApp.Controllers
 
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RoomPropertyId"] = new SelectList(_uow.Properties.All(), "Id", "PropertyName", room.RoomPropertyId);
-
+            ViewData["PropertyId"] = new SelectList(_uow.Properties.All(), "Id", "PropertyName", room.PropertyId);
+            string messages = string.Join("; ", ModelState.Values
+                .SelectMany(x => x.Errors)
+                .Select(x => x.ErrorMessage));
+            Console.WriteLine(messages);
             return View(room);
         }
 
@@ -99,7 +102,7 @@ namespace WebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("RoomName,RoomCapacity,RoomSize,RoomPropertyId,CreatedBy,CreatedAt,DeletedBy,DeletedAt,Id")] Room room)
+        public async Task<IActionResult> Edit(Guid id, [Bind("RoomName,RoomCapacity,RoomSize,RoomId,CreatedBy,CreatedAt,DeletedBy,DeletedAt,Id")] Room room)
         {
             if (id != room.Id)
             {

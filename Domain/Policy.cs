@@ -4,11 +4,11 @@ using DAL.Base;
 
 namespace Domain
 {
-    public class Policy : IDomainEntityBaseMetadata
+    public class Policy : IDomainEntityBaseMetadata, IPolicy
     {
         public Guid Id { get; set; }
         
-        public PolicyName PolicyName { get; set; }
+        public string PolicyName { get; set; }
 
         public int PrepaymentBefore { get; set; }
 
@@ -16,9 +16,19 @@ namespace Domain
 
     }
 
-
-    public enum PolicyName
+    public class CancellationPolicy : IPolicy
     {
-        NonRefundable, General, Flexible
+        
+    }
+    
+    public class PaymentPolicy : IPolicy
+    {
+        
+    }
+
+
+    public interface IPolicy
+    {
+        
     }
 }

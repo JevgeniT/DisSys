@@ -68,6 +68,7 @@ namespace DAL.Base.EF.Repositories
 
         public virtual TDALEntity Update(TDALEntity entity)
         {
+
             return Mapper.Map(RepoDbSet.Update(Mapper.Map<TDALEntity, TDomainEntity>(entity)).Entity);
         }
 

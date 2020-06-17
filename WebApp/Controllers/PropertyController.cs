@@ -72,7 +72,7 @@ namespace WebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PropertyName,Address, PropertyLocation,CreatedBy,CreatedAt,DeletedBy,DeletedAt,Id")] Property @property)
+        public async Task<IActionResult> Create([Bind("PropertyName,Address, Country, Description,CreatedAt,DeletedBy,DeletedAt,Id")] Property @property)
         {
              
             
@@ -84,9 +84,13 @@ namespace WebApp.Controllers
                 
                 property.AppUserId = userId.Result.Id;
                 _uow.Properties.Add(@property);
+                
                 await _uow.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
+           
+
             // ViewData["PropertyLocationId"] = new SelectList(_uow.Locations, "Id", "City", @property.PropertyLocationId);
             return View(@property);
         }

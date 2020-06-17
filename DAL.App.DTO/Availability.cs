@@ -12,12 +12,13 @@ namespace DAL.App.DTO
     {
         public TKey Id { get; set; } = default!;
 
-        public DateTime start { get; set; }
+        public DateTime From { get; set; }
 
  
-        public DateTime end { get; set; }
+        public DateTime To { get; set; }
 
         public decimal PricePerNight { get; set; }
+        public bool IsUsed { get; set; }
         
         public Guid? RoomId { get; set; }
 

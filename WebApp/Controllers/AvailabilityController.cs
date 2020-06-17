@@ -54,7 +54,7 @@ namespace WebApp.Controllers
         // GET: Availability/Create
         public IActionResult Create()
         {
-            ViewData["PropertyRoomId"] = new SelectList(_context.Rooms,"Id","Id");
+            ViewData["RoomId"] = new SelectList(_context.Rooms,"Id","Id");
 
             return View();
         }
@@ -64,7 +64,7 @@ namespace WebApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id, From , To, PropertyRoomId, PricePerNight")] Availability availability)
+        public async Task<IActionResult> Create([Bind("Id, From , To, RoomId, PricePerNight")] Availability availability)
         {
             if (ModelState.IsValid)
             {
@@ -78,7 +78,7 @@ namespace WebApp.Controllers
 
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PropertyRoomId"] = new SelectList(_context.Rooms,"Id","Id");
+            ViewData["RoomId"] = new SelectList(_context.Rooms,"Id","Id");
 
             return View(availability);
         }

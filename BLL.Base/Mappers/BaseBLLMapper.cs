@@ -21,8 +21,8 @@ namespace BLL.Base.Mappers
                 config.CreateMap<Room, DAL.App.DTO.Room>();
                 config.CreateMap<BLL.App.DTO.Room, DAL.App.DTO.Room>();
                 config.CreateMap<DAL.App.DTO.Room, BLL.App.DTO.Room>();
-
                 config.CreateMap<DAL.App.DTO.Property, BLL.App.DTO.Property>();
+                
             }).CreateMapper();
     }
 

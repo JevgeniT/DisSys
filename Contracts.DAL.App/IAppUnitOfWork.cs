@@ -18,8 +18,6 @@ namespace Contracts.DAL.App
 
         IPolicyRepository Policies { get; }
         
-        IPropertyRoomsRepository PropertyRooms { get; }
-
         IRoomFacilitiesRepository RoomFacilities { get; }
 
 

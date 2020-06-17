@@ -16,9 +16,7 @@ namespace BLL.App.DTO
 
         public TKey AppUserId { get; set; } = default!;
         public AppUser<TKey>? AppUser { get; set; }
-
-        public DateTime MadeAt { get; set; } = DateTime.Now;
-
+        
         public TKey Id { get; set; } = default!;
     }
 }                            

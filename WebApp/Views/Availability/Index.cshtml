@@ -19,7 +19,7 @@
                 @Html.DisplayNameFor(model => model.To)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PropertyRoomId)
+                @Html.DisplayNameFor(model => model.RoomId)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.IsUsed)
@@ -43,10 +43,10 @@
                 @Html.DisplayFor(modelItem => item.To)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.PropertyRoomId)
+                @Html.DisplayFor(modelItem => item.RoomId)
             </td>
             <td>
-                            @Html.DisplayFor(modelItem => item.IsUsed)
+                           @item.IsUsed.ToString()
                         </td>
              <td>
                             @Html.DisplayFor(modelItem => item.PricePerNight)

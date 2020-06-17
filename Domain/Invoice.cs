@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using Contracts.DAL.Base;
 using DAL.Base;
 using Domain.Identity;
@@ -21,10 +22,12 @@ namespace Domain
         public TUser? AppUser { get; set; }
 
         public bool IsPaid { get; set; }
+        
+        [Column(TypeName = "decimal(18,2)")]
 
         public decimal TotalPrice { get; set; }
         
-        public Guid ResrvationId { get; set; }
+        public Guid ReservationId { get; set; }
         
         public Reservation? Reservation { get; set; }
         

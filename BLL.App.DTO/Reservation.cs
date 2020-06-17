@@ -18,26 +18,22 @@ namespace BLL.App.DTO
         where TKey: IEquatable<TKey>
     {
 
-        public virtual int ReservationNumber { get; set; }
+        public  int ReservationNumber { get; set; }
 
-        // public DateTime MadeAt { get; set; } = DateTime.Now;
-        //approx
-        // public DateTime CheckIn { get; set; }
-
-        public virtual DateTime CheckInDate{ get; set; }
+        public  DateTime CheckInDate{ get; set; }
         
-        public virtual DateTime CheckOutDate { get; set; }
+        public  DateTime CheckOutDate { get; set; }
 
         public Guid RoomId { get; set; }
         
-        public ICollection<Room>? Rooms { get; set; }
+        // public ICollection<Room>? Rooms { get; set; }
 
-        public virtual Guid PropertyId { get; set; }        
+        public   Guid PropertyId { get; set; }        
         
         // public Property Property { get; set; }
 
         // public Extra Extra { get; set; }    
-        public virtual TKey AppUserId { get; set; }= default!;
+        public   TKey AppUserId { get; set; }= default!;
  
         public TKey Id { get; set; }= default!;
     }

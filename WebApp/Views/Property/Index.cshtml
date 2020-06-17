@@ -19,9 +19,10 @@
                 @Html.DisplayNameFor(model => model.Address)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PropertyLocation)
+                @Html.DisplayNameFor(model => model.Country)
             
             <th>rooms </th>
+            
             <th></th>
         </tr>
     </thead>
@@ -30,12 +31,13 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.PropertyName)
+                type @Html.DisplayFor(modelItem => item.Type )
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Address)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.PropertyLocation)
+                @Html.DisplayFor(modelItem => item.Country)
             </td>
              <td>
                             @foreach (var i in item.PropertyRooms)

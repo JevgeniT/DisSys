@@ -16,24 +16,18 @@ namespace Domain
         where TUser : AppUser<TKey>
     {
         public string? PropertyName { get; set; }
-  
+        public string Description { get; set; }
         public string? Address { get; set; }
         
-        public string? PropertyLocation { get; set; }
-
+        public string? Country { get; set; }
         
-        [InverseProperty(nameof(Room.RoomProperty))]
         public ICollection<Room>? PropertyRooms { get; set; }
 
         public PropertyType Type { get; set; }
 
         public TKey AppUserId { get; set; }= default!;
         public TUser? AppUser { get; set; }
-
-        public override string ToString()
-        {
-            return $"PropertyName: {PropertyName}, PropertyRooms: {PropertyRooms}";
-        }
+ 
     }
 
     public enum PropertyType

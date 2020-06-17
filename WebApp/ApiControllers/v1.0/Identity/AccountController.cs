@@ -39,10 +39,8 @@ namespace WebApp.ApiControllers._1._0.Identity
         public async Task<ActionResult<string>> Login([FromBody] LoginDTO model)
         {
 
-             var appUser = await _userManager.FindByEmailAsync(model.Email);
-
-             Console.WriteLine(appUser.Id + " Db GUID" );
-             
+            var appUser = await _userManager.FindByEmailAsync(model.Email);
+            
             if (appUser == null)
             {
                 _logger.LogInformation($"Web-Api login. User {model.Email} not found!");
@@ -52,6 +50,7 @@ namespace WebApp.ApiControllers._1._0.Identity
             var result = await _signInManager.CheckPasswordSignInAsync(appUser, model.Password, false);
             if (result.Succeeded)
             {
+                
                 var claimsPrincipal = await _signInManager.CreateUserPrincipalAsync(appUser); //get the User analog
                 var jwt = IdentityExtensions.GenerateJWT(claimsPrincipal.Claims,
                     _configuration["JWT:SigningKey"],
@@ -59,6 +58,15 @@ namespace WebApp.ApiControllers._1._0.Identity
                     _configuration.GetValue<int>("JWT:ExpirationInDays")
                 );
                 _logger.LogInformation($"Token generated for user {model.Email} ");
+                Console.WriteLine(appUser.Id);
+                try
+                {
+                    Console.WriteLine(User.UserGuidId());
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("err");
+                }
                 return Ok(new {token = jwt, status = "Logged in"});
             }
 
@@ -70,6 +78,7 @@ namespace WebApp.ApiControllers._1._0.Identity
         [HttpPost]
         public async Task<ActionResult<string>> Register([FromBody] RegisterDTO dto)
         {
+            Console.WriteLine(dto.Email);
             var appUser = await _userManager.FindByEmailAsync(dto.Email);
             if (appUser != null)
             {

@@ -39,7 +39,7 @@ namespace WebApp.ApiControllers
                 {
                     Id = bllEntity.Id,
                     Address = bllEntity.Address,
-                    PropertyLocation = bllEntity.PropertyLocation,
+                    Country = bllEntity.Country,
                     PropertyName = bllEntity.PropertyName,
                     Rooms = bllEntity.PropertyRooms.Select(room => new RoomDTO()
                     {RoomName = room.RoomName, RoomCapacity = room.RoomCapacity, RoomSize = room. RoomSize} ).ToList(),
@@ -52,34 +52,35 @@ namespace WebApp.ApiControllers
         [HttpPost]
         [AllowAnonymous]
         [Route("find")]
-        
         public async Task<ActionResult<IEnumerable<Property>>> FindProperties(SearchDTO search)
         {
              
              var found = _bll.Properties.FindAsync(search);
-             
-             // var rooms = await _bll.PropertyRoomsService.FindAsync(id);
-             // Console.WriteLine(found.Result.Count());
-             
-             var properties = (await found)
-                .Select(bllEntity => new Property()
+              var properties = (await found)
+                .Select(bllEntity => new PropertyDTO()
                 {
                     Id = bllEntity.Id,
                     Address = bllEntity.Address,
-                    PropertyLocation = bllEntity.PropertyLocation,
+                    Country = bllEntity.Country,
                     PropertyName = bllEntity.PropertyName,
-                    // PropertyRooms =  bllEntity.PropertyRooms
-                    // AppUserId = bllEntity.AppUserId
+                    Type = bllEntity.Type
+                    // Rooms = bllEntity.PropertyRooms.Select(room => new RoomDTO()
+                    //     {RoomName = room.RoomName, RoomCapacity = room.RoomCapacity, RoomSize = room. RoomSize} ).ToList()
                 }) ;
+
+            
             
             return Ok(properties);
         }
+        
+        
         // GET: api/Properties/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Property>> GetProperty(Guid id)
         {
-            var property = await _bll.Properties.FirstOrDefaultAsync(id);
+             var property = await _bll.Properties.FirstOrDefaultAsync(id);
            
+            
             if (property == null)
             {
                 return NotFound();
@@ -103,7 +104,7 @@ namespace WebApp.ApiControllers
             }
 
             prop.Address = property.Address;
-            prop.PropertyLocation = property.PropertyLocation;
+            prop.Country = property.Country;
             prop.PropertyName = property.PropertyName;
 
             _bll.Properties.Update(prop);
@@ -132,7 +133,7 @@ namespace WebApp.ApiControllers
             var prop = new BLL.App.DTO.Property()
             {
                 AppUserId = User.UserGuidId(),
-                PropertyLocation =  property.PropertyLocation,
+                Country =  property.Country,
                 PropertyName = property.PropertyName,
                 Address =property.Address
             };

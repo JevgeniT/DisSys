@@ -13,17 +13,14 @@ namespace DAL.App.DTO
         where TKey: IEquatable<TKey>
     {
         public TKey Id { get; set; } = default!;
+        public string? RoomName { get; set; }
+        public int RoomCapacity { get; set; }
+        public int RoomSize { get; set; }  //m2
+        public string? Description { get; set; }
+        public Guid PropertyId { get; set; }
+        public Property? Property { get; set; }
 
-        public virtual string? RoomName { get; set; }
-        public virtual int RoomCapacity { get; set; }
-        public virtual int RoomSize { get; set; }  //m2
-
-        [ForeignKey(nameof(RoomPropertyId))]
-        public Guid RoomPropertyId { get; set; }
-        
-        public Property? RoomProperty { get; set; }
-        
-         
+        public ICollection<Availability> RoomAvailabilities { get; set; }
         public enum BedType
         {
             Large, Single, Double 

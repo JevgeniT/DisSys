@@ -30,7 +30,7 @@ namespace DAL.App.DTO
 
         public Guid RoomId { get; set; }
         
-        public ICollection<Room>? Rooms { get; set; }
+        // public ICollection<Room>? Rooms { get; set; }
 
         public virtual Guid PropertyId { get; set; }        
         

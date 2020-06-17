@@ -25,7 +25,6 @@ namespace DAL.App.EF
 
         public DbSet<Availability> Availabilities { get; set; }
         public DbSet<Property> Properties { get; set; }
-        public DbSet<PropertyRooms> PropertyRooms { get; set; }
         public DbSet<Room> Rooms { get; set; }
         public DbSet<RoomFacilities> RoomFacilities { get; set; }
         public DbSet<RoomPolicies> RoomPolicies { get; set; }

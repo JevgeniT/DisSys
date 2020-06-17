@@ -14,17 +14,17 @@ namespace BLL.App.DTO
         public TKey Id { get; set; }= default!;
         
         [Range(0,10)]
-        public virtual int Score { get; set; }
+        public int Score { get; set; }
         
-        public virtual string? Comment { get; set; }
+        public string? Comment { get; set; }
 
-        public virtual DateTime CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; }
         
-        public virtual Guid PropertyId { get; set; }
+        public Guid PropertyId { get; set; }
         
-        public virtual Property? Property { get; set; }
+        public Property? Property { get; set; }
         
-        public virtual TKey AppUserId { get; set; }= default!;
+        public TKey AppUserId { get; set; }= default!;
         
      }
     

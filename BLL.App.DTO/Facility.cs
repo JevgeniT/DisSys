@@ -9,7 +9,7 @@ namespace BLL.App.DTO
     public class Facility<TKey> : IDomainBaseEntity<TKey>
         where TKey: IEquatable<TKey>
     {
-        public virtual string? Name { get; set; }
+        public  string? Name { get; set; }
 
         public TKey Id { get; set; } = default!;
     }

@@ -6,15 +6,11 @@ namespace Domain
 {
     public class RoomFacilities : IDomainEntityBaseMetadata
     {
-
-        public Guid FacilityId { get; set; }
-        
-        public Facility? Facility { get; set; }
-        
-        public Guid PropertyRoomsId { get; set; }
-        public PropertyRooms? PropertyRooms { get; set; }
-
-
         public Guid Id { get; set; }
+        public Guid FacilityId { get; set; }
+        public Facility? Facility { get; set; }
+
+        public Guid RoomId { get; set; }
+        public Room? Room { get; set; }
     }
 }

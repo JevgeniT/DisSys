@@ -14,17 +14,16 @@ namespace BLL.App.DTO
     {
         public TKey Id { get; set; } = default!;
 
-        public virtual string? RoomName { get; set; }
-        public virtual int RoomCapacity { get; set; }
-        public virtual int RoomSize { get; set; }  //m2
+        public string? RoomName { get; set; }
+        public int RoomCapacity { get; set; }
+        public int RoomSize { get; set; }  //m2
 
-        [ForeignKey(nameof(RoomPropertyId))]
-        public Guid RoomPropertyId { get; set; }
+        public string? Description { get; set; }
+         public Guid PropertyId { get; set; }
 
         public Property? Property { get; set; }
-        public Property? RoomProperty { get; set; }
         
-        public ICollection<RoomAvailability>? RoomAvailabilities { get; set; }
+        public ICollection<Availability>? RoomAvailabilities { get; set; }
         
         public enum BedType
         {

@@ -1,6 +1,7 @@
 using System;
 using Contracts.DAL.App;
 using Contracts.DAL.App.Repositories;
+using DAL.App.EF.Repositories;
 using DAL.Base.EF;
 
 namespace DAL.App.EF
@@ -26,7 +27,6 @@ namespace DAL.App.EF
         public IReservationRepository Reservations => GetRepository<IReservationRepository>(() => new ReservationRepository(UOWDbContext));
         public IPolicyRepository Policies => GetRepository<IPolicyRepository>(() => new PolicyRepository(UOWDbContext));
 
-        public IPropertyRoomsRepository PropertyRooms => GetRepository<IPropertyRoomsRepository>(() => new PropertyRoomsRepository(UOWDbContext));
         public IRoomFacilitiesRepository RoomFacilities => GetRepository<IRoomFacilitiesRepository>(() => new RoomFacilitiesRepository(UOWDbContext));
     } 
 }

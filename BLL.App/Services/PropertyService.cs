@@ -8,7 +8,6 @@ using BLL.Base.Services;
 using Contracts.BLL.App.Services;
 using Contracts.DAL.App;
 using Contracts.DAL.App.Repositories;
-using DAL.App.EF.Mappers;
 using Public.DTO;
 
 namespace BLL.App.Services

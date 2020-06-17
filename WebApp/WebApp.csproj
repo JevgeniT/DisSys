@@ -147,6 +147,11 @@
       <_ContentIncludedByDefault Remove="wwwroot\scripts\src\daypilot-modal.src.js" />
       <_ContentIncludedByDefault Remove="wwwroot\scripts\src\daypilot-month.src.js" />
       <_ContentIncludedByDefault Remove="wwwroot\scripts\src\daypilot-navigator.src.js" />
+      <_ContentIncludedByDefault Remove="Views\R\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\R\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\R\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\R\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\R\Index.cshtml" />
     </ItemGroup>
 
     <ItemGroup>

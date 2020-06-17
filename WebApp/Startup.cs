@@ -58,14 +58,14 @@ namespace WebApp
                 options.AddPolicy(name: MyAllowSpecificOrigins,
                     builder =>
                     {
-                        builder.WithOrigins("https://localhost:5001/api/v1.0/date",
+                        builder.WithOrigins("https://localhost:5001/api/v1.0/",
                             "http://localhost:8080");
                     });
             });
             
             services.AddCors(options => options.AddPolicy("ApiCorsPolicy", builder =>
             {
-                builder.WithOrigins("https://localhost:8080/api").AllowAnyMethod().AllowAnyHeader();
+                builder.WithOrigins("https://localhost:8080/").AllowAnyMethod().AllowAnyHeader();
             }));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddApiVersioning(options =>

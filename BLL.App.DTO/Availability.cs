@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using Contracts.DAL.Base;
 
 namespace BLL.App.DTO
@@ -11,18 +12,16 @@ namespace BLL.App.DTO
         where TKey: IEquatable<TKey>
     {
         public TKey Id { get; set; } = default!;
-        
-        public TKey AppUserId { get; set; } = default!;
-        
-        public virtual Identity.AppUser<TKey>? AppUser { get; set; }
-        public virtual DateTime From { get; set; }
-        
-        public virtual DateTime To { get; set; }
-        
-        public virtual Guid PropertyRoomId { get; set; }
 
-        public virtual bool IsUsed { get; set; } = false;
-        public virtual decimal PricePerNight { get; set; }
+        public DateTime From { get; set; }
+
+        public DateTime To { get; set; }
+        
+        public Guid RoomId { get; set; }
+
+        public bool IsUsed { get; set; }
+        
+        public decimal PricePerNight { get; set; }
     }
      
 }

@@ -2,8 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BLL.App.DTO;
+using Contracts.BLL.App;
 using DAL.App.EF;
-using Domain;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
@@ -23,29 +24,27 @@ namespace WebApp.ApiControllers
     public class DateController : ControllerBase
     {
         
-        private readonly AppDbContext _context;
+        private readonly IAppBLL _bll;
 
-        public DateController(AppDbContext context)
+        public DateController(IAppBLL bll)
         {
-            _context = context;
+            _bll = bll;
         }
 
         [HttpGet]
-        [HttpPost]
         public async Task<ActionResult<IEnumerable<Availability>>> GetDates()
             // public async Task<string> GetDates()
         {
-
-            return await _context.Availabilities.ToListAsync();
+            var availability = (await _bll.Availabilities.AllAsync()).Select(bllEntity => new Availability()
+            {
+                Id = bllEntity.Id,
+                From = bllEntity.From,
+                To = bllEntity.To,
+                IsUsed = bllEntity.IsUsed,
+             }) ;
+            return   Ok(availability);
             
         }
-
-        [HttpGet("/{from}&{to}")]
-        public async Task<ActionResult<Availability>> GetDate(DateTime from, DateTime to)
-        
-        {
-            Console.WriteLine(true);
-            return await _context.Availabilities.Where(a => a.From == from && a.To == to).FirstAsync();
-        }
+ 
     }
 }
