@@ -33,7 +33,7 @@ namespace DAL.Base.EF
 
         public TMapOutObject Map<TMapInObject, TMapOutObject>(TMapInObject inObject) where TMapInObject : class where TMapOutObject : class, new()
         {
-            throw new System.NotImplementedException();
+            return Mapper.Map<TMapInObject, TMapOutObject>(inObject);
         }
 
         public virtual TLeftObject Map(TRightObject inObject)

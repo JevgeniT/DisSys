@@ -41,8 +41,7 @@ namespace WebApp.ApiControllers
                     Address = bllEntity.Address,
                     Country = bllEntity.Country,
                     PropertyName = bllEntity.PropertyName,
-                    Rooms = bllEntity.PropertyRooms.Select(room => new RoomDTO()
-                    {RoomName = room.RoomName, RoomCapacity = room.RoomCapacity, RoomSize = room. RoomSize} ).ToList(),
+                    Rooms = bllEntity.PropertyRooms.Select(room => new RoomDTO() {RoomName = room.RoomName, RoomCapacity = room.RoomCapacity, RoomSize = room. RoomSize} ).ToList(),
                   
                 }) ;
             
@@ -78,9 +77,7 @@ namespace WebApp.ApiControllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Property>> GetProperty(Guid id)
         {
-             var property = await _bll.Properties.FirstOrDefaultAsync(id);
-           
-            
+            var property = await _bll.Properties.FirstOrDefaultAsync(id);
             if (property == null)
             {
                 return NotFound();

@@ -24,41 +24,33 @@ namespace DAL.App.EF.Repositories
             {
                 return await base.AllAsync();
             }
-            
-            return (await RepoDbSet.Where(o => o.AppUserId == userId).Include(property => property.PropertyRooms)
+            return (await RepoDbSet.Where(o => o.AppUserId == userId)
+                .Include(property => property.PropertyRooms)
                 .ToListAsync()).Select(domainEntity => Mapper.Map(domainEntity));
 
- 
         }
  
         public  async Task<IEnumerable<DAL.App.DTO.Property>> FindAsync(SearchDTO? param)
         {
-            
             return (await RepoDbSet
-                
                 .Where(o => o.Country!.Contains(param!.Input) 
-                            || o.PropertyName!.Contains(param.Input)).Include(p=>p.PropertyRooms)
-                            
+                            || o.PropertyName!.Contains(param.Input))
+                .Include(p=>p.PropertyRooms)
                 .ToListAsync()).Select(domainEntity => Mapper.Map(domainEntity));
-            
-            // return (await RepoDbSet.Include(property => property.PropertyRooms)
-            //     .ThenInclude(room => room.Availabilities)
-            //     .Where(o => o.PropertyLocation.Contains(param.Input) 
-            //                 || o.PropertyName.Contains(param.Input)
-            //                 && o.PropertyRooms.Any(room => room.RoomCapacity>=param.Adults
-            //                                                && room.Availabilities.Any(a => a.From >= param.From)))
-            //     .ToListAsync()).Select(domainEntity => Mapper.Map(domainEntity));
         }
 
         public async Task<DAL.App.DTO.Property> FirstOrDefaultAsync(Guid id, Guid? userId = null)
         {
-            var query = RepoDbSet.Where(a => a.Id == id).AsQueryable();
-  
+            var query = RepoDbSet.Where(a => a.Id == id).AsNoTracking();
+            
             if (userId != null)
             {
                 query = query.Where(a => a.Id == userId);
             }
-            return Mapper.Map(await query.FirstOrDefaultAsync());
+            var a = (await query.FirstOrDefaultAsync());
+            a.PropertyRooms = (await RepoDbContext.Rooms.Where(room => room.PropertyId == id).AsNoTracking()
+                .ToListAsync());
+            return Mapper.Map(a);
         }
 
       
@@ -78,17 +70,6 @@ namespace DAL.App.EF.Repositories
             base.Remove(owner);
         }
         
-        
-        
-        public async Task<IEnumerable<PropertyDTO>> DTOAllAsync(Guid? userId = null)
-        {
-            throw new System.NotImplementedException();
-        }
-        
-        public async Task<PropertyDTO> DTOFirstOrDefaultAsync(Guid id, Guid? userId = null)
-        {
-            throw new System.NotImplementedException();
-        }
         
     }
 }
