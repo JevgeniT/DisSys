@@ -113,7 +113,9 @@ namespace WebApp.ApiControllers
                 CheckInDate =  reservation.CheckInDate,
                 CheckOutDate = reservation.CheckOutDate,
                 PropertyId = reservation.PropertyId,
-                RoomId = reservation.RoomId
+                RoomId = reservation.RoomId,
+                TotalPrice = reservation.CheckOutDate.Subtract(reservation.CheckInDate).Days 
+                             * available.FirstOrDefault().PricePerNight
             };
              _bll.Reservations.Add(res);
             await _bll.SaveChangesAsync();

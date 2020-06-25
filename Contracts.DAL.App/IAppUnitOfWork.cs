@@ -17,13 +17,6 @@ namespace Contracts.DAL.App
         IReservationRepository Reservations { get; }
 
         IPolicyRepository Policies { get; }
-        
-        IRoomFacilitiesRepository RoomFacilities { get; }
-
-
-
-
-
 
     }
 }

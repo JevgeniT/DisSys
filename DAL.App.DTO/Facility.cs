@@ -9,8 +9,8 @@ namespace DAL.App.DTO
     public class Facility<TKey> : IDomainBaseEntity<TKey>
         where TKey: IEquatable<TKey>
     {
-        public virtual string? Name { get; set; }
-
+        public string? Name { get; set; }
+        public Guid RoomId { get; set; }
         public TKey Id { get; set; } = default!;
     }
 }

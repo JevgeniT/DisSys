@@ -55,6 +55,7 @@ namespace WebApp.Controllers
         public IActionResult Create()
         {
             ViewData["RoomId"] = new SelectList(_context.Rooms,"Id","Id");
+            ViewData["PolicyId"] = new SelectList(_context.Policies,"Id","Id");
 
             return View();
         }
@@ -64,7 +65,7 @@ namespace WebApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id, From , To, RoomId, PricePerNight")] Availability availability)
+        public async Task<IActionResult> Create([Bind("Id, From , To, RoomId, PolicyId, PricePerNight")] Availability availability)
         {
             if (ModelState.IsValid)
             {
@@ -74,11 +75,11 @@ namespace WebApp.Controllers
 
                 // _context.RoomAvailabilities.Add(new RoomAvailability()
                 //     {RoomId = availability.PropertyRoomId, AvailabilityId = availability.Id});
-                await _context.SaveChangesAsync();
-
+ 
                 return RedirectToAction(nameof(Index));
             }
             ViewData["RoomId"] = new SelectList(_context.Rooms,"Id","Id");
+            ViewData["PolicyId"] = new SelectList(_context.Policies,"Id","Id");
 
             return View(availability);
         }

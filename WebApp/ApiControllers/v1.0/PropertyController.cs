@@ -40,8 +40,9 @@ namespace WebApp.ApiControllers
                     Id = bllEntity.Id,
                     Address = bllEntity.Address,
                     Country = bllEntity.Country,
-                    PropertyName = bllEntity.PropertyName,
-                    Rooms = bllEntity.PropertyRooms.Select(room => new RoomDTO() {RoomName = room.RoomName, RoomCapacity = room.RoomCapacity, RoomSize = room. RoomSize} ).ToList(),
+                    PropertyName = bllEntity.Name,
+                    Rooms = bllEntity.PropertyRooms.Select(room =>
+                        new RoomDTO() {RoomName = room.Name, RoomCapacity = room.Capacity, RoomSize = room. Size} ).ToList(),
                   
                 }) ;
             
@@ -61,7 +62,7 @@ namespace WebApp.ApiControllers
                     Id = bllEntity.Id,
                     Address = bllEntity.Address,
                     Country = bllEntity.Country,
-                    PropertyName = bllEntity.PropertyName,
+                    PropertyName = bllEntity.Name,
                     Type = bllEntity.Type
                     // Rooms = bllEntity.PropertyRooms.Select(room => new RoomDTO()
                     //     {RoomName = room.RoomName, RoomCapacity = room.RoomCapacity, RoomSize = room. RoomSize} ).ToList()
@@ -82,6 +83,7 @@ namespace WebApp.ApiControllers
             {
                 return NotFound();
             }
+            
             return Ok(property);
         }
 
@@ -102,7 +104,7 @@ namespace WebApp.ApiControllers
 
             prop.Address = property.Address;
             prop.Country = property.Country;
-            prop.PropertyName = property.PropertyName;
+            prop.Name = property.Name;
 
             _bll.Properties.Update(prop);
             try
@@ -131,7 +133,7 @@ namespace WebApp.ApiControllers
             {
                 AppUserId = User.UserGuidId(),
                 Country =  property.Country,
-                PropertyName = property.PropertyName,
+                Name = property.Name,
                 Address =property.Address
             };
              _bll.Properties.Add(prop);

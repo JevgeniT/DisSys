@@ -2,27 +2,28 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Contracts.BLL.App;
+using Contracts.DAL.App;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DAL.App.EF;
-using Domain;
-
+using BLL.App.DTO;
 namespace WebApp.Controllers
 {
     public class FacilitiesController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IAppBLL _bll;
 
-        public FacilitiesController(AppDbContext context)
+        public FacilitiesController(IAppBLL context)
         {
-            _context = context;
+            _bll = context;
         }
 
         // GET: Facilities
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Facilities.ToListAsync());
+            return View(await _bll.Facilities.AllAsync());
         }
 
         // GET: Facilities/Details/5
@@ -33,8 +34,8 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var facility = await _context.Facilities
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var facility = await _bll.Facilities
+                .FirstOrDefaultAsync(id.Value);
             if (facility == null)
             {
                 return NotFound();
@@ -46,6 +47,8 @@ namespace WebApp.Controllers
         // GET: Facilities/Create
         public IActionResult Create()
         {
+            ViewData["RoomId"] = new SelectList(_bll.Rooms.All(), "Id", "Id");
+
             return View();
         }
 
@@ -54,13 +57,13 @@ namespace WebApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Id")] Facility facility)
+        public async Task<IActionResult> Create([Bind("Name,Id, RoomId")] Facility facility)
         {
             if (ModelState.IsValid)
             {
                 facility.Id = Guid.NewGuid();
-                _context.Add(facility);
-                await _context.SaveChangesAsync();
+                _bll.Facilities.Add(facility);
+                await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(facility);
@@ -74,12 +77,12 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var facility = await _context.Facilities.FindAsync(id);
+            var facility = await _bll.Facilities.FindAsync(id);
             if (facility == null)
             {
                 return NotFound();
             }
-            return View(facility);
+            return View();
         }
 
         // POST: Facilities/Edit/5
@@ -98,23 +101,15 @@ namespace WebApp.Controllers
             {
                 try
                 {
-                    _context.Update(facility);
-                    await _context.SaveChangesAsync();
+                    await _bll.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!FacilityExists(facility.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                   
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(facility);
+            return View();
         }
 
         // GET: Facilities/Delete/5
@@ -125,8 +120,8 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var facility = await _context.Facilities
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var facility = await _bll.Facilities
+                .FirstOrDefaultAsync(id.Value);
             if (facility == null)
             {
                 return NotFound();
@@ -140,15 +135,12 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var facility = await _context.Facilities.FindAsync(id);
-            _context.Facilities.Remove(facility);
-            await _context.SaveChangesAsync();
+            var facility = await _bll.Facilities.FindAsync(id);
+            _bll.Facilities.Remove(facility);
+            await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool FacilityExists(Guid id)
-        {
-            return _context.Facilities.Any(e => e.Id == id);
-        }
+        
     }
 }

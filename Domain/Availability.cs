@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Contracts.DAL.Base;
+using Domain.Validation;
 
 
 namespace Domain
@@ -14,6 +15,7 @@ namespace Domain
         public Guid Id { get; set; }
 
         [Column(TypeName = "date")]
+        [Availability]
         [DataType(DataType.Date)]
         public DateTime From
         {
@@ -28,6 +30,7 @@ namespace Domain
         }
         
         [Column(TypeName = "date")]
+        [Availability]
         [DataType(DataType.Date)]
         public DateTime To {
             get
@@ -42,18 +45,11 @@ namespace Domain
         
         public Guid RoomId { get; set; }
 
+        public Guid PolicyId { get; set; }
         public bool IsUsed { get; set; } = false;
         
         [Column(TypeName = "decimal(18,2)")]
         public decimal PricePerNight { get; set; }
-
-
-        public override string ToString()
-        {
-            return $"From: {From}, To: {To}, IsUsed: {IsUsed}";
-        }
+        
     }
 }
-
-// dotnet aspnet-codegenerator controller -name PolicyController -actions -m Policy -dc AppDbContext -outDir ApiControllers -api --useAsyncActions  -f
-// dotnet aspnet-codegenerator controller -name RoomFacilityController -actions -m Domain.RoomFacilities -dc AppDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f

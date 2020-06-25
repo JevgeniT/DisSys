@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Contracts.DAL.Base;
 using DAL.Base;
 using Domain.Identity;
+using Domain.Validation;
 
 namespace Domain
 {
@@ -20,8 +21,10 @@ namespace Domain
         
         public int ReservationNumber { get; set; }
 
+        [Availability]
         public DateTime CheckInDate{ get; set; }
-        
+        [Availability]
+
         public DateTime CheckOutDate { get; set; }
 
         public Guid RoomId { get; set; }
@@ -31,9 +34,6 @@ namespace Domain
         public Guid PropertyId { get; set; }
 
         public bool IsCancelled { get; set; } = false;
-        // public Property Property { get; set; }
-
-        // public Extra Extra { get; set; }    
         public virtual TKey AppUserId { get; set; }
         public virtual TUser? AppUser { get; set; }
         

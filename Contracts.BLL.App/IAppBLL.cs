@@ -15,7 +15,6 @@ namespace Contracts.BLL.App
         public IExtraService Extras { get; }
         public IFacilityService Facilities { get; }
         public IPolicyService Policies { get; }
-        public IRoomFacilitiesService RoomFacilities { get; }
         public IReviewService  Reviews{ get; }
 
         public IAvailabilityService Availabilities { get; }

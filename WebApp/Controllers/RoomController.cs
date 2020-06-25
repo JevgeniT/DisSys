@@ -51,8 +51,9 @@ namespace WebApp.Controllers
         // GET: Room/Create
         public IActionResult Create()
         {
-             ViewData["PropertyId"] = new SelectList(_uow.Properties.All(), "Id", "PropertyName");
- 
+             ViewData["PropertyId"] = new SelectList(_uow.Properties.All(), "Id", "Name");
+             ViewData["BedType"] = new SelectList(Enum.GetNames(typeof(BedType)));
+
             return View();
         }
 
@@ -61,23 +62,16 @@ namespace WebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RoomName,RoomCapacity,RoomSize,PropertyId, Description,CreatedAt,DeletedBy,DeletedAt,Id")] Room room)
+        public async Task<IActionResult> Create([Bind("Name,Capacity,Size,PropertyId, Description,CreatedAt,DeletedBy,DeletedAt,Id")] Room room)
         {
      
             if (ModelState.IsValid)
             {
                 _uow.Rooms.Add(room);
                 await _uow.SaveChangesAsync();
-                // _uow.PropertyRoomsService.Add(new PropertyRooms(){RoomId = room.Id,PropertyId = room.RoomPropertyId});
-                // await _uow.SaveChangesAsync();
-
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PropertyId"] = new SelectList(_uow.Properties.All(), "Id", "PropertyName", room.PropertyId);
-            string messages = string.Join("; ", ModelState.Values
-                .SelectMany(x => x.Errors)
-                .Select(x => x.ErrorMessage));
-            Console.WriteLine(messages);
+            ViewData["PropertyId"] = new SelectList(_uow.Properties.All(), "Id", "Name", room.PropertyId);
             return View(room);
         }
 
@@ -164,5 +158,3 @@ namespace WebApp.Controllers
         
     }
 }
-// dotnet aspnet-codegenerator controller -name FacilitiesController  -actions -m Domain.Facility  -dc AppDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
-// dotnet aspnet-codegenerator controller -name RoomFacilitiesController  -actions -m Domain.RoomFacilities  -dc AppDbContext -outDir Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f

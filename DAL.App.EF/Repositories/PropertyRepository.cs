@@ -16,7 +16,7 @@ namespace DAL.App.EF.Repositories
         public PropertyRepository(AppDbContext dbContext) :
             base(dbContext, new DALMapper<Property, DAL.App.DTO.Property>())
         {
-        }
+        }     
 
         public async Task<IEnumerable<DAL.App.DTO.Property>> AllAsync(Guid? userId = null)
         {
@@ -34,7 +34,7 @@ namespace DAL.App.EF.Repositories
         {
             return (await RepoDbSet
                 .Where(o => o.Country!.Contains(param!.Input) 
-                            || o.PropertyName!.Contains(param.Input))
+                            || o.Name!.Contains(param.Input))
                 .Include(p=>p.PropertyRooms)
                 .ToListAsync()).Select(domainEntity => Mapper.Map(domainEntity));
         }
@@ -48,7 +48,8 @@ namespace DAL.App.EF.Repositories
                 query = query.Where(a => a.Id == userId);
             }
             var a = (await query.FirstOrDefaultAsync());
-            a.PropertyRooms = (await RepoDbContext.Rooms.Where(room => room.PropertyId == id).AsNoTracking()
+            a.PropertyRooms = (await RepoDbContext.Rooms.Where(room => room.PropertyId == id)
+                .Include(room => room.RoomFacilities).AsNoTracking()
                 .ToListAsync());
             return Mapper.Map(a);
         }
@@ -66,8 +67,8 @@ namespace DAL.App.EF.Repositories
         
         public async Task DeleteAsync(Guid id, Guid? userId = null)
         {
-            var owner = await FirstOrDefaultAsync(id, userId);
-            base.Remove(owner);
+            var property = await FirstOrDefaultAsync(id, userId);
+            base.Remove(property);
         }
         
         

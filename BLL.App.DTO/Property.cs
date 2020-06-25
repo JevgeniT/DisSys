@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
- using Contracts.DAL.Base;
+using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
+using Contracts.DAL.Base;
  
 namespace BLL.App.DTO
 {
@@ -14,7 +15,7 @@ namespace BLL.App.DTO
     {
         public TKey Id { get; set; } = default!;
         
-        public string? PropertyName { get; set; }
+        public string? Name { get; set; }
   
         public string? Address { get; set; }
         
@@ -24,18 +25,20 @@ namespace BLL.App.DTO
 
         public PropertyType Type { get; set; }
 
+        [JsonIgnore]
         public TKey AppUserId { get; set; }= default!;
+        [JsonIgnore]
         
         public Identity.AppUser<TKey>? AppUser { get; set; }
 
-        public override string ToString()
-        {
-            return $"PropertyName: {PropertyName}, PropertyRooms: {PropertyRooms}";
-        }
     }
 
     public enum PropertyType
     {
-        Hotel,Hostel, Apartments 
+        [EnumMember(Value = "Hotel")]
+        Hotel,
+        Hostel,
+        Apartments 
     }
 }
+

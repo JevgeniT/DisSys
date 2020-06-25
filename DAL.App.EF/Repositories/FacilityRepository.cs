@@ -1,4 +1,3 @@
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,18 +46,8 @@ namespace DAL.App.EF.Repositories
         
         public async Task DeleteAsync(Guid id, Guid? userId = null)
         {
-            var owner = await FirstOrDefaultAsync(id, userId);
-            base.Remove(owner);
-        }
-        
-        public async Task<IEnumerable<Facility>> DTOAllAsync(Guid? userId = null)
-        {
-            throw new System.NotImplementedException();
-        }
-        
-        public async Task<Facility> DTOFirstOrDefaultAsync(Guid id, Guid? userId = null)
-        {
-            throw new System.NotImplementedException();
+            var facility = await FirstOrDefaultAsync(id, userId);
+            base.Remove(facility);
         }
     }
 }

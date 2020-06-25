@@ -72,7 +72,7 @@ namespace WebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PropertyName,Address, Country, Description,CreatedAt,DeletedBy,DeletedAt,Id")] Property @property)
+        public async Task<IActionResult> Create([Bind("Name,Address, Country, Description,CreatedAt,DeletedBy,DeletedAt,Id")] Property @property)
         {
              
             
@@ -115,7 +115,7 @@ namespace WebApp.Controllers
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("PropertyName,PropertyLocationId,CreatedBy,CreatedAt,DeletedBy,DeletedAt,Id")] Property @property)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Name,PropertyLocationId,CreatedBy,CreatedAt,DeletedBy,DeletedAt,Id")] Property @property)
         {
             if (id != @property.Id)
             {
@@ -178,4 +178,3 @@ namespace WebApp.Controllers
  
     }
 }
-// dotnet aspnet-codegenerator controller -name ReservationController  -m Reservation  -actions -dc AppDbContext -outDir ApiControllers -api --useAsyncActions  -f

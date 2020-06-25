@@ -26,7 +26,7 @@ namespace BLL.App.Services
 
         public async Task<Room> FirstOrDefaultAsync(Guid id, Guid? userId = null)
         {
-            return    Mapper.Map(await ServiceRepository.FirstOrDefaultAsync(id, userId));        
+            return   Mapper.Map(await ServiceRepository.FirstOrDefaultAsync(id, userId));        
         }
 
         public async Task<bool> ExistsAsync(Guid id, Guid? userId = null)

@@ -22,7 +22,7 @@ namespace BLL.Base.Mappers
                 config.CreateMap<BLL.App.DTO.Room, DAL.App.DTO.Room>();
                 config.CreateMap<DAL.App.DTO.Room, BLL.App.DTO.Room>();
                 config.CreateMap<DAL.App.DTO.Property, BLL.App.DTO.Property>();
-                
+                config.CreateMap<DAL.App.DTO.Facility, BLL.App.DTO.Facility>();
             }).CreateMapper();
     }
 

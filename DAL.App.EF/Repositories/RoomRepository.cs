@@ -1,37 +1,37 @@
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Contracts.DAL.App.Repositories;
-using DAL.Base.EF.Mappers;
 using DAL.Base.EF.Repositories;
 using Domain;
 using Microsoft.EntityFrameworkCore;
-using Public.DTO;
 
 namespace DAL.App.EF.Repositories
 {
-    public class RoomRepository : EFBaseRepository<AppDbContext,Room, DAL.App.DTO.Room>,  IRoomRepository
+    public class  RoomRepository : EFBaseRepository<AppDbContext,Room, DAL.App.DTO.Room>,  IRoomRepository
     {
-        public RoomRepository(AppDbContext dbContext) :base(dbContext, new BaseDALMapper<Room, DAL.App.DTO.Room>())
+        public RoomRepository(AppDbContext dbContext) :base(dbContext, new DALMapper<Room, DAL.App.DTO.Room>())
         {
         }
+        
         public async Task<IEnumerable<DAL.App.DTO.Room>> AllAsync(Guid? userId = null)
         {
-             
             return await base.AllAsync();
          }
         
         public async Task<DAL.App.DTO.Room> FirstOrDefaultAsync(Guid id, Guid? userId = null)
         {
-            var query = RepoDbSet.Where(a => a.Id == id).AsQueryable();
+            var query = RepoDbSet.Where(a => a.Id == id).AsNoTracking();
             if (userId != null)
             {
                 query = query.Where(a => a.Id == userId);
             }
 
-            return Mapper.Map(await query.FirstOrDefaultAsync());
+            var room = (await query.FirstOrDefaultAsync());
+            room.RoomFacilities = (await RepoDbContext.Facilities.Where(facility => facility.RoomId == id).AsNoTracking()
+                .ToListAsync());
+            return Mapper.Map(room);
         }
         
         public async Task<bool> ExistsAsync(Guid id, Guid? userId = null)
@@ -46,18 +46,9 @@ namespace DAL.App.EF.Repositories
         
         public async Task DeleteAsync(Guid id, Guid? userId = null)
         {
-            var owner = await FirstOrDefaultAsync(id, userId);
-            base.Remove(owner);
+            var room = await FirstOrDefaultAsync(id, userId);
+            base.Remove(room);
         }
-        
-        public async Task<IEnumerable<RoomDTO>> DTOAllAsync(Guid? userId = null)
-        {
-            throw new System.NotImplementedException();
-        }
-        
-        public async Task<RoomDTO> DTOFirstOrDefaultAsync(Guid id, Guid? userId = null)
-        {
-            throw new System.NotImplementedException();
-        }
+       
     }
 }

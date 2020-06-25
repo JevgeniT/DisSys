@@ -4,8 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using DAL.App.EF;
-using Domain;
+using BLL.App.DTO;
+using Contracts.BLL.App;
 
 namespace WebApp.ApiControllers
 {
@@ -14,32 +14,31 @@ namespace WebApp.ApiControllers
     [ApiController]
     public class RoomController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IAppBLL _bll;
 
-        public RoomController(AppDbContext context)
+        public RoomController(IAppBLL context)
         {
-            _context = context;
+            _bll = context;
         }
 
         // GET: api/Rooms
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Room>>> GetRooms()
         {
-            return await _context.Rooms.ToListAsync();
+            return Ok(await _bll.Rooms.AllAsync());
         }
 
         // GET: api/Rooms/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Room>> GetRoom(Guid id)
         {
-            var room = await _context.Rooms.FindAsync(id);
-
+            var room = await _bll.Rooms.FirstOrDefaultAsync(id);
             if (room == null)
             {
                 return NotFound();
             }
 
-            return room;
+            return Ok(room);
         }
 
         // PUT: api/Rooms/5
@@ -53,15 +52,15 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             }
 
-            _context.Entry(room).State = EntityState.Modified;
+            // _bll.Entry(room).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _bll.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!RoomExists(id))
+                if (!await _bll.Rooms.ExistsAsync(id))
                 {
                     return NotFound();
                 }
@@ -74,37 +73,31 @@ namespace WebApp.ApiControllers
             return NoContent();
         }
 
-        // POST: api/Rooms
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
+ 
         [HttpPost]
         public async Task<ActionResult<Room>> PostRoom(Room room)
         {
-            _context.Rooms.Add(room);
-            await _context.SaveChangesAsync();
-
+            _bll.Rooms.Add(room);
+            await _bll.SaveChangesAsync();
+        
             return CreatedAtAction("GetRoom", new { id = room.Id }, room);
         }
-
+        
         // DELETE: api/Rooms/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<Room>> DeleteRoom(int id)
         {
-            var room = await _context.Rooms.FindAsync(id);
+            var room = await _bll.Rooms.FindAsync(id);
             if (room == null)
             {
                 return NotFound();
             }
-
-            _context.Rooms.Remove(room);
-            await _context.SaveChangesAsync();
-
+        
+            _bll.Rooms.Remove(room);
+            await _bll.SaveChangesAsync();
+        
             return room;
         }
-
-        private bool RoomExists(Guid id)
-        {
-            return _context.Rooms.Any(e => e.Id == id);
-        }
+        //
     }
 }

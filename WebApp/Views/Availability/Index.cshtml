@@ -29,6 +29,9 @@
                 @Html.DisplayNameFor(model => model.PricePerNight)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.PolicyId)
+             </th>
+            <th>
                 
             </th>
         </tr>
@@ -42,15 +45,19 @@
             <td>
                 @Html.DisplayFor(modelItem => item.To)
             </td>
+            
             <td>
                 @Html.DisplayFor(modelItem => item.RoomId)
             </td>
             <td>
                            @item.IsUsed.ToString()
                         </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PricePerNight)
+            </td>
              <td>
-                            @Html.DisplayFor(modelItem => item.PricePerNight)
-                        </td>
+                               @Html.DisplayFor(modelItem => item.PolicyId)
+              </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |

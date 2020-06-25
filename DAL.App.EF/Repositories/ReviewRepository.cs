@@ -20,13 +20,9 @@ namespace DAL.App.EF.Repositories
  
         public async Task<IEnumerable<DAL.App.DTO.Review>> AllAsync(Guid? userId = null)
         {
-            if (userId == null)
-            {
-                // base is not actually needed, using it for clarity
-            }
+           
             return await base.AllAsync();
-            // return await RepoDbSet.Where(o => o.AppUserId == userId).ToListAsync();
-        }
+         }
         
         public async Task<DAL.App.DTO.Review> FirstOrDefaultAsync(Guid id, Guid? userId = null)
         {
@@ -51,18 +47,9 @@ namespace DAL.App.EF.Repositories
         
         public async Task DeleteAsync(Guid id, Guid? userId = null)
         {
-            var owner = await FirstOrDefaultAsync(id, userId);
-            base.Remove(owner);
+            var review = await FirstOrDefaultAsync(id, userId);
+            base.Remove(review);
         }
-        
-        public async Task<IEnumerable<Review>> DTOAllAsync(Guid? userId = null)
-        {
-            throw new System.NotImplementedException();
-        }
-        
-        public async Task<Review> DTOFirstOrDefaultAsync(Guid id, Guid? userId = null)
-        {
-            throw new System.NotImplementedException();
-        }
+       
     }
 }

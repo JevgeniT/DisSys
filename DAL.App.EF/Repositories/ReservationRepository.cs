@@ -47,18 +47,9 @@ namespace DAL.App.EF.Repositories
         
         public async Task DeleteAsync(Guid id, Guid? userId = null)
         {
-            var owner = await FirstOrDefaultAsync(id, userId);
-            base.Remove(owner);
+            var reservation = await FirstOrDefaultAsync(id, userId);
+            base.Remove(reservation);
         }
-        
-        public async Task<IEnumerable<Reservation>> DTOAllAsync(Guid? userId = null)
-        {
-            throw new System.NotImplementedException();
-        }
-        
-        public async Task<Reservation> DTOFirstOrDefaultAsync(Guid id, Guid? userId = null)
-        {
-            throw new System.NotImplementedException();
-        }
+     
     }
 }

@@ -15,9 +15,10 @@ namespace DAL.App.EF
             MapperConfigurationExpression.CreateMap<DAL.App.DTO.Property, BLL.App.DTO.Property>();
             MapperConfigurationExpression.CreateMap<Domain.Availability, DAL.App.DTO.Availability>();
             MapperConfigurationExpression.CreateMap<DAL.App.DTO.Availability, BLL.App.DTO.Availability>();
-            MapperConfigurationExpression.CreateMap<Domain.Room, DAL.App.DTO.Room>();
+            MapperConfigurationExpression.CreateMap<Domain.Facility, DAL.App.DTO.Facility>();
+            MapperConfigurationExpression.CreateMap<DAL.App.DTO.Facility, BLL.App.DTO.Facility>();
             MapperConfigurationExpression.CreateMap<DAL.App.DTO.Room , BLL.App.DTO.Room>();
-            MapperConfigurationExpression.CreateMap<Domain.Room , BLL.App.DTO.Room>();
+            MapperConfigurationExpression.CreateMap<Domain.Room , DAL.App.DTO.Room>();
 
             Mapper = new Mapper(new MapperConfiguration(MapperConfigurationExpression));
         }

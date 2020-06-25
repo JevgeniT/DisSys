@@ -49,25 +49,14 @@ namespace DAL.App.EF.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Facilities",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    Name = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Facilities", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Policies",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    PolicyName = table.Column<string>(nullable: false),
-                    PrepaymentBefore = table.Column<int>(nullable: false),
-                    CancellationBefore = table.Column<int>(nullable: false)
+                    Name = table.Column<string>(nullable: false),
+                    CancellationBefore = table.Column<int>(nullable: true),
+                    PrepaymentBefore = table.Column<int>(nullable: true),
+                    CancellationFee = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -189,7 +178,7 @@ namespace DAL.App.EF.Migrations
                     CreatedAt = table.Column<DateTime>(nullable: false),
                     ChangedBy = table.Column<string>(nullable: true),
                     ChangedAt = table.Column<DateTime>(nullable: false),
-                    PropertyName = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: false),
                     Address = table.Column<string>(nullable: true),
                     Country = table.Column<string>(nullable: true),
@@ -235,26 +224,6 @@ namespace DAL.App.EF.Migrations
                         name: "FK_Reservations_AspNetUsers_AppUserId",
                         column: x => x.AppUserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Extras",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    FacilityId = table.Column<Guid>(nullable: true),
-                    Fee = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Extras", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Extras_Facilities_FacilityId",
-                        column: x => x.FacilityId,
-                        principalTable: "Facilities",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -333,11 +302,12 @@ namespace DAL.App.EF.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    RoomName = table.Column<string>(nullable: true),
-                    RoomCapacity = table.Column<int>(nullable: false),
-                    RoomSize = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    Capacity = table.Column<int>(nullable: false),
+                    Size = table.Column<int>(nullable: false),
                     Description = table.Column<string>(nullable: false),
                     PropertyId = table.Column<Guid>(nullable: false),
+                    Bed = table.Column<string>(nullable: false),
                     ReservationId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
@@ -365,6 +335,7 @@ namespace DAL.App.EF.Migrations
                     From = table.Column<DateTime>(type: "date", nullable: false),
                     To = table.Column<DateTime>(type: "date", nullable: false),
                     RoomId = table.Column<Guid>(nullable: false),
+                    PolicyId = table.Column<Guid>(nullable: false),
                     IsUsed = table.Column<bool>(nullable: false),
                     PricePerNight = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
@@ -380,24 +351,18 @@ namespace DAL.App.EF.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RoomFacilities",
+                name: "Facilities",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    FacilityId = table.Column<Guid>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
                     RoomId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RoomFacilities", x => x.Id);
+                    table.PrimaryKey("PK_Facilities", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_RoomFacilities_Facilities_FacilityId",
-                        column: x => x.FacilityId,
-                        principalTable: "Facilities",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_RoomFacilities_Rooms_RoomId",
+                        name: "FK_Facilities_Rooms_RoomId",
                         column: x => x.RoomId,
                         principalTable: "Rooms",
                         principalColumn: "Id",
@@ -405,26 +370,21 @@ namespace DAL.App.EF.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RoomPolicies",
+                name: "Extras",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    RoomId = table.Column<Guid>(nullable: false),
-                    PolicyId = table.Column<Guid>(nullable: false)
+                    Name = table.Column<string>(nullable: true),
+                    FacilityId = table.Column<Guid>(nullable: true),
+                    Fee = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RoomPolicies", x => x.Id);
+                    table.PrimaryKey("PK_Extras", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_RoomPolicies_Policies_PolicyId",
-                        column: x => x.PolicyId,
-                        principalTable: "Policies",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_RoomPolicies_Rooms_RoomId",
-                        column: x => x.RoomId,
-                        principalTable: "Rooms",
+                        name: "FK_Extras_Facilities_FacilityId",
+                        column: x => x.FacilityId,
+                        principalTable: "Facilities",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -479,6 +439,11 @@ namespace DAL.App.EF.Migrations
                 column: "FacilityId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Facilities_RoomId",
+                table: "Facilities",
+                column: "RoomId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Invoices_AppUserId",
                 table: "Invoices",
                 column: "AppUserId");
@@ -512,26 +477,6 @@ namespace DAL.App.EF.Migrations
                 name: "IX_Reviews_ReservationId",
                 table: "Reviews",
                 column: "ReservationId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_RoomFacilities_FacilityId",
-                table: "RoomFacilities",
-                column: "FacilityId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_RoomFacilities_RoomId",
-                table: "RoomFacilities",
-                column: "RoomId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_RoomPolicies_PolicyId",
-                table: "RoomPolicies",
-                column: "PolicyId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_RoomPolicies_RoomId",
-                table: "RoomPolicies",
-                column: "RoomId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Rooms_PropertyId",
@@ -571,22 +516,16 @@ namespace DAL.App.EF.Migrations
                 name: "Invoices");
 
             migrationBuilder.DropTable(
+                name: "Policies");
+
+            migrationBuilder.DropTable(
                 name: "Reviews");
-
-            migrationBuilder.DropTable(
-                name: "RoomFacilities");
-
-            migrationBuilder.DropTable(
-                name: "RoomPolicies");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "Facilities");
-
-            migrationBuilder.DropTable(
-                name: "Policies");
 
             migrationBuilder.DropTable(
                 name: "Rooms");

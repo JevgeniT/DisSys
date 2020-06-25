@@ -26,14 +26,11 @@ namespace BLL.App.DTO
 
         public Guid RoomId { get; set; }
         
-        // public ICollection<Room>? Rooms { get; set; }
+        public ICollection<Room>? Rooms { get; set; }
 
-        public   Guid PropertyId { get; set; }        
-        
-        // public Property Property { get; set; }
-
-        // public Extra Extra { get; set; }    
-        public   TKey AppUserId { get; set; }= default!;
+        public Guid PropertyId { get; set; }
+        public decimal TotalPrice { get; set; }
+        public TKey AppUserId { get; set; }= default!;
  
         public TKey Id { get; set; }= default!;
     }

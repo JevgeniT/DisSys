@@ -47,8 +47,8 @@ namespace DAL.App.EF.Repositories
         
         public async Task DeleteAsync(Guid id, Guid? userId = null)
         {
-            var owner = await FirstOrDefaultAsync(id, userId);
-            base.Remove(owner);
+            var invoice = await FirstOrDefaultAsync(id, userId);
+            base.Remove(invoice);
         }
         
          

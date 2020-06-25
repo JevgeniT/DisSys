@@ -152,6 +152,11 @@
       <_ContentIncludedByDefault Remove="Views\R\Details.cshtml" />
       <_ContentIncludedByDefault Remove="Views\R\Edit.cshtml" />
       <_ContentIncludedByDefault Remove="Views\R\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\RoomFacility\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\RoomFacility\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\RoomFacility\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\RoomFacility\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\RoomFacility\Index.cshtml" />
     </ItemGroup>
 
     <ItemGroup>

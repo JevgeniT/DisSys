@@ -15,7 +15,7 @@ namespace DAL.App.DTO
     {
         public TKey Id { get; set; } = default!;
 
-        public string? PropertyName { get; set; }
+        public string? Name { get; set; }
   
         public string? Address { get; set; }
         
