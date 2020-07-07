@@ -1,5 +1,7 @@
+using System;
 using AutoMapper;
- using DAL.Base.EF;
+using DAL.App.DTO;
+using DAL.Base.EF;
 
 namespace DAL.App.EF
 {
@@ -19,6 +21,9 @@ namespace DAL.App.EF
             MapperConfigurationExpression.CreateMap<DAL.App.DTO.Facility, BLL.App.DTO.Facility>();
             MapperConfigurationExpression.CreateMap<DAL.App.DTO.Room , BLL.App.DTO.Room>();
             MapperConfigurationExpression.CreateMap<Domain.Room , DAL.App.DTO.Room>();
+            MapperConfigurationExpression.CreateMap<Domain.Availability , DAL.App.DTO.Availability>();
+            MapperConfigurationExpression.CreateMap<Domain.Policy , DAL.App.DTO.Policy>();
+
 
             Mapper = new Mapper(new MapperConfiguration(MapperConfigurationExpression));
         }

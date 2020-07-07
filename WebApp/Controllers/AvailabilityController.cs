@@ -54,8 +54,8 @@ namespace WebApp.Controllers
         // GET: Availability/Create
         public IActionResult Create()
         {
-            ViewData["RoomId"] = new SelectList(_context.Rooms,"Id","Id");
-            ViewData["PolicyId"] = new SelectList(_context.Policies,"Id","Id");
+            ViewData["RoomId"] = new SelectList(_context.Rooms,"Id","Name");
+            ViewData["PolicyId"] = new SelectList(_context.Policies,"Id","Name");
 
             return View();
         }
@@ -65,7 +65,7 @@ namespace WebApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id, From , To, RoomId, PolicyId, PricePerNight")] Availability availability)
+        public async Task<IActionResult> Create([Bind("Id, From , To, RoomId, PolicyId, PricePerNightForAdult, RoomsAvailable")] Availability availability)
         {
             if (ModelState.IsValid)
             {

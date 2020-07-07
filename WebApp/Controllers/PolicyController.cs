@@ -54,7 +54,7 @@ namespace WebApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,PolicyName,PrepaymentBefore,CancellationBefore")] Policy policy)
+        public async Task<IActionResult> Create([Bind("Id,Name,PrepaymentBefore,CancellationBefore")] Policy policy)
         {
             if (ModelState.IsValid)
             {
@@ -93,7 +93,7 @@ namespace WebApp.Controllers
             {
                 return NotFound();
             }
-
+            
             if (ModelState.IsValid)
             {
                 try

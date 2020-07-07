@@ -19,10 +19,12 @@ namespace BLL.Base.Mappers
                 config.CreateMap<TInObject, TOutObject>();
                 config.CreateMap<TOutObject, TInObject>();
                 config.CreateMap<Room, DAL.App.DTO.Room>();
-                config.CreateMap<BLL.App.DTO.Room, DAL.App.DTO.Room>();
+                config.CreateMap<Domain.Room, DAL.App.DTO.Room>();
                 config.CreateMap<DAL.App.DTO.Room, BLL.App.DTO.Room>();
                 config.CreateMap<DAL.App.DTO.Property, BLL.App.DTO.Property>();
                 config.CreateMap<DAL.App.DTO.Facility, BLL.App.DTO.Facility>();
+                config.CreateMap<DAL.App.DTO.Availability, BLL.App.DTO.Availability>();
+                config.CreateMap<DAL.App.DTO.Policy, BLL.App.DTO.Policy>();
             }).CreateMapper();
     }
 
@@ -45,4 +47,5 @@ namespace BLL.Base.Mappers
 
     
     }
+    
 }

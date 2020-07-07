@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.App.EF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200625144401_Init")]
+    [Migration("20200703125649_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,16 +36,27 @@ namespace DAL.App.EF.Migrations
                     b.Property<Guid>("PolicyId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<decimal>("PricePerNight")
+                    b.Property<decimal>("PricePerNightForAdult")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("PricePerNightForChild")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<bool>("PricePerPerson")
+                        .HasColumnType("bit");
 
                     b.Property<Guid>("RoomId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("RoomsAvailable")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("To")
                         .HasColumnType("date");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PolicyId");
 
                     b.HasIndex("RoomId");
 
@@ -412,11 +423,14 @@ namespace DAL.App.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("AdultsCapacity")
+                        .HasColumnType("int");
+
                     b.Property<string>("Bed")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Capacity")
+                    b.Property<int>("ChildCapacity")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
@@ -547,8 +561,14 @@ namespace DAL.App.EF.Migrations
 
             modelBuilder.Entity("Domain.Availability", b =>
                 {
-                    b.HasOne("Domain.Room", null)
-                        .WithMany("Availabilities")
+                    b.HasOne("Domain.Policy", "Policy")
+                        .WithMany()
+                        .HasForeignKey("PolicyId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Room", "Room")
+                        .WithMany("RoomAvailabilities")
                         .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();

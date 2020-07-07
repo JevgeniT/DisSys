@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 using Contracts.DAL.Base;
-using DAL.Base;
 
 namespace BLL.App.DTO
 {
@@ -16,15 +14,23 @@ namespace BLL.App.DTO
         public TKey Id { get; set; } = default!;
 
         public string? Name { get; set; }
-        public int Capacity { get; set; }
+        public int AdultsCapacity { get; set; }
+        public int ChildCapacity { get; set; }
         public int Size { get; set; }  //m2
+        
+        [JsonIgnore]
         public BedType Bed { get; set; }
+        
+        public string BedType
+        {
+            get { return Bed.ToString(); }
+        }
+
         public string? Description { get; set; }
         public Guid PropertyId { get; set; }
         
         public ICollection<Facility>? RoomFacilities { get; set; }
         
-        public ICollection<Availability>? RoomAvailabilities { get; set; }
         
     }
         public enum BedType

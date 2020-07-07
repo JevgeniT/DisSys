@@ -14,7 +14,8 @@ namespace DAL.App.DTO
     {
         public TKey Id { get; set; } = default!;
         public string? Name { get; set; }
-        public int Capacity { get; set; }
+        public int AdultsCapacity { get; set; }
+        public int ChildCapacity { get; set; }
         public int Size { get; set; }  //m2
         public string? Description { get; set; }
         public Guid PropertyId { get; set; }

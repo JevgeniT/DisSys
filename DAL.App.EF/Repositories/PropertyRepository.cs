@@ -6,6 +6,7 @@ using Contracts.DAL.App.Repositories;
 using DAL.Base.EF.Repositories;
 using Domain;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using Public.DTO;
 
 namespace DAL.App.EF.Repositories
@@ -47,9 +48,12 @@ namespace DAL.App.EF.Repositories
             {
                 query = query.Where(a => a.Id == userId);
             }
+     
             var a = (await query.FirstOrDefaultAsync());
-            a.PropertyRooms = (await RepoDbContext.Rooms.Where(room => room.PropertyId == id)
-                .Include(room => room.RoomFacilities).AsNoTracking()
+            // var av= RepoDbContext.Availabilities.Where(availability  =>availability.RoomId )
+            a.PropertyRooms = (await RepoDbContext.Rooms
+                .Include(room => room.RoomFacilities)
+                .AsNoTracking().Where(room => room.PropertyId == id)
                 .ToListAsync());
             return Mapper.Map(a);
         }

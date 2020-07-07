@@ -13,15 +13,27 @@ namespace BLL.App.DTO
     {
         public TKey Id { get; set; } = default!;
 
+        [DataType(DataType.Date)]
         public DateTime From { get; set; }
-
+        
+        [DataType(DataType.Date)]
         public DateTime To { get; set; }
         
         public Guid RoomId { get; set; }
+        public Room? Room { get; set; }
 
+        public Guid PolicyId { get; set; }
+        public Policy? Policy { get; set; }
+        
         public bool IsUsed { get; set; }
         
-        public decimal PricePerNight { get; set; }
+        public decimal PricePerNightForAdult { get; set; }
+        
+        public decimal PricePerNightForChild { get; set; }
+
+        public bool PricePerPerson { get; set; }
+        public int RoomsAvailable { get; set; }
+
     }
      
 }

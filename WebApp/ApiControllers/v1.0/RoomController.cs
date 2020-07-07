@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BLL.App.DTO;
 using Contracts.BLL.App;
+using Public.DTO;
 
 namespace WebApp.ApiControllers
 {
@@ -23,9 +24,9 @@ namespace WebApp.ApiControllers
 
         // GET: api/Rooms
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Room>>> GetRooms()
+        public async Task<ActionResult<IEnumerable<Room>>> GetRooms(SearchDTO? searchDTO)
         {
-            return Ok(await _bll.Rooms.AllAsync());
+            return Ok(await _bll.Rooms.AllAsync(searchDTO));
         }
 
         // GET: api/Rooms/5

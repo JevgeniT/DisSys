@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Contracts.DAL.Base;
 using Contracts.DAL.Base.Repositories;
 using DAL.App.DTO;
+using Public.DTO;
 
 namespace Contracts.DAL.App.Repositories
 {
@@ -17,7 +18,7 @@ namespace Contracts.DAL.App.Repositories
     {
   
    
-        Task<IEnumerable<TDALEntity>> AllAsync();
+        Task<IEnumerable<TDALEntity>> AllAsync(SearchDTO? searchDTO);
         
         Task<TDALEntity> FirstOrDefaultAsync(Guid id, Guid? userId = null);
 

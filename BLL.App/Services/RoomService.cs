@@ -8,6 +8,7 @@ using BLL.Base.Services;
 using Contracts.BLL.App.Services;
 using Contracts.DAL.App;
 using Contracts.DAL.App.Repositories;
+using Public.DTO;
 
 namespace BLL.App.Services
 {
@@ -19,9 +20,9 @@ namespace BLL.App.Services
         {
         }
 
-        public async  Task<IEnumerable<Room>> AllAsync(Guid? userId = null)
+        public async  Task<IEnumerable<Room>> AllAsync(SearchDTO? searchDTO)
         {
-            return (await ServiceRepository.AllAsync()).Select( dalEntity => Mapper.Map(dalEntity) );
+            return (await ServiceRepository.AllAsync(searchDTO)).Select( dalEntity => Mapper.Map(dalEntity) );
         }
 
         public async Task<Room> FirstOrDefaultAsync(Guid id, Guid? userId = null)

@@ -62,7 +62,7 @@ namespace WebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Capacity,Size,PropertyId, Description,CreatedAt,DeletedBy,DeletedAt,Id")] Room room)
+        public async Task<IActionResult> Create([Bind("Name,AdultsCapacity,Size, ChildCapacity, PropertyId, Description,CreatedAt,DeletedBy,DeletedAt,Id")] Room room)
         {
      
             if (ModelState.IsValid)

@@ -9,7 +9,7 @@ namespace Domain.Validation
         {
             DateTime date = DateTime.Parse(value.ToString());
 
-            if (date < DateTime.Now)
+            if (date.Date < DateTime.Now.Date)
             {
                 return new ValidationResult("Cannot be in the past");
             }

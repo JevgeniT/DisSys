@@ -20,8 +20,6 @@ namespace DAL.Base.EF.Mappers
                 config.CreateMap<TInObject, TOutObject>();
                 config.CreateMap<TOutObject, TInObject>();
             }).CreateMapper();
-
-            // 
         }
         
         
@@ -29,7 +27,7 @@ namespace DAL.Base.EF.Mappers
         public TOutObject Map(TInObject inObject)
         {
             return _mapper.Map<TInObject, TOutObject>(inObject);
-        }
+        }    
 
         public TMapOutObject Map<TMapInObject, TMapOutObject>(TMapInObject inObject) where TMapInObject : class
             where TMapOutObject : class, new()

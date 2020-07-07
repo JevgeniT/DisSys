@@ -303,7 +303,8 @@ namespace DAL.App.EF.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(nullable: true),
-                    Capacity = table.Column<int>(nullable: false),
+                    AdultsCapacity = table.Column<int>(nullable: false),
+                    ChildCapacity = table.Column<int>(nullable: false),
                     Size = table.Column<int>(nullable: false),
                     Description = table.Column<string>(nullable: false),
                     PropertyId = table.Column<Guid>(nullable: false),
@@ -337,11 +338,20 @@ namespace DAL.App.EF.Migrations
                     RoomId = table.Column<Guid>(nullable: false),
                     PolicyId = table.Column<Guid>(nullable: false),
                     IsUsed = table.Column<bool>(nullable: false),
-                    PricePerNight = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    PricePerNightForAdult = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    PricePerNightForChild = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    PricePerPerson = table.Column<bool>(nullable: false),
+                    RoomsAvailable = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Availabilities", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Availabilities_Policies_PolicyId",
+                        column: x => x.PolicyId,
+                        principalTable: "Policies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Availabilities_Rooms_RoomId",
                         column: x => x.RoomId,
@@ -427,6 +437,11 @@ namespace DAL.App.EF.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Availabilities_PolicyId",
+                table: "Availabilities",
+                column: "PolicyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Availabilities_RoomId",
@@ -516,13 +531,13 @@ namespace DAL.App.EF.Migrations
                 name: "Invoices");
 
             migrationBuilder.DropTable(
-                name: "Policies");
-
-            migrationBuilder.DropTable(
                 name: "Reviews");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Policies");
 
             migrationBuilder.DropTable(
                 name: "Facilities");

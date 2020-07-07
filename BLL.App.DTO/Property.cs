@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 using Contracts.DAL.Base;
- 
+
 namespace BLL.App.DTO
 {
     public class  Property: Property<Guid>, IDomainBaseEntity
@@ -19,11 +19,20 @@ namespace BLL.App.DTO
   
         public string? Address { get; set; }
         
+        public string? Description { get; set; }
         public string? Country { get; set; }
 
-        public ICollection<Room>? PropertyRooms { get; set; }
+        public int Score { get; set; }
 
+        public ICollection<Room>? PropertyRooms { get; set; }
+        
+        [JsonIgnore]
         public PropertyType Type { get; set; }
+        
+        public string PropertyType
+        {
+            get { return Type.ToString(); }
+        }
 
         [JsonIgnore]
         public TKey AppUserId { get; set; }= default!;

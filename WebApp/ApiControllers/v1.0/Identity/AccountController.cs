@@ -58,15 +58,6 @@ namespace WebApp.ApiControllers._1._0.Identity
                     _configuration.GetValue<int>("JWT:ExpirationInDays")
                 );
                 _logger.LogInformation($"Token generated for user {model.Email} ");
-                Console.WriteLine(appUser.Id);
-                try
-                {
-                    Console.WriteLine(User.UserGuidId());
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("err");
-                }
                 return Ok(new {token = jwt, status = "Logged in"});
             }
 

@@ -29,10 +29,10 @@ namespace BLL.App.Services
             return  Mapper.Map(await ServiceRepository.FirstOrDefaultAsync(id, userId));        
         }
 
-        public async Task<IEnumerable<Availability>> FindAvailableDates(DateTime @from, DateTime to)
+        public async Task<IEnumerable<Availability>> FindAvailableDates(DateTime @from, DateTime to, Guid? RoomId = null)
         {
            
-            return (await ServiceRepository.FindAvailableDates(from, to)).Select( dalEntity => Mapper.Map(dalEntity) );
+            return (await ServiceRepository.FindAvailableDates(from, to, RoomId)).Select( dalEntity => Mapper.Map(dalEntity) );
         }
         
         public async Task<bool> ExistsAsync(Guid id, Guid? userId = null)
@@ -56,7 +56,7 @@ namespace BLL.App.Services
                     {
                         From = From == available.From ? To : available.From,
                         To = To == available.To ? From : available.To,
-                        PricePerNight = available.PricePerNight,
+                        PricePerNightForAdult = available.PricePerNightForAdult,
                         IsUsed = false,
                         RoomId = available.RoomId
                     };
@@ -69,7 +69,7 @@ namespace BLL.App.Services
                     Add(new Availability{ 
                             From = available.From, To = From,
                             IsUsed = false, 
-                            PricePerNight = available.PricePerNight,
+                            PricePerNightForAdult = available.PricePerNightForAdult,
                             RoomId = available.RoomId
                         
                         });
@@ -77,7 +77,7 @@ namespace BLL.App.Services
                         {
                             From = available.To, To = available.To,
                             IsUsed = false, 
-                            PricePerNight = available.PricePerNight ,
+                            PricePerNightForAdult = available.PricePerNightForAdult ,
                             RoomId = available.RoomId
                         });
                 }

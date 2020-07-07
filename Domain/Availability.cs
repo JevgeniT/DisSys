@@ -44,12 +44,20 @@ namespace Domain
         }
         
         public Guid RoomId { get; set; }
-
+        public Room? Room { get; set; }
         public Guid PolicyId { get; set; }
+        public Policy? Policy { get; set; }
         public bool IsUsed { get; set; } = false;
         
         [Column(TypeName = "decimal(18,2)")]
-        public decimal PricePerNight { get; set; }
-        
+        public decimal PricePerNightForAdult { get; set; }
+
+        [Column(TypeName = "decimal(18,2)")]
+
+        public decimal PricePerNightForChild { get; set; }
+
+        public bool PricePerPerson { get; set; }
+
+        public int RoomsAvailable { get; set; }
     }
 }

@@ -28,10 +28,15 @@
                   <select asp-for="PolicyId" class ="form-control" asp-items="ViewBag.PolicyId"></select>
             </div>
               <div class="form-group">
-                <label asp-for="PricePerNight" class="control-label"></label>
-                <input asp-for="PricePerNight" class="form-control" />
-                <span asp-validation-for="PricePerNight" class="text-danger"></span>
+                <label asp-for="PricePerNightForAdult" class="control-label"></label>
+                <input asp-for="PricePerNightForAdult" class="form-control" />
+                <span asp-validation-for="PricePerNightForAdult" class="text-danger"></span>
             </div>
+             <div class="form-group">
+                            <label asp-for="RoomsAvailable" class="control-label"></label>
+                            <input asp-for="RoomsAvailable" class="form-control" />
+                            <span asp-validation-for="RoomsAvailable" class="text-danger"></span>
+                        </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

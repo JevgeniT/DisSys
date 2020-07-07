@@ -14,13 +14,22 @@ namespace DAL.App.DTO
 
         public DateTime From { get; set; }
 
- 
         public DateTime To { get; set; }
 
-        public decimal PricePerNight { get; set; }
+        public Guid PolicyId { get; set; }
+        public Policy? Policy { get; set; }
+
         public bool IsUsed { get; set; }
         
         public Guid? RoomId { get; set; }
+        public Room? Room { get; set; }
+
+        public decimal PricePerNightForAdult { get; set; }
+        
+        public decimal PricePerNightForChild { get; set; }
+
+        public bool PricePerPerson { get; set; }
+        public int RoomsAvailable { get; set; }
 
     }
 }

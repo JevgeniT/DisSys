@@ -6,6 +6,7 @@ using Contracts.DAL.App.Repositories;
 using DAL.Base.EF.Repositories;
 using Domain;
 using Microsoft.EntityFrameworkCore;
+using Public.DTO;
 
 namespace DAL.App.EF.Repositories
 {
@@ -15,8 +16,20 @@ namespace DAL.App.EF.Repositories
         {
         }
         
-        public async Task<IEnumerable<DAL.App.DTO.Room>> AllAsync(Guid? userId = null)
+        public async Task<IEnumerable<DAL.App.DTO.Room>> AllAsync(SearchDTO? searchDTO)
         {
+            if (searchDTO != null)
+            {
+                var query = RepoDbSet.Include(room => room.RoomAvailabilities).AsNoTracking()
+                    .Where(room => room.PropertyId == searchDTO.PropertyId);
+                
+                var rooms = (await  query.ToListAsync()).Select(r=>Mapper.Map(r));
+               
+                // var dates = RepoDbContext.Availabilities.Where(
+                //     availability => availability.RoomId == rooms.FirstOrDefault().Id
+                // ).ToListAsync();
+                return rooms;
+            }
             return await base.AllAsync();
          }
         
@@ -31,6 +44,8 @@ namespace DAL.App.EF.Repositories
             var room = (await query.FirstOrDefaultAsync());
             room.RoomFacilities = (await RepoDbContext.Facilities.Where(facility => facility.RoomId == id).AsNoTracking()
                 .ToListAsync());
+            // room.RoomAvailabilities = (await RepoDbContext.Availabilities.Where(availability => availability.RoomId == id)
+            //     .AsNoTracking().ToListAsync());
             return Mapper.Map(room);
         }
         

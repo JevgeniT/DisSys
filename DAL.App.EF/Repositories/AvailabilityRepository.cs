@@ -14,7 +14,7 @@ namespace DAL.App.EF.Repositories
         EFBaseRepository<AppDbContext,Availability,  DAL.App.DTO.Availability>,  IAvailabilityRepository
     {
         public AvailabilityRepository(AppDbContext dbContext) 
-            :base(dbContext, new BaseDALMapper<Availability,  DAL.App.DTO.Availability>())
+            :base(dbContext, new DALMapper<Availability,  DAL.App.DTO.Availability>())
         {
         }
         
@@ -34,10 +34,14 @@ namespace DAL.App.EF.Repositories
             return Mapper.Map(await query.FirstOrDefaultAsync());
         }
         
-        public async Task<IEnumerable< DAL.App.DTO.Availability>> FindAvailableDates(DateTime from, DateTime to)
+        public async Task<IEnumerable< DAL.App.DTO.Availability>> FindAvailableDates(DateTime from, DateTime to, Guid? PropertyId = null)
         {
-            var str = $"'{from.ToShortDateString()}' and '{to.ToShortDateString()}'";
-            var query = RepoDbSet.FromSqlRaw("select * from Availabilities where [FROM] between " + str + " or [To] between " + str);
+            var dates = $"'{from.ToShortDateString()}' and '{to.ToShortDateString()}'";
+            
+            var query = RepoDbSet.FromSqlRaw("select * from Availabilities where [FROM] between " + dates + " or [To] between " + dates)
+                .Include(availability => availability.Room)
+                .Include(availability => availability.Policy)
+                .Where(availability => availability.Room.PropertyId==PropertyId);
             query.AsNoTracking();
             return (query.Where(a=> !a.IsUsed).AsNoTracking().Select(e => Mapper.Map(e)));
         }
