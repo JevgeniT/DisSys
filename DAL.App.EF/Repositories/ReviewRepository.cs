@@ -20,10 +20,16 @@ namespace DAL.App.EF.Repositories
  
         public async Task<IEnumerable<DAL.App.DTO.Review>> AllAsync(Guid? userId = null)
         {
-           
             return await base.AllAsync();
-         }
-        
+        }
+
+        public async Task<IEnumerable<DTO.Review>> PropertyReviews(Guid? propertyId)
+        {
+            var query = RepoDbSet.Where(a => a.PropertyId == propertyId).AsQueryable();
+
+            return await query.Select(entity=> Mapper.Map(entity)).ToListAsync();
+        }
+
         public async Task<DAL.App.DTO.Review> FirstOrDefaultAsync(Guid id, Guid? userId = null)
         {
             var query = RepoDbSet.Where(a => a.Id == id).AsQueryable();

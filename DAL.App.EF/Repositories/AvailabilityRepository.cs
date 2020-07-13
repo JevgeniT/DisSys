@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Contracts.DAL.App.Repositories;
-using DAL.Base.EF.Mappers;
 using DAL.Base.EF.Repositories;
 using Domain;
 using Microsoft.EntityFrameworkCore;
@@ -41,8 +40,9 @@ namespace DAL.App.EF.Repositories
             var query = RepoDbSet.FromSqlRaw("select * from Availabilities where [FROM] between " + dates + " or [To] between " + dates)
                 .Include(availability => availability.Room)
                 .Include(availability => availability.Policy)
-                .Where(availability => availability.Room.PropertyId==PropertyId);
+                .Where(availability => availability.Room.PropertyId == PropertyId);
             query.AsNoTracking();
+            
             return (query.Where(a=> !a.IsUsed).AsNoTracking().Select(e => Mapper.Map(e)));
         }
         

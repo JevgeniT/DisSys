@@ -24,6 +24,8 @@ namespace DAL.App.DTO
         
         public Property? Property { get; set; }
         
+        public Guid ReservationId { get; set; }
+
         public TKey AppUserId { get; set; }= default!;
         
      }

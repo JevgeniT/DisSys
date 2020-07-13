@@ -179,8 +179,8 @@ namespace DAL.App.EF.Migrations
                     ChangedBy = table.Column<string>(nullable: true),
                     ChangedAt = table.Column<DateTime>(nullable: false),
                     Name = table.Column<string>(nullable: true),
-                    Description = table.Column<string>(nullable: false),
                     Address = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: false),
                     Country = table.Column<string>(nullable: true),
                     Type = table.Column<string>(nullable: false),
                     AppUserId = table.Column<Guid>(nullable: false)

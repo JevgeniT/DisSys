@@ -9,10 +9,15 @@
       <ProjectReference Include="..\Contracts.BLL.Base\Contracts.BLL.Base.csproj" />
       <ProjectReference Include="..\Contracts.DAL.Base\Contracts.DAL.Base.csproj" />
       <ProjectReference Include="..\DAL.App.DTO\DAL.App.DTO.csproj" />
+      <ProjectReference Include="..\Public.DTO\Public.DTO.csproj" />
     </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="AutoMapper" Version="9.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="Mappers\BaseMapper.cs" />
     </ItemGroup>
 
 </Project>

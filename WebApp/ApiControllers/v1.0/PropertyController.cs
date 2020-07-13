@@ -1,15 +1,12 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
-using BLL.Base.Mappers;
 using Contracts.BLL.App;
 using BLL.App.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
- using Extensions;
+using Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Public.DTO;
@@ -25,12 +22,12 @@ namespace WebApp.ApiControllers
     public class PropertyController : ControllerBase
     {
         private readonly IAppBLL _bll;
-        private readonly DTOMapper<Property, PropertyDTO> _mapper = new DTOMapper<Property, PropertyDTO>();
- 
+        private readonly PropertyMapper _mapper = new PropertyMapper();
+        
         public PropertyController(IAppBLL bll)
         {
             _bll = bll;
-         }
+        }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PropertyDTO>>> GetProperties()
@@ -43,23 +40,13 @@ namespace WebApp.ApiControllers
         [HttpPost]
         [AllowAnonymous]
         [Route("find")]
-        public async Task<ActionResult<IEnumerable<PropertyDTO>>> FindProperties(SearchDTO search)
+        public async Task<ActionResult<IEnumerable<PropertyViewDTO>>> FindProperties(SearchDTO search)
         {
              
-             var found = _bll.Properties.FindAsync(search);
-             var properties = (await found)
-                .Select(bllEntity => new PropertyDTO()
-                {
-                    Id = bllEntity.Id,
-                    Address = bllEntity.Address,
-                    Country = bllEntity.Country,
-                    Name = bllEntity.Name,
-                    Score = bllEntity.Score
-                });
+             var found = _bll.Properties.FindAsync(search); // TODO 
+             var properties = (await found);
 
-            
-                
-            return Ok(properties);
+             return Ok(properties.Select(p=> _mapper.MapPropertyView(p)));
         }
         
         
@@ -68,6 +55,7 @@ namespace WebApp.ApiControllers
         public async Task<ActionResult<PropertyDTO>> GetProperty(Guid id)
         {
             var property = await _bll.Properties.FirstOrDefaultAsync(id);
+            
             if (property == null)
             {
                 return NotFound();

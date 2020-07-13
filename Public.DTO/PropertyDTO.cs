@@ -14,13 +14,15 @@ namespace Public.DTO
         public string? Address { get; set; }
 
         public string? Description { get; set; }
+        
         [JsonIgnore]
         public PropertyType PropertyType { get; set; }
 
         public string Type { get { return PropertyType.ToString();} }
-        public int Score { get; set; }
+        
+        public double Score { get; set; }
 
-        public int ReviewCount { get; set; }
+        public int ReviewsCount { get; set; }
         
         public ICollection<RoomDTO>? PropertyRooms { get; set; }
 

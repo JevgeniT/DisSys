@@ -14,30 +14,24 @@ namespace BLL.App.DTO
         where TKey: IEquatable<TKey>
     {
         public TKey Id { get; set; } = default!;
-        
         public string? Name { get; set; }
-  
         public string? Address { get; set; }
         
         public string? Description { get; set; }
         public string? Country { get; set; }
-
-        public int Score { get; set; }
-
+        public ICollection<Review>? Reviews { get; set; }
+        
         public ICollection<Room>? PropertyRooms { get; set; }
         
         [JsonIgnore]
         public PropertyType Type { get; set; }
         
-        public string PropertyType
-        {
-            get { return Type.ToString(); }
-        }
+        public string PropertyType => Type.ToString();
 
         [JsonIgnore]
-        public TKey AppUserId { get; set; }= default!;
-        [JsonIgnore]
+        public TKey AppUserId { get; set; } = default!;
         
+        [JsonIgnore]
         public Identity.AppUser<TKey>? AppUser { get; set; }
 
     }

@@ -1,12 +1,16 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BLL.App.DTO;
 using Contracts.BLL.App;
+using DAL.App.EF;
+using Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Public.DTO;
 
 namespace WebApp.ApiControllers
 {
@@ -18,12 +22,20 @@ namespace WebApp.ApiControllers
     public class ReviewController : ControllerBase
     {
         private readonly IAppBLL _bll;
+        private readonly DALMapper<Review, ReviewDTO> _mapper = new DALMapper<Review, ReviewDTO>();
 
         public ReviewController(IAppBLL bll)
         {
             _bll = bll;
         }
 
+        [HttpGet][Route("property/{propertyId}")]
+        public async Task<ActionResult<IEnumerable<ReviewDTO>>> GetReviewsForProperty(Guid propertyId)
+        {
+            var reviews = (await _bll.Reviews.PropertyReviews(propertyId)).Select(r=> _mapper.Map(r));             
+            return Ok(reviews);
+        }
+        
         // GET: api/Review
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Review>>> GetReviews()
@@ -83,6 +95,8 @@ namespace WebApp.ApiControllers
         [HttpPost]
         public async Task<ActionResult<Review>> PostReview(Review review)
         {
+            review.AppUserId = User.UserGuidId();
+            review.CreatedAt = DateTime.Now;
             _bll.Reviews.Add(review);
             await _bll.SaveChangesAsync();
 

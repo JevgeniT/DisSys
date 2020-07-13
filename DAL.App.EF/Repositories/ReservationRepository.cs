@@ -13,7 +13,7 @@ namespace DAL.App.EF.Repositories
 {
     public class ReservationRepository : EFBaseRepository<AppDbContext,Reservation, DAL.App.DTO.Reservation>,  IReservationRepository
     {
-        public ReservationRepository(AppDbContext dbContext) : base(dbContext, new BaseDALMapper<Reservation, DAL.App.DTO.Reservation>())
+        public ReservationRepository(AppDbContext dbContext) : base(dbContext, new DALMapper<Reservation, DAL.App.DTO.Reservation>())
         {
         }
 

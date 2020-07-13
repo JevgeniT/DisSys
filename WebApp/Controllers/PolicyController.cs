@@ -87,7 +87,7 @@ namespace WebApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,PolicyName,PrepaymentBefore,CancellationBefore")] Policy policy)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,PrepaymentBefore,CancellationBefore")] Policy policy)
         {
             if (id != policy.Id)
             {

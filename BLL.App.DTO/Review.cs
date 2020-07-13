@@ -17,13 +17,13 @@ namespace BLL.App.DTO
         public int Score { get; set; }
         
         public string? Comment { get; set; }
-
         public DateTime CreatedAt { get; set; }
         
         public Guid PropertyId { get; set; }
         
         public Property? Property { get; set; }
-        
+
+        public Guid ReservationId { get; set; }
         public TKey AppUserId { get; set; }= default!;
         
      }

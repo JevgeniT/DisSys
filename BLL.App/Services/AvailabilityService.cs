@@ -29,10 +29,10 @@ namespace BLL.App.Services
             return  Mapper.Map(await ServiceRepository.FirstOrDefaultAsync(id, userId));        
         }
 
-        public async Task<IEnumerable<Availability>> FindAvailableDates(DateTime @from, DateTime to, Guid? RoomId = null)
+        public async Task<IEnumerable<Availability>> FindAvailableDates(DateTime @from, DateTime to, Guid? PropertyId = null)
         {
            
-            return (await ServiceRepository.FindAvailableDates(from, to, RoomId)).Select( dalEntity => Mapper.Map(dalEntity) );
+            return (await ServiceRepository.FindAvailableDates(from, to, PropertyId)).Select( dalEntity => Mapper.Map(dalEntity) );
         }
         
         public async Task<bool> ExistsAsync(Guid id, Guid? userId = null)
@@ -58,7 +58,9 @@ namespace BLL.App.Services
                         To = To == available.To ? From : available.To,
                         PricePerNightForAdult = available.PricePerNightForAdult,
                         IsUsed = false,
-                        RoomId = available.RoomId
+                        RoomId = available.RoomId,
+                        PolicyId = available.PolicyId
+
                     };
                     
                         Add(availability);
@@ -70,7 +72,8 @@ namespace BLL.App.Services
                             From = available.From, To = From,
                             IsUsed = false, 
                             PricePerNightForAdult = available.PricePerNightForAdult,
-                            RoomId = available.RoomId
+                            RoomId = available.RoomId,
+                            PolicyId = available.PolicyId
                         
                         });
                     Add(new Availability
@@ -78,7 +81,8 @@ namespace BLL.App.Services
                             From = available.To, To = available.To,
                             IsUsed = false, 
                             PricePerNightForAdult = available.PricePerNightForAdult ,
-                            RoomId = available.RoomId
+                            RoomId = available.RoomId,
+                            PolicyId = available.PolicyId
                         });
                 }
                 else if (available.From == From && available.To == To)

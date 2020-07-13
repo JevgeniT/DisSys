@@ -24,6 +24,11 @@ namespace BLL.App.Services
             return (await ServiceRepository.AllAsync(userId)).Select( dalEntity => Mapper.Map(dalEntity) );
         }
 
+        public async Task<IEnumerable<Review>> PropertyReviews(Guid? propertyId)
+        {
+            return (await ServiceRepository.PropertyReviews(propertyId)).Select( dalEntity => Mapper.Map(dalEntity) );
+        }
+
         public async Task<Review> FirstOrDefaultAsync(Guid id, Guid? userId = null)
         {
             return    Mapper.Map(await ServiceRepository.FirstOrDefaultAsync(id, userId));        

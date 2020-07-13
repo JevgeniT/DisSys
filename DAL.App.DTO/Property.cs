@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using Contracts.DAL.Base;
 using DAL.App.DTO.Identity;
   
@@ -22,7 +21,9 @@ namespace DAL.App.DTO
         public string? Country { get; set; }
 
         public string? Description { get; set; }
-        
+
+        public ICollection<Review>? ReviewsCount { get; set; }
+
         public ICollection<Room>? PropertyRooms { get; set; }
 
         public PropertyType Type { get; set; }
@@ -30,7 +31,7 @@ namespace DAL.App.DTO
         public TKey AppUserId { get; set; }= default!;
         
         public AppUser<TKey>? AppUser { get; set; }
- 
+        
     }
 
     public enum PropertyType

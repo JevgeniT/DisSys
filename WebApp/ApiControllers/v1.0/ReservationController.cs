@@ -4,13 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using BLL.App.DTO;
 using Contracts.BLL.App;
-using Domain.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Public.DTO;
 
 namespace WebApp.ApiControllers
@@ -98,15 +96,14 @@ namespace WebApp.ApiControllers
         [HttpPost]
         public async Task<ActionResult<Reservation>> PostReservation(Reservation reservation)
         {
-            var available = await _bll.Availabilities.FindAvailableDates(reservation.CheckInDate,reservation.CheckOutDate);
-            
-            _bll.Availabilities.ParseDate(new List<Availability>(available.ToList()), reservation.CheckInDate,reservation.CheckOutDate);
+            var available = await _bll.Availabilities.FindAvailableDates(reservation.CheckInDate,reservation.CheckOutDate,reservation.PropertyId);
+            _bll.Availabilities .ParseDate(new List<Availability>(available.ToList()), reservation.CheckInDate,reservation.CheckOutDate);
             
             if (!available.Any())
             {
                 return BadRequest(new MessageDTO("no dates available"));
             }
-            
+
             var res = new Reservation()
             {
                 AppUserId = User.UserGuidId(),

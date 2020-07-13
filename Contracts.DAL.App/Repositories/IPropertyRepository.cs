@@ -9,20 +9,20 @@ using Public.DTO;
 namespace Contracts.DAL.App.Repositories
 {
  
- public interface IPropertyRepository : IPropertyRepository<Guid, Property>, IBaseRepository<Property>
- {
- }
- public interface IPropertyRepository<TKey, TDALEntity> : IBaseRepository<TKey,TDALEntity> 
-   where TDALEntity : class, IDomainBaseEntity<TKey>, new() 
-   where TKey : IEquatable<TKey>
- {
-     Task<IEnumerable<TDALEntity>> AllAsync(Guid? userId = null);
-     
-     Task<IEnumerable<TDALEntity>> FindAsync(SearchDTO? param );
+  public interface IPropertyRepository : IPropertyRepository<Guid, Property>, IBaseRepository<Property>, IPropertyCustomRepository
+  {
+  }
+  public interface IPropertyRepository<TKey, TDALEntity> : IBaseRepository<TKey,TDALEntity> 
+     where TDALEntity : class, IDomainBaseEntity<TKey>, new() 
+     where TKey : IEquatable<TKey>
+  {
+        Task<IEnumerable<TDALEntity>> AllAsync(Guid? userId = null);
+           
+        Task<IEnumerable<TDALEntity>> FindAsync(SearchDTO? param );
 
-     Task<TDALEntity> FirstOrDefaultAsync(Guid id, Guid? userId = null);
+        Task<TDALEntity> FirstOrDefaultAsync(Guid id, Guid? userId = null);
 
-     Task<bool> ExistsAsync(Guid id, Guid? userId = null);
-     Task DeleteAsync(Guid id, Guid? userId = null);
- }
+        Task<bool> ExistsAsync(Guid id, Guid? userId = null);
+        Task DeleteAsync(Guid id, Guid? userId = null);
+    }
 }

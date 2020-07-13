@@ -13,7 +13,7 @@ namespace DAL.App.EF.Repositories
 {
     public class PolicyRepository : EFBaseRepository<AppDbContext,Policy, DAL.App.DTO.Policy>,  IPolicyRepository
     {
-        public PolicyRepository(AppDbContext dbContext) : base(dbContext, new BaseDALMapper<Policy, DAL.App.DTO.Policy>())
+        public PolicyRepository(AppDbContext dbContext) : base(dbContext, new DALMapper<Policy, DAL.App.DTO.Policy>())
         {
         }
 
