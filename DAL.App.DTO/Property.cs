@@ -22,7 +22,7 @@ namespace DAL.App.DTO
 
         public string? Description { get; set; }
 
-        public ICollection<Review>? ReviewsCount { get; set; }
+        public ICollection<Review>? Reviews { get; set; }
 
         public ICollection<Room>? PropertyRooms { get; set; }
 

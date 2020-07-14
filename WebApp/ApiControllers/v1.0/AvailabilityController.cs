@@ -51,8 +51,6 @@ namespace WebApp.ApiControllers
         [HttpPost][Route("checkdates")][Consumes("application/json")]
         public async Task<ActionResult<IEnumerable<Availability>>> CheckDates(SearchDTO searchDTO)
         {
-            
-          
             var availability = (await _bll.Availabilities.FindAvailableDates(searchDTO.From, searchDTO.To,searchDTO.PropertyId))
                .Select(bllEntity => new Availability()
                 {

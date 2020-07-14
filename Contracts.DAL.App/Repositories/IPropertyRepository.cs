@@ -9,7 +9,7 @@ using Public.DTO;
 namespace Contracts.DAL.App.Repositories
 {
  
-  public interface IPropertyRepository : IPropertyRepository<Guid, Property>, IBaseRepository<Property>, IPropertyCustomRepository
+  public interface IPropertyRepository : IPropertyRepository<Guid, Property>, IBaseRepository<Property>
   {
   }
   public interface IPropertyRepository<TKey, TDALEntity> : IBaseRepository<TKey,TDALEntity> 

@@ -13,7 +13,6 @@ namespace Public.DTO.Mappers
             MapperConfigurationExpression.CreateMap<Bll.Room, RoomDTO>();
             MapperConfigurationExpression.CreateMap<Bll.PropertyType, string>().ConvertUsing(src=> src.ToString());
             MapperConfigurationExpression.CreateMap<Bll.Facility, FacilityDTO>();
-            MapperConfigurationExpression.CreateMap<Bll.PropertyView, PropertyDTO>();
 
 
 

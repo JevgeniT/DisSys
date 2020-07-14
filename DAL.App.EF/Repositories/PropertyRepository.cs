@@ -42,29 +42,6 @@ namespace DAL.App.EF.Repositories
         }
         
         
-        public virtual async Task<IEnumerable<PropertyView>> FindForViewAsync(SearchDTO searchDTO)
-        {
-            var query = (RepoDbSet
-                .Where(o => o.Country!.Contains(searchDTO!.Input)
-                            || o.Name!.Contains(searchDTO.Input))
-                .Include(p => p.Reviews));
-               
-
-           var result = query.Select(a => new PropertyView()
-           {
-               Id = a.Id,
-               Name = a.Name,
-               ReviewsCount = a.Reviews.Count(),
-               Score = Math.Round(a.Reviews.Average(review => review.Score),1),
-               Address = a.Address,
-               Country = a.Country,
-               Type =  a.Type.ToString(),
-               Description = a.Description
-           }).ToListAsync();
-
-           return await result;
-        }
-        
         
         public async Task<DAL.App.DTO.Property> FirstOrDefaultAsync(Guid id, Guid? userId = null)
         {

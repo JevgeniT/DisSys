@@ -10,7 +10,6 @@ using Contracts.DAL.App.Repositories;
 using DAL.App.DTO;
 using Public.DTO;
 using Property = BLL.App.DTO.Property;
-using PropertyView = BLL.App.DTO.PropertyView;
 
 namespace BLL.App.Services
 {
@@ -30,13 +29,6 @@ namespace BLL.App.Services
         public async Task<IEnumerable<Property>> FindAsync(SearchDTO? search)
         {
             return (await ServiceRepository.FindAsync(search)).Select( dalEntity => Mapper.Map(dalEntity) );
-        }
-
-        public virtual async Task<IEnumerable<PropertyView>> FindForViewAsync(SearchDTO searchDTO)
-        {
-            BaseBLLMapper<DAL.App.DTO.PropertyView, PropertyView> mapper = new BaseBLLMapper<DAL.App.DTO.PropertyView, PropertyView>(); // TODO fix mapper 
-            
-            return (await ServiceRepository.FindForViewAsync(searchDTO)).Select(e => mapper.Map(e));
         }
 
 

@@ -20,26 +20,17 @@ namespace BLL.Base.Mappers
             {
                 config.CreateMap<TInObject, TOutObject>();
                 config.CreateMap<TOutObject, TInObject>();
-                config.CreateMap<Room, DAL.App.DTO.Room>();
-                config.CreateMap<Domain.Room, DAL.App.DTO.Room>();
+                config.CreateMap<DAL.App.DTO.Room, Room>();
                 config.CreateMap<DAL.App.DTO.Room, BLL.App.DTO.Room>();
                 config.CreateMap<DAL.App.DTO.Property, BLL.App.DTO.Property>();
                 config.CreateMap<DAL.App.DTO.Facility, BLL.App.DTO.Facility>();
                 config.CreateMap<DAL.App.DTO.Availability, BLL.App.DTO.Availability>();
                 config.CreateMap<DAL.App.DTO.Policy, BLL.App.DTO.Policy>();
-                config.CreateMap<BLL.App.DTO.Policy, DAL.App.DTO.Policy>();
                 config.CreateMap<DAL.App.DTO.Reservation, BLL.App.DTO.Reservation>();
-                config.CreateMap<BLL.App.DTO.Reservation, DAL.App.DTO.Reservation>();
                 config.CreateMap<DAL.App.DTO.Review, BLL.App.DTO.Review>();
-                config.CreateMap<PropertyView, BLL.App.DTO.PropertyView>();
             }).CreateMapper();
     }
 
-    public virtual TInObject Map(TOutObject inObject)
-    {
-        return _mapper.Map<TOutObject, TInObject>(inObject);
-    }
-    
     public TOutObject Map(TInObject inObject)
     {
         return _mapper.Map<TInObject, TOutObject>(inObject);
