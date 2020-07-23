@@ -33,9 +33,9 @@ namespace DAL.App.EF.Repositories
             return Mapper.Map(await query.FirstOrDefaultAsync());
         }
         
-        public async Task<IEnumerable< DAL.App.DTO.Availability>> FindAvailableDates(DateTime from, DateTime to, Guid? PropertyId = null)
+        public async Task<IEnumerable< DAL.App.DTO.Availability>> FindAvailableDates(DateTime? from, DateTime? to, Guid? PropertyId = null)
         {
-            var dates = $"'{from.ToShortDateString()}' and '{to.ToShortDateString()}'";
+            var dates = $"'{from.Value.ToShortDateString()}' and '{to.Value.ToShortDateString()}'";
             
             var query = RepoDbSet.FromSqlRaw("select * from Availabilities where [FROM] between " + dates + " or [To] between " + dates)
                 .Include(availability => availability.Room)

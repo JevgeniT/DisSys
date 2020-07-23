@@ -29,7 +29,7 @@ namespace BLL.App.Services
             return  Mapper.Map(await ServiceRepository.FirstOrDefaultAsync(id, userId));        
         }
 
-        public async Task<IEnumerable<Availability>> FindAvailableDates(DateTime @from, DateTime to, Guid? PropertyId = null)
+        public async Task<IEnumerable<Availability>> FindAvailableDates(DateTime? @from, DateTime? to, Guid? PropertyId = null)
         {
            
             return (await ServiceRepository.FindAvailableDates(from, to, PropertyId)).Select( dalEntity => Mapper.Map(dalEntity) );

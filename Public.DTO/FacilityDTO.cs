@@ -1,14 +1,16 @@
 using System;
+using System.Text.Json.Serialization;
 
 namespace Public.DTO
 {
     public class FacilityDTO
     {
-        public Guid Id { get; set; }
+        // [JsonIgnore]
+        // public Guid Id { get; set; }
 
         public string? Name { get; set; }
         
-        public Guid RoomId { get; set; }
+        // public Guid RoomId { get; set; }
 
     }
 }

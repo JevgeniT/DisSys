@@ -2,10 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper.Internal;
 using Contracts.DAL.App.Repositories;
 using DAL.App.DTO;
 using DAL.Base.EF.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using Public.DTO;
 using Property = Domain.Property;
 
@@ -31,14 +33,27 @@ namespace DAL.App.EF.Repositories
 
         }
  
-        public  async Task<IEnumerable<DAL.App.DTO.Property>> FindAsync(SearchDTO? param)
+        public  async Task<IEnumerable<DAL.App.DTO.Property>> FindAsync(SearchDTO? request)
         {
+            if (request?.From == null && request?.To == null )
+            {
+                return (await RepoDbSet
+                    .Where(o => o.Country!.Contains(request!.Input) 
+                                || o.Name!.Contains(request.Input))
+                    .Include(p=>p.Reviews)
+                    .ToListAsync()).Select(domainEntity => Mapper.Map(domainEntity));
+            }
+
             return (await RepoDbSet
-                .Where(o => o.Country!.Contains(param!.Input) 
-                            || o.Name!.Contains(param.Input))
-                .Include(p=>p.Reviews)
-                .ToListAsync()).Select(domainEntity => Mapper.Map(domainEntity));
-            
+                    .Include(p=>p.Reviews)
+                    .Include(p=>p.PropertyRooms)
+                    .ThenInclude(r => r.RoomAvailabilities)
+                    .Where(o => o.Country!.Contains(request!.Input) || o.Name!.Contains(request.Input) && 
+                                    o.PropertyRooms.Any(room => room.RoomAvailabilities.Any(availability => 
+                                        availability.From >= request.From && availability.To >= request.To && availability.From.Month == request.From.Value.Month))) // todo fix upper bound
+                    .ToListAsync())
+                .Select(domainEntity => Mapper.Map(domainEntity));
+
         }
         
         

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.App.EF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200708131448_Init")]
+    [Migration("20200720104713_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -449,6 +449,9 @@ namespace DAL.App.EF.Migrations
                     b.Property<int>("Size")
                         .HasColumnType("int");
 
+                    b.Property<bool>("SmokingAllowed")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
 
                     b.HasIndex("PropertyId");
@@ -633,7 +636,7 @@ namespace DAL.App.EF.Migrations
                         .IsRequired();
 
                     b.HasOne("Domain.Property", "Property")
-                        .WithMany()
+                        .WithMany("Reviews")
                         .HasForeignKey("PropertyId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();

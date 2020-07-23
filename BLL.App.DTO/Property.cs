@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using System.Text.Json.Serialization;
 using Contracts.DAL.Base;
 
 namespace BLL.App.DTO
@@ -20,18 +19,13 @@ namespace BLL.App.DTO
         public string? Description { get; set; }
         public string? Country { get; set; }
         public ICollection<Review>? Reviews { get; set; }
-        
+
         public ICollection<Room>? PropertyRooms { get; set; }
         
-        [JsonIgnore]
         public PropertyType Type { get; set; }
         
-        public string PropertyType => Type.ToString();
-
-        [JsonIgnore]
         public TKey AppUserId { get; set; } = default!;
         
-        [JsonIgnore]
         public Identity.AppUser<TKey>? AppUser { get; set; }
 
     }

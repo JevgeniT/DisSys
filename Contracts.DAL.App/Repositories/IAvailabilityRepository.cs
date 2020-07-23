@@ -23,7 +23,7 @@ namespace Contracts.DAL.App.Repositories
         Task<bool> ExistsAsync(Guid id, Guid? userId = null);
         Task DeleteAsync(Guid id, Guid? userId = null);
         
-        Task<IEnumerable<TDALEntity>> FindAvailableDates(DateTime from, DateTime to, Guid? RoomId = null);
+        Task<IEnumerable<TDALEntity>> FindAvailableDates(DateTime? from, DateTime? to, Guid? RoomId = null);
         
     }
     

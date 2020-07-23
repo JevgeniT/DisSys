@@ -16,19 +16,21 @@ namespace BLL.App.Services
     public class PropertyService :
         BaseEntityService<IPropertyRepository, IAppUnitOfWork, DAL.App.DTO.Property, Property>, IPropertyService
     {
+        public async Task<IEnumerable<Property>> FindAsync(SearchDTO? request)
+        {
+            
+                return (await ServiceRepository.FindAsync(request)).Select(dalEntity => Mapper.Map(dalEntity));
+
+        }
+
         public PropertyService(IAppUnitOfWork unitOfWork) 
             : base(unitOfWork, new BaseBLLMapper<DAL.App.DTO.Property, Property>(), unitOfWork.Properties)
         {
         }
-       
+
         public async  Task<IEnumerable<Property>> AllAsync(Guid? userId = null)
         {
             return (await ServiceRepository.AllAsync(userId)).Select(dalEntity => Mapper.Map(dalEntity));
-        }
-
-        public async Task<IEnumerable<Property>> FindAsync(SearchDTO? search)
-        {
-            return (await ServiceRepository.FindAsync(search)).Select( dalEntity => Mapper.Map(dalEntity) );
         }
 
 

@@ -18,14 +18,10 @@ namespace BLL.App.DTO
         public int ChildCapacity { get; set; }
         public int Size { get; set; }  //m2
         
-        [JsonIgnore]
-        public BedType Bed { get; set; }
-        
-        public string BedType
-        {
-            get { return Bed.ToString(); }
-        }
+        public ICollection<Availability>? RoomAvailabilities { get; set; }
 
+        public BedType Bed { get; set; }
+ 
         public string? Description { get; set; }
         public Guid PropertyId { get; set; }
         

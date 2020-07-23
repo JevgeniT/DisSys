@@ -307,6 +307,7 @@ namespace DAL.App.EF.Migrations
                     ChildCapacity = table.Column<int>(nullable: false),
                     Size = table.Column<int>(nullable: false),
                     Description = table.Column<string>(nullable: false),
+                    SmokingAllowed = table.Column<bool>(nullable: false),
                     PropertyId = table.Column<Guid>(nullable: false),
                     Bed = table.Column<string>(nullable: false),
                     ReservationId = table.Column<Guid>(nullable: true)

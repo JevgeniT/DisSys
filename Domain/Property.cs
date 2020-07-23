@@ -21,6 +21,7 @@ namespace Domain
         public ICollection<Review>? Reviews { get; set; }
         public ICollection<Room>? PropertyRooms { get; set; }
         public PropertyType Type { get; set; }
+        
         public TKey AppUserId { get; set; }= default!;
         public TUser? AppUser { get; set; }
  
@@ -28,6 +29,6 @@ namespace Domain
 
     public enum PropertyType
     {
-        Hotel,Hostel, Apartments 
+        Hotel, Hostel, Apartments 
     }
 }

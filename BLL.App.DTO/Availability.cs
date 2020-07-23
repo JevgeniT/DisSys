@@ -20,7 +20,6 @@ namespace BLL.App.DTO
         public DateTime To { get; set; }
         
         public Guid RoomId { get; set; }
-        public Room? Room { get; set; }
 
         public Guid PolicyId { get; set; }
         public Policy? Policy { get; set; }

@@ -60,7 +60,7 @@ namespace WebApp.Controllers
         {
           
             
-            ViewData["PropertyType"] = new SelectList(Enum.GetNames(typeof(PropertyType)));
+            ViewData["Type"] = new SelectList(Enum.GetNames(typeof(PropertyType)));
             
             
 
@@ -72,7 +72,7 @@ namespace WebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Address, Country, Description,CreatedAt,DeletedBy,DeletedAt,Id")] Property @property)
+        public async Task<IActionResult> Create([Bind("Name,Address, Country,Type, Description,CreatedAt,DeletedBy,DeletedAt,Id")] Property @property)
         {
              
             

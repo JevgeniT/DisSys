@@ -16,7 +16,8 @@ namespace Public.DTO
 
         public int ReviewsCount { get; set; }
         
-        public double Score { get; set; }
+        public RoomViewDTO Room { get; set; }
+        public double Score { get; set; } = 0;
         
         public string? Type { get; set; }
     }

@@ -42,10 +42,8 @@ namespace WebApp.ApiControllers
         [Route("find")]
         public async Task<ActionResult<IEnumerable<PropertyViewDTO>>> FindProperties(SearchDTO search)
         {
-             
              var found = _bll.Properties.FindAsync(search); // TODO 
              var properties = (await found);
-
              return Ok(properties.Select(p=> _mapper.MapPropertyView(p)));
         }
         

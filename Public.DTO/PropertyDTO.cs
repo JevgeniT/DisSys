@@ -19,8 +19,8 @@ namespace Public.DTO
         public PropertyType PropertyType { get; set; }
 
         public string Type { get { return PropertyType.ToString();} }
-        
-        public double Score { get; set; }
+
+        public double Score { get; set; } = 0;
 
         public int ReviewsCount { get; set; }
         

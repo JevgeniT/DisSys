@@ -447,6 +447,9 @@ namespace DAL.App.EF.Migrations
                     b.Property<int>("Size")
                         .HasColumnType("int");
 
+                    b.Property<bool>("SmokingAllowed")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
 
                     b.HasIndex("PropertyId");
@@ -631,7 +634,7 @@ namespace DAL.App.EF.Migrations
                         .IsRequired();
 
                     b.HasOne("Domain.Property", "Property")
-                        .WithMany()
+                        .WithMany("Reviews")
                         .HasForeignKey("PropertyId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
