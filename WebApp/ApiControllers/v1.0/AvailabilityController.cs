@@ -7,9 +7,7 @@ using Contracts.BLL.App;
 using DAL.App.EF;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Public.DTO;
 
 
@@ -24,50 +22,61 @@ namespace WebApp.ApiControllers
 
     public class AvailabilityController : ControllerBase
     {
-        
         private readonly IAppBLL _bll;
-
+        private readonly DALMapper<Availability,AvailabilityDTO> _mapper = new DALMapper<Availability, AvailabilityDTO>();
+        
         public AvailabilityController(IAppBLL bll)
         {
             _bll = bll;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Availability>>> GetDates(SearchDTO searchDTO)
+        public async Task<ActionResult<IEnumerable<AvailabilityDTO>>> GetDates([FromQuery] Guid rId)
         {
-            var availability = (await _bll.Availabilities.AllAsync()).Select(bllEntity => new Availability()
-            {
-                Id = bllEntity.Id,
-                From = bllEntity.From,
-                To = bllEntity.To,
-                IsUsed = bllEntity.IsUsed,
-                RoomId = bllEntity.RoomId, 
-                PricePerNightForAdult = bllEntity.PricePerNightForAdult
-            });
+            var availability = (await _bll.Availabilities.AllAsync(rId)); //TODO
             
-            return   Ok(availability);
+            return Ok(availability.Select(a=> _mapper.Map(a)));
         }
 
-        [HttpPost][Route("checkdates")][Consumes("application/json")]
-        public async Task<ActionResult<IEnumerable<Availability>>> CheckDates(SearchDTO searchDTO)
+        [HttpGet]
+        [Route("checkdates")]
+        [AllowAnonymous]
+        public async Task<ActionResult<IEnumerable<AvailabilityDTO>>> CheckDates([FromQuery]DateTime from, [FromQuery]DateTime to, [FromQuery] Guid pId)
         {
-            var availability = (await _bll.Availabilities.FindAvailableDates(searchDTO.From, searchDTO.To,searchDTO.PropertyId))
-               .Select(bllEntity => new Availability()
-                {
-                    Id = bllEntity.Id,
-                    From = bllEntity.From,
-                    To = bllEntity.To,
-                    // IsUsed = bllEntity.IsUsed,
-                    RoomId = bllEntity.RoomId,
-                    Policy = bllEntity.Policy,
-                    PricePerNightForAdult = bllEntity.PricePerNightForAdult,
-                    RoomsAvailable = bllEntity.RoomsAvailable
-                });
-            ;
-
+            var availability = (await _bll.Availabilities.FindAvailableDates(from, to, pId))
+               .Select(bllEntity => _mapper.Map(bllEntity));
             return Ok(availability);
         }
        
+        [HttpPost]
+        [Consumes("application/json")]
+        public async Task<ActionResult<AvailabilityDTO>> PostAvailability(AvailabilityDTO availability)
+        {
+            var entity = _mapper.Map(availability);
+            
+            _bll.Availabilities.Add(entity);
+            await _bll.SaveChangesAsync();
+            availability.Id = entity.Id;
+            return CreatedAtAction("GetDates", new { id = availability.Id }, availability);
+        }
+        
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutProperty(Guid id, AvailabilityDTO availability)
+        {
+            if (id != availability.Id)
+            {
+                return BadRequest(new MessageDTO("Ids does not match!"));
+            }
+
+            if (!await _bll.Availabilities.ExistsAsync(id))
+            {
+                return BadRequest();
+            } 
+            
+            _bll.Availabilities.Update(_mapper.Map(availability));
+            await _bll.SaveChangesAsync();
+            return NoContent();
+        }
  
     }
 }

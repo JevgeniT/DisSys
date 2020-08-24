@@ -22,6 +22,7 @@ namespace DAL.App.DTO
         public bool IsUsed { get; set; }
         
         public Guid? RoomId { get; set; }
+        
         public Room? Room { get; set; }
 
         public decimal PricePerNightForAdult { get; set; }

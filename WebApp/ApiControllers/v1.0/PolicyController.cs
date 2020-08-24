@@ -2,109 +2,99 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using BLL.App.DTO;
+using Contracts.BLL.App;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using DAL.App.EF;
-using Domain;
+using Public.DTO;
+using Public.DTO.Mappers;
 
 namespace WebApp.ApiControllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [ApiVersion( "1.0" )]
+    [Produces("application/json")]
+    [Route("api/v{version:apiVersion}/[controller]")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class PolicyController : ControllerBase
     {
-        private readonly AppDbContext _context;
-
-        public PolicyController(AppDbContext context)
+        private readonly IAppBLL _bll;
+        private readonly DTOMapper<Policy, PolicyDTO> _mapper = new DTOMapper<Policy, PolicyDTO>();
+        
+        public PolicyController(IAppBLL bll)    
         {
-            _context = context;
+            _bll = bll;
         }
 
-        // GET: api/Policy
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Policy>>> GetPolicies()
+        public async Task<ActionResult<IEnumerable<PolicyDTO>>> GetPolicies([FromQuery(Name = "pId")] Guid pId)
         {
-            return await _context.Policies.ToListAsync();
+            var policies = await _bll.Policies.AllAsync(pId);
+            return Ok(policies.Select(p=> _mapper.Map(p)));
         }
 
-        // GET: api/Policy/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Policy>> GetPolicy(Guid id)
+        public async Task<ActionResult<PolicyDTO>> GetPolicy(Guid id)
         {
-            var policy = await _context.Policies.FindAsync(id);
+            var policy = await _bll.Policies.FindAsync(id);
 
             if (policy == null)
             {
                 return NotFound();
             }
 
-            return policy;
+            return Ok(policy);
         }
-
-        // PUT: api/Policy/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+ 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPolicy(Guid id, Policy policy)
+        public async Task<IActionResult> PutPolicy(Guid id, PolicyDTO policy)
         {
             if (id != policy.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(policy).State = EntityState.Modified;
+            if (! await _bll.Policies.ExistsAsync(id))
+            {
+                return NotFound();
+            }
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PolicyExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            _bll.Policies.Update(_mapper.Map(policy));
+            await _bll.SaveChangesAsync();
+           
 
             return NoContent();
         }
 
-        // POST: api/Policy
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Policy>> PostPolicy(Policy policy)
+        public async Task<ActionResult<PolicyDTO>> PostPolicy(PolicyDTO policy)
         {
-            _context.Policies.Add(policy);
-            await _context.SaveChangesAsync();
-
+            var entity = _mapper.Map(policy);
+            
+            _bll.Policies.Add(entity);
+            await _bll.SaveChangesAsync();
+            policy.Id = entity.Id;
+            
             return CreatedAtAction("GetPolicy", new { id = policy.Id }, policy);
         }
 
         // DELETE: api/Policy/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Policy>> DeletePolicy(Guid id)
+        public async Task<ActionResult<PolicyDTO>> DeletePolicy(Guid id)
         {
-            var policy = await _context.Policies.FindAsync(id);
+            var policy = await _bll.Policies.FindAsync(id);
+            
             if (policy == null)
             {
                 return NotFound();
             }
 
-            _context.Policies.Remove(policy);
-            await _context.SaveChangesAsync();
+            _bll.Policies.Remove(policy);
+            await _bll.SaveChangesAsync();
 
-            return policy;
+            return Ok(policy);
         }
-
-        private bool PolicyExists(Guid id)
-        {
-            return _context.Policies.Any(e => e.Id == id);
-        }
+        
     }
 }

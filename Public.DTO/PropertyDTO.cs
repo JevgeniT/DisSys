@@ -15,7 +15,6 @@ namespace Public.DTO
 
         public string? Description { get; set; }
         
-        [JsonIgnore]
         public PropertyType PropertyType { get; set; }
 
         public string Type { get { return PropertyType.ToString();} }

@@ -1,10 +1,8 @@
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Contracts.DAL.App.Repositories;
-using DAL.Base.EF.Mappers;
 using DAL.Base.EF.Repositories;
 using Domain;
 using Microsoft.EntityFrameworkCore;
@@ -18,37 +16,30 @@ namespace DAL.App.EF.Repositories
         }
 
  
-        public async Task<IEnumerable<DAL.App.DTO.Policy>> AllAsync(Guid? userId = null)
+        public async Task<IEnumerable<DAL.App.DTO.Policy>> AllAsync(Guid? propertyId)
         {
-            
-            return await base.AllAsync();
+            return ( RepoDbSet.Where(policy => policy.PropertyId == propertyId)).Select(policy => Mapper.Map(policy));
          
         }
         
-        public async Task<DAL.App.DTO.Policy> FirstOrDefaultAsync(Guid id, Guid? userId = null)
+        public async Task<DAL.App.DTO.Policy> FirstOrDefaultAsync(Guid id, Guid? propertyId = null)
         {
             var query = RepoDbSet.Where(a => a.Id == id).AsQueryable();
-            if (userId != null)
+            if (propertyId != null)
             {
-                query = query.Where(a => a.Id == userId);
+                query = query.Where(a => a.PropertyId == propertyId);
             }
-
             return Mapper.Map(await query.FirstOrDefaultAsync());
         }
         
-        public async Task<bool> ExistsAsync(Guid id, Guid? userId = null)
+        public async Task<bool> ExistsAsync(Guid id)
         {
-            if (userId == null)
-            {
-                return await RepoDbSet.AnyAsync(a => a.Id == id);
-            }
-
-            return await RepoDbSet.AnyAsync(a => a.Id == id && a.Id == userId);
+            return await RepoDbSet.AnyAsync(a => a.Id == id);
         }
         
-        public async Task DeleteAsync(Guid id, Guid? userId = null)
+        public async Task DeleteAsync(Guid id, Guid? propertyId = null)
         {
-            var policy = await FirstOrDefaultAsync(id, userId);
+            var policy = await FirstOrDefaultAsync(id, propertyId);
             base.Remove(policy);
         }
    

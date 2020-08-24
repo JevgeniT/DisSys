@@ -21,6 +21,7 @@ namespace Contracts.DAL.Base.Repositories
         Task<TDALEntity> FindAsync(params object[] id);
         TDALEntity Add(TDALEntity entity);
         TDALEntity Update(TDALEntity entity);
+        
         TDALEntity Remove(TDALEntity entity);
         TDALEntity Remove(params object[] id);
     }

@@ -1,31 +1,26 @@
+#pragma warning disable 1591
 using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
+using System.IO;
+using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 using BLL.App;
 using Contracts.BLL.App;
 using Contracts.DAL.App;
-using Contracts.DAL.App.Repositories;
 using Contracts.DAL.Base;
 using DAL.App.EF;
 using Domain.Identity;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using WebApp.Helpers;
 
@@ -66,8 +61,6 @@ namespace WebApp
             services.AddApiVersioning(options =>
             {
                 options.ReportApiVersions = true;
-                // options.DefaultApiVersion = new ApiVersion(1,0);
-                // options.AssumeDefaultVersionWhenUnspecified = false;
             });
             
             services.AddVersionedApiExplorer( options => options.GroupNameFormat = "'v'VVV" );
@@ -130,12 +123,7 @@ namespace WebApp
               // options.DefaultApiVersion = new ApiVersion(1,0);
               // options.AssumeDefaultVersionWhenUnspecified = false;
           });
-            
-          services.AddVersionedApiExplorer( options => options.GroupNameFormat = "'v'VVV" );
-          services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
-          services.AddSwaggerGen();
 
-        
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -156,22 +144,34 @@ namespace WebApp
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
- 
             app.UseRouting();
-
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseCors("CorsPolicy");
-            app.UseCors(
-                options => options.WithOrigins("https://localhost:5001/api/v1.0/date").AllowAnyMethod()
-            );
-             app.UseEndpoints(endpoints =>
+            
+            app.UseSwagger();
+            app.UseSwaggerUI(options =>
             {
+                foreach (var description in provider.ApiVersionDescriptions)
+                {
+                    options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json",
+                        description.GroupName.ToUpperInvariant());
+                }
+            });
+
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "area",
+                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
+
         }
     }
 }

@@ -19,7 +19,7 @@
                 @Html.DisplayNameFor(model => model.To)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.RoomId)
+                @Html.DisplayNameFor(model => model.Room.Name)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.IsUsed)
@@ -47,7 +47,7 @@
             </td>
             
             <td>
-                @Html.DisplayFor(modelItem => item.RoomId)
+                @Html.DisplayFor(modelItem => item.Room.Name)
             </td>
             <td>
                            @item.IsUsed.ToString()

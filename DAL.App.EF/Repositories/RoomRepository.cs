@@ -16,19 +16,13 @@ namespace DAL.App.EF.Repositories
         {
         }
         
-        public async Task<IEnumerable<DAL.App.DTO.Room>> AllAsync(SearchDTO? searchDTO)
+        public async Task<IEnumerable<DAL.App.DTO.Room>> AllAsync(Guid propertyId)
         {
-            if (searchDTO != null)
+            if (propertyId != null)
             {
-                var query = RepoDbSet.Include(room => room.RoomAvailabilities).AsNoTracking()
-                    .Where(room => room.PropertyId == searchDTO.PropertyId);
+                var query = RepoDbSet.Where(room => room.PropertyId == propertyId);
                 
-                var rooms = (await  query.ToListAsync()).Select(r=>Mapper.Map(r));
-               
-                // var dates = RepoDbContext.Availabilities.Where(
-                //     availability => availability.RoomId == rooms.FirstOrDefault().Id
-                // ).ToListAsync();
-                return rooms;
+               return (await  query.ToListAsync()).Select(r=>Mapper.Map(r));
             }
             return await base.AllAsync();
          }

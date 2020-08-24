@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using BLL.App.DTO;
 using Contracts.BLL.App;
+using Microsoft.AspNetCore.Authorization;
 using Public.DTO;
+using Public.DTO.Mappers;
 
 namespace WebApp.ApiControllers
 {
@@ -16,22 +16,30 @@ namespace WebApp.ApiControllers
     public class RoomController : ControllerBase
     {
         private readonly IAppBLL _bll;
+        private readonly DTOMapper<BLL.App.DTO.Room, RoomDTO> _mapper = new DTOMapper<Room, RoomDTO>();
 
-        public RoomController(IAppBLL context)
+        public RoomController(IAppBLL bll)
         {
-            _bll = context;
+            _bll = bll;
         }
 
         // GET: api/Rooms
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Room>>> GetRooms(SearchDTO? searchDTO)
+        public async Task<ActionResult<IEnumerable<RoomDTO>>> GetRooms(Guid propertyId)
         {
-            return Ok(await _bll.Rooms.AllAsync(searchDTO));
+            return Ok(await _bll.Rooms.AllAsync(propertyId));
         }
-
+        
+        
+        [HttpGet][Route("property/{propertyId}")]
+        public async Task<ActionResult<IEnumerable<RoomDTO>>> GetPropertyRooms(Guid propertyId)
+        {
+            return Ok(await _bll.Rooms.AllAsync(propertyId));
+        }
+        
         // GET: api/Rooms/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Room>> GetRoom(Guid id)
+        [HttpGet("{id}")][AllowAnonymous] 
+        public async Task<ActionResult<RoomDTO>> GetRoom(Guid id)
         {
             var room = await _bll.Rooms.FirstOrDefaultAsync(id);
             if (room == null)
@@ -41,63 +49,53 @@ namespace WebApp.ApiControllers
 
             return Ok(room);
         }
-
-        // PUT: api/Rooms/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
+ 
+        
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutRoom(Guid id, Room room)
+        public async Task<IActionResult> PutRoom(Guid id, RoomDTO room)
         {
             if (id != room.Id)
             {
                 return BadRequest();
             }
 
-            // _bll.Entry(room).State = EntityState.Modified;
+            if (!await _bll.Rooms.ExistsAsync(id))
+            {
+                return NotFound();
+            }
 
-            try
-            {
-                await _bll.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!await _bll.Rooms.ExistsAsync(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            _bll.Rooms.Update(_mapper.Map(room));
+            await _bll.SaveChangesAsync();
 
             return NoContent();
         }
 
  
         [HttpPost]
-        public async Task<ActionResult<Room>> PostRoom(Room room)
+        public async Task<ActionResult<RoomDTO>> PostRoom(RoomDTO room)
         {
-            _bll.Rooms.Add(room);
+            var entity = _mapper.Map(room);
+            _bll.Rooms.Add(entity);
             await _bll.SaveChangesAsync();
-        
+            room.Id = entity.Id;
             return CreatedAtAction("GetRoom", new { id = room.Id }, room);
         }
         
         // DELETE: api/Rooms/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Room>> DeleteRoom(int id)
+        public async Task<ActionResult<RoomDTO>> DeleteRoom(Guid id)
         {
             var room = await _bll.Rooms.FindAsync(id);
+            
             if (room == null)
             {
                 return NotFound();
             }
         
-            _bll.Rooms.Remove(room);
+            await _bll.Rooms.DeleteAsync(id);
             await _bll.SaveChangesAsync();
         
-            return room;
+            return Ok(room);
         }
         
     }

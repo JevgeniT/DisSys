@@ -17,13 +17,13 @@ namespace Contracts.DAL.App.Repositories
     {
   
    
-        Task<IEnumerable<TDALEntity>> AllAsync(Guid? userId = null);
-        Task<TDALEntity> FirstOrDefaultAsync(Guid id, Guid? userId = null);
+        Task<IEnumerable<TDALEntity>> AllAsync(Guid? roomId = null);
+        Task<TDALEntity> FirstOrDefaultAsync(Guid id);
 
-        Task<bool> ExistsAsync(Guid id, Guid? userId = null);
-        Task DeleteAsync(Guid id, Guid? userId = null);
+        Task<bool> ExistsAsync(Guid id);
+        Task DeleteAsync(Guid id);
         
-        Task<IEnumerable<TDALEntity>> FindAvailableDates(DateTime? from, DateTime? to, Guid? RoomId = null);
+        Task<IEnumerable<TDALEntity>> FindAvailableDates(DateTime from, DateTime to, Guid? propertyId = null);
         
     }
     

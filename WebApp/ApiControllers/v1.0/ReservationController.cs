@@ -9,7 +9,9 @@ using Microsoft.EntityFrameworkCore;
 using Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore.Internal;
 using Public.DTO;
+using Public.DTO.Mappers;
 
 namespace WebApp.ApiControllers
 {
@@ -20,34 +22,35 @@ namespace WebApp.ApiControllers
     public class ReservationController : ControllerBase
     {
         private readonly IAppBLL _bll;
- 
-        public ReservationController(IAppBLL context)
+        private DTOMapper<Reservation,ReservationDTO> _mapper = new DTOMapper<Reservation,ReservationDTO>();
+        
+        public ReservationController(IAppBLL bll)
         {
-            _bll = context;
+            _bll = bll;
         }
 
         // GET: api/Reservation
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Reservation>>> GetReservations()
+        public async Task<ActionResult<IEnumerable<ReservationDTO>>> GetReservations()
         {
-            
             var reservations = (await _bll.Reservations.AllAsync(User.UserGuidId()))
-                .Select(bllEntity => new Reservation()
-                {
-                    Id = bllEntity.Id,
-                    CheckInDate = bllEntity.CheckInDate,
-                    CheckOutDate = bllEntity.CheckOutDate,
-                    PropertyId = bllEntity.PropertyId,
-                    AppUserId = bllEntity.AppUserId
-                }) ;
-
+                .Select(res => _mapper.Map(res));
             return Ok(reservations);
 
         }
 
+        [HttpGet][Route("property/{propertyId}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "host")]
+        public async Task<ActionResult<IEnumerable<ReservationDTO>>> GetPropertyReservations(Guid? propertyId)
+        {
+            var reservations = (await _bll.Reservations.AllForPropertyAsync(User.UserGuidId(), propertyId))
+                .Select(res => _mapper.Map(res));
+            return Ok(reservations);
+
+        }
         // GET: api/Reservation/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Reservation>> GetReservation(Guid id)
+        public async Task<ActionResult<ReservationDTO>> GetReservation(Guid id)
         {
             var reservation = await _bll.Reservations.FirstOrDefaultAsync(id, User.UserGuidId());
 
@@ -94,14 +97,14 @@ namespace WebApp.ApiControllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Reservation>> PostReservation(Reservation reservation)
+        public async Task<ActionResult<ReservationDTO>> PostReservation(Reservation reservation)
         {
             var available = await _bll.Availabilities.FindAvailableDates(reservation.CheckInDate,reservation.CheckOutDate,reservation.PropertyId);
             _bll.Availabilities .ParseDate(new List<Availability>(available.ToList()), reservation.CheckInDate,reservation.CheckOutDate);
             
             if (!available.Any())
             {
-                return BadRequest(new MessageDTO("no dates available"));
+                return BadRequest(new MessageDTO("No dates available"));
             }
 
             var res = new Reservation()

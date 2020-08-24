@@ -19,7 +19,8 @@ namespace DAL.App.EF
             MapperConfigurationExpression.CreateMap<Domain.Availability , DAL.App.DTO.Availability>();
             MapperConfigurationExpression.CreateMap<Domain.Policy, DAL.App.DTO.Policy>();
             MapperConfigurationExpression.CreateMap<Domain.Review , DAL.App.DTO.Review>();
-          
+            MapperConfigurationExpression.CreateMap<Domain.Identity.AppUser, DAL.App.DTO.Identity.AppUser>();
+
 
             
             Mapper = new Mapper(new MapperConfiguration(MapperConfigurationExpression));

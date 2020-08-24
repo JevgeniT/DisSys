@@ -24,7 +24,7 @@ namespace WebApp.Controllers
         public async Task<IActionResult> Index()
         {
            
-            return View(await _context.Availabilities.ToListAsync());
+            return View(await _context.Availabilities.Include(availability => availability.Room).ToListAsync());
         }
 
         [HttpGet]

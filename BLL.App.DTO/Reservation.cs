@@ -30,8 +30,8 @@ namespace BLL.App.DTO
 
         public Guid PropertyId { get; set; }
         public decimal TotalPrice { get; set; }
-        public TKey AppUserId { get; set; }= default!;
- 
+        public TKey AppUserId { get; set; } = default!;
+        public AppUser AppUser { get; set; }
         public TKey Id { get; set; }= default!;
     }
 }

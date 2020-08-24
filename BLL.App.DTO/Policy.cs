@@ -13,12 +13,13 @@ namespace BLL.App.DTO
     {
         public TKey Id { get; set; } = default!;
 
+        public Guid PropertyId { get; set; }
+
         public string? Name { get; set; }
 
         public int PrepaymentBefore { get; set; }
 
         public int CancellationBefore { get; set; }
 
- 
     }
 }

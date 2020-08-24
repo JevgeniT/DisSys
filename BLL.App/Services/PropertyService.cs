@@ -16,10 +16,10 @@ namespace BLL.App.Services
     public class PropertyService :
         BaseEntityService<IPropertyRepository, IAppUnitOfWork, DAL.App.DTO.Property, Property>, IPropertyService
     {
-        public async Task<IEnumerable<Property>> FindAsync(SearchDTO? request)
+        public async Task<IEnumerable<Property>> FindAsync(DateTime? from, DateTime? to, string input)
         {
             
-                return (await ServiceRepository.FindAsync(request)).Select(dalEntity => Mapper.Map(dalEntity));
+                return (await ServiceRepository.FindAsync(from, to, input)).Select(dalEntity => Mapper.Map(dalEntity));
 
         }
 

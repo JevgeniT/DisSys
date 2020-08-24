@@ -17,11 +17,11 @@ namespace Contracts.DAL.App.Repositories
     {
   
    
-        Task<IEnumerable<TDALEntity>> AllAsync(Guid? userId = null);
-        Task<TDALEntity> FirstOrDefaultAsync(Guid id, Guid? userId = null);
+        Task<IEnumerable<TDALEntity>> AllAsync(Guid? propertyId = null);
+        Task<TDALEntity> FirstOrDefaultAsync(Guid id, Guid? propertyId = null);
 
-        Task<bool> ExistsAsync(Guid id, Guid? userId = null);
-        Task DeleteAsync(Guid id, Guid? userId = null);
+        Task<bool> ExistsAsync(Guid id);
+        Task DeleteAsync(Guid id, Guid? propertyId = null);
         
      
     }

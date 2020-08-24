@@ -5,6 +5,9 @@
         <UserSecretsId>aspnet-WebApp-1AD69472-6CFC-4732-BAD3-52432B351EC6</UserSecretsId>
     </PropertyGroup>
 
+  <PropertyGroup>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\WebApp.xml</DocumentationFile>
+  </PropertyGroup>
     <ItemGroup>
       <ProjectReference Include="..\BLL.App\BLL.App.csproj" />
       <ProjectReference Include="..\Contracts.BLL.App\Contracts.BLL.App.csproj" />

@@ -7,7 +7,8 @@ namespace Domain
     public class Policy : IDomainEntityBaseMetadata
     {
         public Guid Id { get; set; }
-        
+
+        public Guid PropertyId { get; set; }
         public string Name { get; set; }
 
         public int? CancellationBefore { get; set; }

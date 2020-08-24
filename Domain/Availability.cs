@@ -14,33 +14,18 @@ namespace Domain
         private DateTime _to;
         public Guid Id { get; set; }
 
-        [Column(TypeName = "date")]
         [Availability]
+        [Column(TypeName = "date")]
         [DataType(DataType.Date)]
         public DateTime From
-        {
-            get
-            {
-                return _from.Date;
-            }
-            set
-            {
-                _from = value.Date;
-            }
-        }
+        { get { return _from.Date; } set { _from = value.Date; } }
         
-        [Column(TypeName = "date")]
         [Availability]
+        [Column(TypeName = "date")]
         [DataType(DataType.Date)]
         public DateTime To {
-            get
-            {
-                return _to.Date;
-            }
-            set
-            {
-                _to = value.Date;
-            }
+            get => _to.Date;
+            set => _to = value.Date;
         }
         
         public Guid RoomId { get; set; }

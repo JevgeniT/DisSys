@@ -19,30 +19,30 @@ namespace BLL.App.Services
         {
         }
 
-        public async  Task<IEnumerable<Availability>> AllAsync(Guid? userId = null)
+        public async  Task<IEnumerable<Availability>> AllAsync(Guid? roomId = null)
         {
-            return (await ServiceRepository.AllAsync(userId)).Select( dalEntity => Mapper.Map(dalEntity) );
+            return (await ServiceRepository.AllAsync( roomId)).Select( dalEntity => Mapper.Map(dalEntity) );
         }
 
-        public async Task<Availability> FirstOrDefaultAsync(Guid id, Guid? userId = null)
+        public async Task<Availability> FirstOrDefaultAsync(Guid id)
         {
-            return  Mapper.Map(await ServiceRepository.FirstOrDefaultAsync(id, userId));        
+            return  Mapper.Map(await ServiceRepository.FirstOrDefaultAsync(id));        
         }
 
-        public async Task<IEnumerable<Availability>> FindAvailableDates(DateTime? @from, DateTime? to, Guid? PropertyId = null)
+        public async Task<IEnumerable<Availability>> FindAvailableDates(DateTime @from, DateTime to, Guid? PropertyId = null)
         {
            
             return (await ServiceRepository.FindAvailableDates(from, to, PropertyId)).Select( dalEntity => Mapper.Map(dalEntity) );
         }
         
-        public async Task<bool> ExistsAsync(Guid id, Guid? userId = null)
+        public async Task<bool> ExistsAsync(Guid id)
         {
-            return  await ServiceRepository.ExistsAsync(id, userId);
+            return  await ServiceRepository.ExistsAsync(id);
         }
 
-        public async Task DeleteAsync(Guid id, Guid? userId = null)
+        public async Task DeleteAsync(Guid id)
         {
-            await ServiceRepository.DeleteAsync(id, userId);
+            await ServiceRepository.DeleteAsync(id);
         }
         
         public  void ParseDate(List<Availability> list, DateTime From, DateTime To)

@@ -17,48 +17,41 @@ namespace DAL.App.EF.Repositories
         {
         }
         
-        public async Task<IEnumerable< DAL.App.DTO.Availability>> AllAsync(Guid? userId = null)
+        public async Task<IEnumerable< DAL.App.DTO.Availability>> AllAsync(Guid? roomId = null)
         {
-            return await base.AllAsync();
+            return (await RepoDbContext.Availabilities.Include(availability => availability.Room).Where(availability => availability.RoomId == roomId)
+                .ToListAsync()).Select(a => Mapper.Map(a));
         }
         
-        public async Task< DAL.App.DTO.Availability> FirstOrDefaultAsync(Guid id, Guid? userId = null)
+        public async Task< DAL.App.DTO.Availability> FirstOrDefaultAsync(Guid id)
         {
             var query = RepoDbSet.Where(a => a.Id == id).AsQueryable();
-            if (userId != null)
-            {
-                query = query.Where(a => a.Id == userId);
-            }
-
             return Mapper.Map(await query.FirstOrDefaultAsync());
         }
         
-        public async Task<IEnumerable< DAL.App.DTO.Availability>> FindAvailableDates(DateTime? from, DateTime? to, Guid? PropertyId = null)
+        public async Task<IEnumerable< DAL.App.DTO.Availability>> FindAvailableDates(DateTime from, DateTime to, Guid? propertyId = null)
         {
-            var dates = $"'{from.Value.ToShortDateString()}' and '{to.Value.ToShortDateString()}'";
+            var dates = $"'{from}' and '{to}'";
             
-            var query = RepoDbSet.FromSqlRaw("select * from Availabilities where [FROM] between " + dates + " or [To] between " + dates)
+            var query =   RepoDbSet.FromSqlRaw("select * from Availabilities where [FROM] between " + dates + " or [To] between " + dates)
                 .Include(availability => availability.Room)
                 .Include(availability => availability.Policy)
-                .Where(availability => availability.Room.PropertyId == PropertyId);
+                .Where(availability => availability.Room.PropertyId == propertyId);
+            
             query.AsNoTracking();
             
-            return (query.Where(a=> !a.IsUsed).AsNoTracking().Select(e => Mapper.Map(e)));
+            return  ( query.Where(a=> !a.IsUsed).AsNoTracking().Select(e => Mapper.Map(e)));
         }
         
 
-        public async Task<bool> ExistsAsync(Guid id, Guid? userId = null)
+        public async Task<bool> ExistsAsync(Guid id )
         {
-            if (userId == null)
-            {
-                return await RepoDbSet.AnyAsync(a => a.Id == id);
-            }
-            return await RepoDbSet.AnyAsync(a => a.Id == id && a.Id == userId);
+            return await RepoDbSet.AnyAsync(a => a.Id == id);
         }
         
-        public async Task DeleteAsync(Guid id, Guid? userId = null)
+        public async Task DeleteAsync(Guid id)
         {
-            var availability = await FirstOrDefaultAsync(id, userId);
+            var availability = await FirstOrDefaultAsync(id);
             base.Remove(availability);
         }
 

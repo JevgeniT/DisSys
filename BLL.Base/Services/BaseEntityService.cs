@@ -26,11 +26,6 @@ namespace BLL.Base.Services
             ServiceUnitOfWork = unitOfWork;
             ServiceRepository = serviceRepository;
             Mapper = mapper;
-
-            // TODO - NOT POSSIBLE - we have no idea of what DAL actually is.
-            // we have now BaseRepository implementation - cant call new on it
-            // or asc for func methodToCreateRepo to create the correct repo
-            //ServiceRepository = ServiceUnitOfWork.GetRepository<IBaseRepository<TDALEntity>>(methodToCreateRepo);
         }
 
 
@@ -51,7 +46,7 @@ namespace BLL.Base.Services
 
         public virtual TBLLEntity Update(TBLLEntity entity) =>
             Mapper.Map<TDALEntity, TBLLEntity>(ServiceRepository.Update(Mapper.Map<TBLLEntity, TDALEntity>(entity)));
-
+        
 
         public virtual TBLLEntity Remove(TBLLEntity entity) =>
             Mapper.Map<TDALEntity, TBLLEntity>(ServiceRepository.Remove(Mapper.Map<TBLLEntity, TDALEntity>(entity)));

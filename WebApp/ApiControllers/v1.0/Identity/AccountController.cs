@@ -69,7 +69,6 @@ namespace WebApp.ApiControllers._1._0.Identity
         [HttpPost]
         public async Task<ActionResult<string>> Register([FromBody] RegisterDTO dto)
         {
-            Console.WriteLine(dto.Email);
             var appUser = await _userManager.FindByEmailAsync(dto.Email);
             if (appUser != null)
             {
@@ -86,7 +85,11 @@ namespace WebApp.ApiControllers._1._0.Identity
             };
 
             var role = dto.IsHost ? "host" : "guest";
-          
+
+            if (!await _roleManager.RoleExistsAsync(role))
+            {
+              await  _roleManager.CreateAsync(new AppRole(){Name =  role});
+            }
             
             var result = await _userManager.CreateAsync(appUser, dto.Password);
             

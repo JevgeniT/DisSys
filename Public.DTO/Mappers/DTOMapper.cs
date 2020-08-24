@@ -13,8 +13,13 @@ namespace Public.DTO.Mappers
             MapperConfigurationExpression.CreateMap<Bll.Room, RoomDTO>();
             MapperConfigurationExpression.CreateMap<Bll.PropertyType, string>().ConvertUsing(src=> src.ToString());
             MapperConfigurationExpression.CreateMap<Bll.Facility, FacilityDTO>();
+            MapperConfigurationExpression.CreateMap<Bll.Availability, AvailabilityDTO>();
+            MapperConfigurationExpression.CreateMap<Bll.Availability, AvailabilityDTO>().ForMember(dto => dto.RoomName,
+                opt => opt.MapFrom(r  =>  r.Room.Name));;
 
-
+            MapperConfigurationExpression.CreateMap<Bll.Reservation, ReservationDTO>();
+            MapperConfigurationExpression.CreateMap<Bll.Reservation, ReservationDTO>().ForMember(dto => dto.ReservedBy,
+                opt => opt.MapFrom(r  =>  r.AppUser.FirstName + " " + r.AppUser.LastName));
 
             Mapper = new Mapper(new MapperConfiguration(MapperConfigurationExpression));
 

@@ -53,6 +53,7 @@ namespace DAL.App.EF.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
+                    PropertyId = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(nullable: false),
                     CancellationBefore = table.Column<int>(nullable: true),
                     PrepaymentBefore = table.Column<int>(nullable: true),
@@ -207,8 +208,8 @@ namespace DAL.App.EF.Migrations
                     ChangedAt = table.Column<DateTime>(nullable: false),
                     ReservationNumber = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CheckInDate = table.Column<DateTime>(nullable: false),
-                    CheckOutDate = table.Column<DateTime>(nullable: false),
+                    CheckInDate = table.Column<DateTime>(type: "date", nullable: false),
+                    CheckOutDate = table.Column<DateTime>(type: "date", nullable: false),
                     RoomId = table.Column<Guid>(nullable: false),
                     PropertyId = table.Column<Guid>(nullable: false),
                     IsCancelled = table.Column<bool>(nullable: false),
@@ -224,6 +225,12 @@ namespace DAL.App.EF.Migrations
                         name: "FK_Reservations_AspNetUsers_AppUserId",
                         column: x => x.AppUserId,
                         principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Reservations_Properties_PropertyId",
+                        column: x => x.PropertyId,
+                        principalTable: "Properties",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -303,11 +310,11 @@ namespace DAL.App.EF.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(nullable: true),
-                    AdultsCapacity = table.Column<int>(nullable: false),
-                    ChildCapacity = table.Column<int>(nullable: false),
+                    AdultsOccupancy = table.Column<int>(nullable: false),
+                    ChildOccupancy = table.Column<int>(nullable: false),
                     Size = table.Column<int>(nullable: false),
                     Description = table.Column<string>(nullable: false),
-                    SmokingAllowed = table.Column<bool>(nullable: false),
+                    AllowSmoking = table.Column<bool>(nullable: false),
                     PropertyId = table.Column<Guid>(nullable: false),
                     Bed = table.Column<string>(nullable: false),
                     ReservationId = table.Column<Guid>(nullable: true)
@@ -480,6 +487,11 @@ namespace DAL.App.EF.Migrations
                 column: "AppUserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Reservations_PropertyId",
+                table: "Reservations",
+                column: "PropertyId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Reviews_AppUserId",
                 table: "Reviews",
                 column: "AppUserId");
@@ -547,10 +559,10 @@ namespace DAL.App.EF.Migrations
                 name: "Rooms");
 
             migrationBuilder.DropTable(
-                name: "Properties");
+                name: "Reservations");
 
             migrationBuilder.DropTable(
-                name: "Reservations");
+                name: "Properties");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

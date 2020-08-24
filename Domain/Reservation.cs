@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Contracts.DAL.Base;
 using DAL.Base;
@@ -22,9 +23,13 @@ namespace Domain
         public int ReservationNumber { get; set; }
 
         [Availability]
+        [Column(TypeName = "date")]
+        [DataType(DataType.Date)]
         public DateTime CheckInDate{ get; set; }
+        
         [Availability]
-
+        [Column(TypeName = "date")]
+        [DataType(DataType.Date)]
         public DateTime CheckOutDate { get; set; }
 
         public Guid RoomId { get; set; }
@@ -32,8 +37,10 @@ namespace Domain
         public ICollection<Room>? Rooms { get; set; }
 
         public Guid PropertyId { get; set; }
-
+        public Property Property { get; set; }
+        
         public bool IsCancelled { get; set; } = false;
+        
         public virtual TKey AppUserId { get; set; }
         public virtual TUser? AppUser { get; set; }
         
@@ -44,8 +51,5 @@ namespace Domain
         
         public int Children { get; set; }
 
-        // [ForeignKey(nameof(ReservedBy))]
-        // public virtual Guid GuestId { get; set; }
-        // public virtual Guest? ReservedBy { get; set; }
     }
 }

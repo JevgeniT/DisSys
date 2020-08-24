@@ -10,14 +10,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.App.EF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200720104713_Init")]
+    [Migration("20200823124829_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.5")
+                .HasAnnotation("ProductVersion", "3.1.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -266,6 +266,9 @@ namespace DAL.App.EF.Migrations
                     b.Property<int?>("PrepaymentBefore")
                         .HasColumnType("int");
 
+                    b.Property<Guid>("PropertyId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.ToTable("Policies");
@@ -335,10 +338,10 @@ namespace DAL.App.EF.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CheckInDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("date");
 
                     b.Property<DateTime>("CheckOutDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("date");
 
                     b.Property<int>("Children")
                         .HasColumnType("int");
@@ -369,6 +372,8 @@ namespace DAL.App.EF.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AppUserId");
+
+                    b.HasIndex("PropertyId");
 
                     b.ToTable("Reservations");
                 });
@@ -423,14 +428,17 @@ namespace DAL.App.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("AdultsCapacity")
+                    b.Property<int>("AdultsOccupancy")
                         .HasColumnType("int");
+
+                    b.Property<bool>("AllowSmoking")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Bed")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ChildCapacity")
+                    b.Property<int>("ChildOccupancy")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
@@ -448,9 +456,6 @@ namespace DAL.App.EF.Migrations
 
                     b.Property<int>("Size")
                         .HasColumnType("int");
-
-                    b.Property<bool>("SmokingAllowed")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -623,6 +628,12 @@ namespace DAL.App.EF.Migrations
                     b.HasOne("Domain.Identity.AppUser", "AppUser")
                         .WithMany()
                         .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Property", "Property")
+                        .WithMany()
+                        .HasForeignKey("PropertyId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });

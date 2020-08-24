@@ -18,7 +18,7 @@ namespace Contracts.DAL.App.Repositories
     {
   
    
-        Task<IEnumerable<TDALEntity>> AllAsync(SearchDTO? searchDTO);
+        Task<IEnumerable<TDALEntity>> AllAsync(Guid propertyId);
         
         Task<TDALEntity> FirstOrDefaultAsync(Guid id, Guid? userId = null);
 
