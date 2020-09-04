@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.App.EF.Repositories
 {
-    public class FacilityRepository : EFBaseRepository<AppDbContext,Facility ,DAL.App.DTO.Facility>,  IFacilityRepository
+    public class FacilityRepository : EFBaseRepository<AppDbContext, Facility, DAL.App.DTO.Facility>,  IFacilityRepository
     {
         public FacilityRepository(AppDbContext dbContext) :  base(dbContext, new BaseDALMapper<Facility, DAL.App.DTO.Facility>())
         {
@@ -18,9 +18,7 @@ namespace DAL.App.EF.Repositories
 
         public async Task<IEnumerable<DAL.App.DTO.Facility>> AllAsync(Guid? userId = null)
         {
-            
             return await base.AllAsync();
-            
         }
         
         public async Task<DAL.App.DTO.Facility> FirstOrDefaultAsync(Guid id, Guid? userId = null)

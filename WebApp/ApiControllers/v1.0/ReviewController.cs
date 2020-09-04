@@ -14,9 +14,11 @@ using Public.DTO;
 
 namespace WebApp.ApiControllers
 {
+    /// <summary>
+    ///  Reviews
+    /// </summary>
     [ApiController]
     [ApiVersion( "1.0" )]
-    [Produces("application/json")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ReviewController : ControllerBase
@@ -24,99 +26,115 @@ namespace WebApp.ApiControllers
         private readonly IAppBLL _bll;
         private readonly DALMapper<Review, ReviewDTO> _mapper = new DALMapper<Review, ReviewDTO>();
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public ReviewController(IAppBLL bll)
         {
             _bll = bll;
         }
 
-        [HttpGet][Route("property/{propertyId}")]
-        public async Task<ActionResult<IEnumerable<ReviewDTO>>> GetReviewsForProperty(Guid propertyId)
+   
+        /// <summary>
+        /// Get all the property Reviews
+        /// </summary>
+        /// <param name="pId">property Id</param>
+        /// <returns>Array of reviews</returns>
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<ReviewDTO>>> GetReviews([FromQuery] Guid pId)
         {
-            var reviews = (await _bll.Reviews.PropertyReviews(propertyId)).Select(r=> _mapper.Map(r));             
+            // var reviews = (await _bll.Reviews.AllAsync()).Select(r=> _mapper.Map(r));             
+            var reviews = (await _bll.Reviews.PropertyReviews(pId)).Select(r=> _mapper.Map(r));
             return Ok(reviews);
         }
-        
-        // GET: api/Review
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Review>>> GetReviews()
-        {
-            return Ok(await _bll.Reviews.AllAsync());
-        }
 
-        // GET: api/Review/5
+        
+        /// <summary>
+        /// Get a single Review
+        /// </summary>
+        /// <param name="id">Review Id</param>
+        /// <returns>Array of reviews</returns>
         [HttpGet("{id}")]
-        public async Task<ActionResult<Review>> GetReview(Guid id)
+        public async Task<ActionResult<ReviewDTO>> GetReview(Guid id)
         {
             var review = await _bll.Reviews.FindAsync(id);
 
             if (review == null)
             {
-                return NotFound();
+                return NotFound(new MessageDTO($"Review with id {id} not found"));
             }
 
-            return review;
+            return Ok(_mapper.Map(review));
         }
 
-        // PUT: api/Review/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        
+        /// <summary>
+        /// Update the Review
+        /// </summary>
+        /// <param name="id">Review Id</param>
+        /// <param name="review">Review to update</param>
+        /// <returns></returns>
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutReview(Guid id, Review review)
+        public async Task<IActionResult> PutReview(Guid id, ReviewDTO review)
         {
             if (id != review.Id)
             {
+                return BadRequest(new MessageDTO("Ids does not match!"));
+            }
+
+            if (!await _bll.Reviews.ExistsAsync(id))
+            {
                 return BadRequest();
+
             }
 
-            // _bll.Entry(review).State = EntityState.Modified;
-
-            try
-            {
-                await _bll.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (! await _bll.Reviews.ExistsAsync(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
+            _bll.Reviews.Update(_mapper.Map(review));
+            await _bll.SaveChangesAsync();
             return NoContent();
         }
 
-        // POST: api/Review
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+
+        /// <summary>
+        /// Post the new Review
+        /// </summary>
+        /// <param name="review"></param>
+        /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult<Review>> PostReview(Review review)
+        public async Task<ActionResult<ReviewDTO>> PostReview(ReviewDTO review)
         {
             review.AppUserId = User.UserGuidId();
             review.CreatedAt = DateTime.Now;
-            _bll.Reviews.Add(review);
+            
+            var entity = _mapper.Map(review);
+
+            _bll.Reviews.Add(entity);
             await _bll.SaveChangesAsync();
 
+            review.Id = entity.Id;
+            
             return CreatedAtAction("GetReview", new { id = review.Id }, review);
         }
 
-        // DELETE: api/Review/5
+        /// <summary>
+        /// Delete the Review
+        /// </summary>
+        /// <param name="id">Review id to delete</param>
+        /// <returns>Review just deleted</returns>
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Review>> DeleteReview(Guid id)
+        public async Task<ActionResult<ReviewDTO>> DeleteReview(Guid id)
         {
-            var review = await _bll.Reviews.FindAsync(id);
+            var review = await _bll.Reviews.FirstOrDefaultAsync(id);
+            
             if (review == null)
             {
                 return NotFound();
             }
 
             _bll.Reviews.Remove(review);
+            
             await _bll.SaveChangesAsync();
 
-            return review;
+            return Ok(review);
         }
 
        

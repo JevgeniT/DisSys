@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Contracts.DAL.Base;
  
 namespace DAL.App.DTO
@@ -16,9 +17,8 @@ namespace DAL.App.DTO
 
         public DateTime To { get; set; }
 
-        public Guid PolicyId { get; set; }
-        public Policy? Policy { get; set; }
-
+        public  ICollection<AvailabilityPolicies>? AvailabilityPolicies { get; set; }
+        
         public bool IsUsed { get; set; }
         
         public Guid? RoomId { get; set; }

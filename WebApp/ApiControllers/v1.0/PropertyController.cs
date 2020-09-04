@@ -35,17 +35,24 @@ namespace WebApp.ApiControllers._1._0
         }
 
         /// <summary>
-        /// get all properties
+        /// Get all Properties
         /// </summary>
         /// <returns>Array of properties</returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PropertyDTO>>> GetProperties()
         {
-            var properties = (await _bll.Properties.AllAsync(User.UserGuidId())) //user !!
+            var properties = (await _bll.Properties.AllAsync(User.UserGuidId()))
                 .Select(bllEntity => _mapper.Map(bllEntity)) ;
              return Ok(properties);
         }
 
+        /// <summary>
+        /// Find Properties
+        /// </summary>
+        /// <param name="from">Check in date</param>
+        /// <param name="to">Check out date</param>
+        /// <param name="input">Name or location of the property</param>
+        /// <returns>Array of the properties that match criteria</returns>
         [HttpGet]
         [AllowAnonymous]
         [Route("find")]
@@ -56,7 +63,13 @@ namespace WebApp.ApiControllers._1._0
         }
         
         
-        [HttpGet("{id}")][AllowAnonymous]
+        /// <summary>
+        /// Get single Property
+        /// </summary>
+        /// <param name="id">Property Id</param>
+        /// <returns>Property object</returns>
+        [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<ActionResult<PropertyDTO>> GetProperty(Guid id)
         {
             var property = await _bll.Properties.FirstOrDefaultAsync(id);
@@ -69,7 +82,12 @@ namespace WebApp.ApiControllers._1._0
             return Ok(_mapper.Map(property));
         }
 
-      
+        /// <summary>
+        /// Update Property
+        /// </summary>
+        /// <param name="id">Property Id</param>
+        /// <param name="property"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> PutProperty(Guid id, PropertyDTO property)
         {
@@ -89,10 +107,16 @@ namespace WebApp.ApiControllers._1._0
         }
 
       
+        /// <summary>
+        /// Create Property
+        /// </summary>
+        /// <param name="property"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult<PropertyDTO>> PostProperty(PropertyDTO property)
         {
 
+            property.AppUserId = User.UserGuidId();
             var entity = _mapper.Map(property);
             
              _bll.Properties.Add(entity);
@@ -103,7 +127,11 @@ namespace WebApp.ApiControllers._1._0
             return CreatedAtAction("GetProperty", new { id = property.Id }, property);
         }
 
-        // DELETE: api/Properties/5
+        /// <summary>
+        /// Delete Property
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<ActionResult<PropertyDTO>> DeleteProperty(Guid id)
         {

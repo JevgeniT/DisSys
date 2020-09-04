@@ -7,7 +7,7 @@ using Contracts.DAL.App;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using BLL.App.DTO;
+using DAL.App.DTO;
 
 using Microsoft.AspNetCore.Authorization;
 
@@ -17,9 +17,9 @@ namespace WebApp.Controllers
 
     public class RoomController : Controller
     {
-        private readonly IAppBLL _uow;
+        private readonly IAppUnitOfWork _uow;
 
-        public RoomController(IAppBLL uow)
+        public RoomController(IAppUnitOfWork uow)
         {
             _uow = uow;
         }
@@ -27,7 +27,7 @@ namespace WebApp.Controllers
         // GET: Room
         public async Task<IActionResult> Index()
         {
-            return View(await _uow.Rooms.AllAsync());
+            return View();
         }
 
         // GET: Room/Details/5
@@ -45,7 +45,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            return View(room);
+            return View();
         }
 
         // GET: Room/Create
@@ -62,17 +62,18 @@ namespace WebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,AdultsCapacity,Size, ChildCapacity, PropertyId, Description,CreatedAt,DeletedBy,DeletedAt,Id")] Room room)
+        public async Task<IActionResult> Create([Bind("Name,AdultsOccupancy,Size, AdultsOccupancy, PropertyId, Description,CreatedAt,DeletedBy,DeletedAt,Id")] Room room)
         {
      
             if (ModelState.IsValid)
             {
                 _uow.Rooms.Add(room);
                 await _uow.SaveChangesAsync();
+                Console.WriteLine(room.Id);
                 return RedirectToAction(nameof(Index));
             }
             ViewData["PropertyId"] = new SelectList(_uow.Properties.All(), "Id", "Name", room.PropertyId);
-            return View(room);
+            return View();
         }
 
         // GET: Room/Edit/5
@@ -88,7 +89,7 @@ namespace WebApp.Controllers
             {
                 return NotFound();
             }
-            return View(room);
+            return View();
         }
 
         // POST: Room/Edit/5
@@ -123,7 +124,7 @@ namespace WebApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(room);
+            return View();
         }
 
         // GET: Room/Delete/5
@@ -141,7 +142,7 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            return View(room);
+            return View();
         }
 
         // POST: Room/Delete/5

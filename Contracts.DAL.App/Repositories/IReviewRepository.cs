@@ -22,6 +22,7 @@ namespace Contracts.DAL.App.Repositories
         Task<TDALEntity> FirstOrDefaultAsync(Guid id, Guid? userId = null);
 
         Task<bool> ExistsAsync(Guid id, Guid? userId = null);
+        
         Task DeleteAsync(Guid id, Guid? userId = null);
         
     }

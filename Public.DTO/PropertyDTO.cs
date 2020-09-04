@@ -9,6 +9,7 @@ namespace Public.DTO
     {
         
         public Guid Id { get; set; }
+        public Guid AppUserId { get; set; }
         public string? Name { get; set; }
         public string? Country { get; set; }
         public string? Address { get; set; }

@@ -1,5 +1,6 @@
-﻿﻿using System;
-using System.Linq;
+﻿using System;
+ using System.Collections.Generic;
+ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Contracts.DAL.Base;
@@ -10,11 +11,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.App.EF
 {
-    public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid >
+    public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>, IBaseEntityTracker
     {
         private IUserNameProvider _userNameProvider;
 
-
+        private readonly Dictionary<IDomainBaseEntity<Guid>, IDomainBaseEntity<Guid>> _entityTracker =
+            new Dictionary<IDomainBaseEntity<Guid>, IDomainBaseEntity<Guid>>();
         //
         public DbSet<Extra> Extras { get; set; }
         public DbSet<Facility> Facilities { get; set; }
@@ -22,6 +24,8 @@ namespace DAL.App.EF
         public DbSet<Reservation> Reservations { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Policy> Policies { get; set; }
+        
+        public DbSet<AvailabilityPolicies> AvailabilitiyPolicies { get; set; }
 
         public DbSet<Availability> Availabilities { get; set; }
         public DbSet<Property> Properties { get; set; }
@@ -53,10 +57,35 @@ namespace DAL.App.EF
            {
                relationship.DeleteBehavior = DeleteBehavior.Restrict;
            }
-           
-           
+        }
+         public void AddToEntityTracker(IDomainBaseEntity<Guid> internalEntity,
+                    IDomainBaseEntity<Guid> externalEntity)
+         {
+             _entityTracker.Add(internalEntity, externalEntity);
+         }
+
+        private void UpdateTrackedEntities()
+        {
+            foreach (var (key, value) in _entityTracker)
+            {
+                value.Id = key.Id;
+            }
         }
 
+        public override int SaveChanges()
+        {
+            var result = base.SaveChanges();
+            UpdateTrackedEntities();
+            return result;
+        }
+        
 
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+        {
+            var result = base.SaveChangesAsync(cancellationToken);
+            UpdateTrackedEntities();
+            return result;
+        }
+       
     }
 }

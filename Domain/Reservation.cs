@@ -48,7 +48,6 @@ namespace Domain
 
         public decimal TotalPrice { get; set; }
         public int Adults { get; set; }
-        
         public int Children { get; set; }
 
     }

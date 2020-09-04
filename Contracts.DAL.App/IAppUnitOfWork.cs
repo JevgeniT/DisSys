@@ -3,12 +3,15 @@ using Contracts.DAL.Base;
 
 namespace Contracts.DAL.App
 {
-    public interface IAppUnitOfWork: IBaseUnitOfWork
+    public interface IAppUnitOfWork: IBaseUnitOfWork, IBaseEntityTracker
     {
         IPropertyRepository Properties { get; }
         IRoomRepository Rooms { get; }
  
         IAvailabilityRepository Availabilities { get; }
+        
+        IAvailabilityPoliciesRepository AvailabilityPolicies { get; }
+
         IExtraRepository Extras { get; }
 
         IFacilityRepository Facilities { get; }

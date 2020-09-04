@@ -17,9 +17,9 @@ namespace BLL.Base
             UnitOfWork = unitOfWork;
         }
         
-        public async Task<int> SaveChangesAsync()
+        public  Task<int> SaveChangesAsync()
         {
-            return await UnitOfWork.SaveChangesAsync();
+            return  UnitOfWork.SaveChangesAsync();
         }
 
         public int SaveChanges()
@@ -30,7 +30,7 @@ namespace BLL.Base
         private readonly Dictionary<Type, object> _repoCache = new Dictionary<Type, object>();
 
         // Factory method
-        public TService GetService<TService>(Func<TService> serviceCreationMethod)
+        public TService GetService<TService>(Func<TService> serviceCreationMethod) 
         {
             if (_repoCache.TryGetValue(typeof(TService), out var repo))
             {

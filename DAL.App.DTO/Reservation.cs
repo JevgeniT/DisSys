@@ -17,7 +17,6 @@ namespace DAL.App.DTO
     public class Reservation<TKey> : IDomainBaseEntity<TKey>
         where TKey: IEquatable<TKey>
     {
-
         public int ReservationNumber { get; set; }
 
         public DateTime CheckInDate{ get; set; }
@@ -31,7 +30,9 @@ namespace DAL.App.DTO
         public  Guid PropertyId { get; set; }        
         
         public  TKey AppUserId { get; set; } = default!;
+        
         public AppUser AppUser { get; set; }
+        
         public TKey Id { get; set; }= default!;
     }
 }

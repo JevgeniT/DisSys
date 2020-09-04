@@ -31,9 +31,6 @@ namespace DAL.App.EF.Migrations
                     b.Property<bool>("IsUsed")
                         .HasColumnType("bit");
 
-                    b.Property<Guid>("PolicyId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<decimal>("PricePerNightForAdult")
                         .HasColumnType("decimal(18,2)");
 
@@ -54,11 +51,30 @@ namespace DAL.App.EF.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PolicyId");
-
                     b.HasIndex("RoomId");
 
                     b.ToTable("Availabilities");
+                });
+
+            modelBuilder.Entity("Domain.AvailabilityPolicies", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AvailabilityId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("PolicyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AvailabilityId");
+
+                    b.HasIndex("PolicyId");
+
+                    b.ToTable("AvailabilitiyPolicies");
                 });
 
             modelBuilder.Entity("Domain.Extra", b =>
@@ -263,6 +279,9 @@ namespace DAL.App.EF.Migrations
 
                     b.Property<int?>("PrepaymentBefore")
                         .HasColumnType("int");
+
+                    b.Property<double>("PriceCoefficient")
+                        .HasColumnType("float");
 
                     b.Property<Guid>("PropertyId")
                         .HasColumnType("uniqueidentifier");
@@ -567,15 +586,24 @@ namespace DAL.App.EF.Migrations
 
             modelBuilder.Entity("Domain.Availability", b =>
                 {
-                    b.HasOne("Domain.Policy", "Policy")
-                        .WithMany()
-                        .HasForeignKey("PolicyId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("Domain.Room", "Room")
                         .WithMany("RoomAvailabilities")
                         .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.AvailabilityPolicies", b =>
+                {
+                    b.HasOne("Domain.Availability", "Availability")
+                        .WithMany("AvailabilityPolicies")
+                        .HasForeignKey("AvailabilityId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Policy", "Policy")
+                        .WithMany("PolicyAvailabilities")
+                        .HasForeignKey("PolicyId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });

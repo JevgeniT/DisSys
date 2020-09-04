@@ -9,5 +9,7 @@ namespace Contracts.BLL.App.Services
     {
         void ParseDate(List<Availability> list, DateTime from, DateTime to);
         
+        
+        
     }
 }

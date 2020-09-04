@@ -7,10 +7,12 @@ namespace Public.DTO
     public class ReservationDTO
     {
         public Guid Id { get; set; }
-        public int ReservationNumber { get; set; }
-        public string CheckInDate { get; set; }
         
-        public string CheckOutDate { get; set; }
+        public int ReservationNumber { get; set; }
+        
+        public DateTime CheckInDate { get; set; }
+        
+        public DateTime CheckOutDate { get; set; }
         
         public ICollection<RoomDTO>? Rooms { get; set; }
 
@@ -23,7 +25,8 @@ namespace Public.DTO
         public int Adults { get; set; }
         
         public int Children { get; set; }
-        
+
+        public Dictionary<string, int>? RoomsOrdered { get; set; }
         public string? ReservedBy { get; set; }
     }
 }

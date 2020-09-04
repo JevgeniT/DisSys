@@ -32,6 +32,7 @@ namespace BLL.App.Services
         public async Task<IEnumerable<Availability>> FindAvailableDates(DateTime @from, DateTime to, Guid? PropertyId = null)
         {
            
+            
             return (await ServiceRepository.FindAvailableDates(from, to, PropertyId)).Select( dalEntity => Mapper.Map(dalEntity) );
         }
         
@@ -59,7 +60,7 @@ namespace BLL.App.Services
                         PricePerNightForAdult = available.PricePerNightForAdult,
                         IsUsed = false,
                         RoomId = available.RoomId,
-                        PolicyId = available.PolicyId
+                        // PolicyId = available.PolicyId
 
                     };
                     
@@ -73,7 +74,7 @@ namespace BLL.App.Services
                             IsUsed = false, 
                             PricePerNightForAdult = available.PricePerNightForAdult,
                             RoomId = available.RoomId,
-                            PolicyId = available.PolicyId
+                            // PolicyId = available.PolicyId
                         
                         });
                     Add(new Availability
@@ -82,7 +83,7 @@ namespace BLL.App.Services
                             IsUsed = false, 
                             PricePerNightForAdult = available.PricePerNightForAdult ,
                             RoomId = available.RoomId,
-                            PolicyId = available.PolicyId
+                            // PolicyId = available.PolicyId
                         });
                 }
                 else if (available.From == From && available.To == To)

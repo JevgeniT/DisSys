@@ -18,7 +18,7 @@ namespace DAL.App.EF.Repositories
  
         public async Task<IEnumerable<DAL.App.DTO.Policy>> AllAsync(Guid? propertyId)
         {
-            return ( RepoDbSet.Where(policy => policy.PropertyId == propertyId)).Select(policy => Mapper.Map(policy));
+            return (RepoDbSet.Where(policy => policy.PropertyId == propertyId)).Select(policy => Mapper.Map(policy));
          
         }
         

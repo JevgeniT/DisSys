@@ -11,7 +11,6 @@ namespace Contracts.BLL.Base
         int SaveChanges();
         
         TService GetService<TService>(Func<TService> serviceCreationMethod);
-
-
+        
     }
 }

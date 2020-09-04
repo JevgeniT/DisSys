@@ -14,7 +14,7 @@ namespace Domain
         where TUser : AppUser<TKey>
     {
      
-        [Range(0,10)]
+        [Range(1,10)]
         public int Score { get; set; }
 
         public Guid ReservationId { get; set; }

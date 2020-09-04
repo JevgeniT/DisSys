@@ -5,11 +5,14 @@ using Contracts.DAL.Base;
 
 namespace DAL.Base
 {
-    public abstract class BaseUnitOfWork : IBaseUnitOfWork
+    public abstract class BaseUnitOfWork<TKey> : IBaseUnitOfWork, IBaseEntityTracker<TKey> 
+        where TKey : IEquatable<TKey>
     {
         private readonly Dictionary<Type, object> _repoCache = new Dictionary<Type, object>();
 
-        // Factory method
+        private readonly Dictionary<IDomainBaseEntity<TKey>, IDomainBaseEntity<TKey>> _entityTracker =
+            new Dictionary<IDomainBaseEntity<TKey>, IDomainBaseEntity<TKey>>();
+        
         public TRepository GetRepository<TRepository>(Func<TRepository> repoCreationMethod)
         {
             if (_repoCache.TryGetValue(typeof(TRepository), out var repo))
@@ -24,5 +27,20 @@ namespace DAL.Base
         public abstract int SaveChanges();
 
         public abstract Task<int> SaveChangesAsync();
+        
+      
+
+        public void AddToEntityTracker(IDomainBaseEntity<TKey> internalEntity, IDomainBaseEntity<TKey> externalEntity)
+        {
+            _entityTracker.Add(internalEntity, externalEntity);
+        }
+        
+        protected void UpdateTrackedEntities()
+        {
+            foreach (var (key, value) in _entityTracker)
+            {
+                value.Id = key.Id;
+            }
+        }
     }
 }

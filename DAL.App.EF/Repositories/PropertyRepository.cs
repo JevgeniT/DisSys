@@ -38,7 +38,8 @@ namespace DAL.App.EF.Repositories
                     .Where(o => o.Country!.Contains(input) 
                                 || o.Name!.Contains(input))
                     .Include(p=>p.Reviews)
-                    .ToListAsync()).Select(domainEntity => Mapper.Map(domainEntity));
+                    .ToListAsync())
+                    .Select(domainEntity => Mapper.Map(domainEntity));
             }
 
             return (await RepoDbSet

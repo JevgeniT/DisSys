@@ -6,13 +6,12 @@ using DAL.Base;
 
 namespace DAL.App.DTO
 {
-    public class Room : Room<Guid>, IDomainBaseEntity
+    // public class Room : Room<Guid>, IDomainBaseEntity
+    // {
+    // }
+    public class Room : IDomainBaseEntity
     {
-    }
-    public class Room<TKey> : IDomainBaseEntity<TKey>
-        where TKey: IEquatable<TKey>
-    {
-        public TKey Id { get; set; } = default!;
+        public Guid Id { get; set; }
         public string? Name { get; set; }
         public int AdultsOccupancy { get; set; }
         public int ChildOccupancy { get; set; }

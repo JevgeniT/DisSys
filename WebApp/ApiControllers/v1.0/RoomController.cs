@@ -10,6 +10,10 @@ using Public.DTO.Mappers;
 
 namespace WebApp.ApiControllers
 {
+    /// <summary>
+    /// Rooms
+    /// </summary>
+
     [Produces("application/json")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
@@ -18,26 +22,31 @@ namespace WebApp.ApiControllers
         private readonly IAppBLL _bll;
         private readonly DTOMapper<BLL.App.DTO.Room, RoomDTO> _mapper = new DTOMapper<Room, RoomDTO>();
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="bll"></param>
         public RoomController(IAppBLL bll)
         {
             _bll = bll;
         }
 
-        // GET: api/Rooms
+        /// <summary>
+        /// Get all property Rooms
+        /// </summary>
+        /// <param name="pId">Property Id</param>
+        /// <returns>Array of rooms</returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<RoomDTO>>> GetRooms(Guid propertyId)
+        public async Task<ActionResult<IEnumerable<RoomDTO>>> GetRooms([FromQuery] Guid pId)
         {
-            return Ok(await _bll.Rooms.AllAsync(propertyId));
+            return Ok(await _bll.Rooms.AllAsync(pId));
         }
-        
-        
-        [HttpGet][Route("property/{propertyId}")]
-        public async Task<ActionResult<IEnumerable<RoomDTO>>> GetPropertyRooms(Guid propertyId)
-        {
-            return Ok(await _bll.Rooms.AllAsync(propertyId));
-        }
-        
-        // GET: api/Rooms/5
+
+        /// <summary>
+        /// Get single Room
+        /// </summary>
+        /// <param name="id">Room Id</param>
+        /// <returns>Room object</returns>
         [HttpGet("{id}")][AllowAnonymous] 
         public async Task<ActionResult<RoomDTO>> GetRoom(Guid id)
         {
@@ -51,6 +60,13 @@ namespace WebApp.ApiControllers
         }
  
         
+        /// <summary>
+        /// Update the Room
+        /// </summary>
+        /// <param name="id">Room Id</param>
+        /// <param name="room">room object</param>
+        /// <returns></returns>
+
         [HttpPut("{id}")]
         public async Task<IActionResult> PutRoom(Guid id, RoomDTO room)
         {
@@ -70,18 +86,30 @@ namespace WebApp.ApiControllers
             return NoContent();
         }
 
- 
+        
+        /// <summary>
+        /// Post the new Room
+        /// </summary>
+        /// <param name="room"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult<RoomDTO>> PostRoom(RoomDTO room)
         {
             var entity = _mapper.Map(room);
-            _bll.Rooms.Add(entity);
-            await _bll.SaveChangesAsync();
+           _bll.Rooms.Add(entity);
+
+            await  _bll.SaveChangesAsync();
             room.Id = entity.Id;
+            
             return CreatedAtAction("GetRoom", new { id = room.Id }, room);
         }
         
-        // DELETE: api/Rooms/5
+        
+        /// <summary>
+        /// Delete the Room
+        /// </summary>
+        /// <param name="id">Room id to delete</param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<ActionResult<RoomDTO>> DeleteRoom(Guid id)
         {

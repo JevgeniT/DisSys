@@ -19,7 +19,10 @@ namespace DAL.App.EF.Repositories
         
         public async Task<IEnumerable< DAL.App.DTO.Availability>> AllAsync(Guid? roomId = null)
         {
-            return (await RepoDbContext.Availabilities.Include(availability => availability.Room).Where(availability => availability.RoomId == roomId)
+            return (await RepoDbContext.Availabilities.Include(availability => availability.Room)
+                .Include(availability => availability.AvailabilityPolicies)
+                .ThenInclude(policies => policies.Policy)
+                .Where(availability => availability.RoomId == roomId)
                 .ToListAsync()).Select(a => Mapper.Map(a));
         }
         
@@ -35,12 +38,12 @@ namespace DAL.App.EF.Repositories
             
             var query =   RepoDbSet.FromSqlRaw("select * from Availabilities where [FROM] between " + dates + " or [To] between " + dates)
                 .Include(availability => availability.Room)
-                .Include(availability => availability.Policy)
+                // .Include(availability => availability.Policy)
                 .Where(availability => availability.Room.PropertyId == propertyId);
             
             query.AsNoTracking();
             
-            return  ( query.Where(a=> !a.IsUsed).AsNoTracking().Select(e => Mapper.Map(e)));
+            return  (query.Where(a=> !a.IsUsed).AsNoTracking().Select(e => Mapper.Map(e)));
         }
         
 

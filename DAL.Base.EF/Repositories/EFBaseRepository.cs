@@ -13,7 +13,7 @@ namespace DAL.Base.EF.Repositories
         IBaseRepository<TDALEntity>
         where TDALEntity : class, IDomainBaseEntity<Guid>, new()
         where TDomainEntity : class, IDomainEntityBaseMetadata<Guid>, new()
-        where TDbContext : DbContext
+        where TDbContext : DbContext,  IBaseEntityTracker
     {
         public EFBaseRepository(TDbContext dbContext,  IBaseDALMapper<TDomainEntity, TDALEntity> mapper) : base(dbContext, mapper)
         {
@@ -23,8 +23,8 @@ namespace DAL.Base.EF.Repositories
     public class EFBaseRepository<TKey, TDbContext, TDomainEntity, TDALEntity> : IBaseRepository<TKey, TDALEntity>
         where TDALEntity : class, IDomainBaseEntity<TKey>, new()
         where TDomainEntity : class, IDomainEntityBaseMetadata<TKey>, new()
+        where TDbContext : DbContext, IBaseEntityTracker<TKey>
         where TKey : IEquatable<TKey>
-        where TDbContext : DbContext
     {
         protected TDbContext RepoDbContext;
         protected DbSet<TDomainEntity> RepoDbSet;
@@ -63,7 +63,14 @@ namespace DAL.Base.EF.Repositories
 
         public virtual TDALEntity Add(TDALEntity entity)
         {
-            return Mapper.Map(RepoDbSet.Add(Mapper.Map<TDALEntity, TDomainEntity>(entity)).Entity);
+
+            var dalEntity = Mapper.Map<TDALEntity, TDomainEntity>(entity);
+
+            var trackedEntity = RepoDbSet.Add(dalEntity).Entity;
+            RepoDbContext.AddToEntityTracker(trackedEntity,dalEntity);
+
+            var result = Mapper.Map(trackedEntity);
+            return result;
         }
 
         public virtual TDALEntity Update(TDALEntity entity)

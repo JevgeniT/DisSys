@@ -19,6 +19,7 @@ namespace Contracts.BLL.App
 
         public IAvailabilityService Availabilities { get; }
 
+        public IAvailabilityPoliciesService AvailabilityPolicies { get; }
 
 
 

@@ -20,6 +20,8 @@ namespace DAL.App.DTO
         public int PrepaymentBefore { get; set; }
 
         public int CancellationBefore { get; set; }
+        public double PriceCoefficient { get; set; }
+
         
     }
 }
