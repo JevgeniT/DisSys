@@ -1,14 +1,15 @@
 using System;
 using Contracts.DAL.Base;
+using DAL.Base;
 
 namespace BLL.App.DTO
 {
-    public class AvailabilityPolicies : AvailabilityPolicies<Guid>,IDomainBaseEntity
+    public class AvailabilityPolicies : AvailabilityPolicies<Guid>, IDomainEntityBaseMetadata
     {
+        
     }
-
-    public class AvailabilityPolicies<TKey> : IDomainBaseEntity<TKey>
-        where TKey : IEquatable<TKey>
+    public class AvailabilityPolicies<TKey> : DomainEntityBaseMetadata<TKey>
+        where TKey: IEquatable<TKey>
     {
         public TKey Id { get; set; }
 
@@ -18,5 +19,4 @@ namespace BLL.App.DTO
         public Guid PolicyId { get; set; }
         public Policy? Policy { get; set; }
     }
-    
 }

@@ -41,7 +41,8 @@ namespace WebApp.ApiControllers
         /// <param name="pId">Property Id</param>
         /// <returns>Array of policies</returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<PolicyDTO>>> GetPolicies([FromQuery(Name = "pId")] Guid pId)
+        [AllowAnonymous]
+        public async Task<ActionResult<IEnumerable<PolicyDTO>>> GetPolicies([FromQuery] Guid pId)
         {
             var policies = await _bll.Policies.AllAsync(pId);
             return Ok(policies.Select(p=> _mapper.Map(p)));
@@ -56,7 +57,7 @@ namespace WebApp.ApiControllers
         [HttpGet("{id}")]
         public async Task<ActionResult<PolicyDTO>> GetPolicy(Guid id)
         {
-            var policy = await _bll.Policies.FindAsync(id);
+            var policy = await _bll.Policies.FirstOrDefaultAsync(id);
 
             if (policy == null)
             {
@@ -118,7 +119,7 @@ namespace WebApp.ApiControllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<PolicyDTO>> DeletePolicy(Guid id)
         {
-            var policy = await _bll.Policies.FindAsync(id);
+            var policy = await _bll.Policies.FirstOrDefaultAsync(id);
             
             if (policy == null)
             {

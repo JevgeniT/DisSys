@@ -29,21 +29,6 @@ namespace BLL.App.Services
             return (await ServiceRepository.AllForPropertyAsync(userId, propertyId)).Select( dalEntity => Mapper.Map(dalEntity) );
         }
 
-        public async Task<Reservation> FirstOrDefaultAsync(Guid id, Guid? userId = null)
-        {
-            return    Mapper.Map(await ServiceRepository.FirstOrDefaultAsync(id, userId));        
-        }
-
-        public async Task<bool> ExistsAsync(Guid id, Guid? userId = null)
-        {
-            return  await ServiceRepository.ExistsAsync(id, userId);
-        }
-
-        public async Task DeleteAsync(Guid id, Guid? userId = null)
-        {
-            await ServiceRepository.DeleteAsync(id, userId);
-           
-        }
     }
     
     

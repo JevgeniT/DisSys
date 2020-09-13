@@ -5,9 +5,13 @@ using DAL.Base;
 
 namespace Domain
 {
-    public class Policy : IDomainEntityBaseMetadata
+    public class Policy : Policy<Guid>, IDomainEntityBaseMetadata
     {
-        public Guid Id { get; set; }
+    }
+    public class Policy<TKey> : DomainEntityBaseMetadata<TKey>
+    where TKey : IEquatable<TKey>
+    {
+        public TKey Id { get; set; }
         public Guid PropertyId { get; set; }
         public string Name { get; set; }
         public int? CancellationBefore { get; set; }
@@ -17,7 +21,7 @@ namespace Domain
         
         public double PriceCoefficient { get; set; }
         
-        public ICollection<AvailabilityPolicies> PolicyAvailabilities { get; set; }
+        public ICollection<ReservationRooms> PolicyAvailabilities { get; set; }
 
     }
 }

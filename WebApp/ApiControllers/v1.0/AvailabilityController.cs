@@ -58,10 +58,9 @@ namespace WebApp.ApiControllers
         [HttpGet]
         [Route("checkdates")]
         [AllowAnonymous]
-        public async Task<ActionResult<IEnumerable<AvailabilityDTO>>> CheckDates([FromQuery]DateTime from, [FromQuery]DateTime to, [FromQuery] Guid pId)
+        public async Task<ActionResult<IEnumerable<AvailabilityDTO>>> CheckDates([FromQuery]DateTime from, [FromQuery]DateTime to, [FromQuery]Guid pId)
         {
-            var availability = (await _bll.Availabilities.FindAvailableDates(from, to, pId))
-               .Select(bllEntity => _mapper.Map(bllEntity));
+            var availability = (await _bll.Availabilities.FindAvailableDates(from, to, pId)).Select(bllEntity => _mapper.Map(bllEntity));
             return Ok(availability);
         }
        
@@ -74,13 +73,22 @@ namespace WebApp.ApiControllers
         [Consumes("application/json")]
         public async Task<ActionResult<AvailabilityDTO>> PostAvailability(AvailabilityDTO availability)
         {
+            if (await _bll.Availabilities.ExistsAsync(availability.From.Date, availability.To.Date))
+            {
+                return BadRequest(new MessageDTO("Dates exist"));
+            }
+       
             var entity = _mapper.Map(availability);
             _bll.Availabilities.Add(entity);
             await _bll.SaveChangesAsync();
-
-            foreach (var p in entity.AvailabilityPolicies)
+            
+            foreach (var dto in availability.PolicyDtos)
             {
-                _bll.AvailabilityPolicies.Add(new AvailabilityPolicies(){ AvailabilityId = entity.Id, PolicyId = p.Id });
+                _bll.AvailabilityPolicies.Add(new AvailabilityPolicies()
+                {
+                    PolicyId = dto.Id,
+                    AvailabilityId = entity.Id
+                });
             }
 
             await _bll.SaveChangesAsync();

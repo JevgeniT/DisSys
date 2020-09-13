@@ -1,11 +1,17 @@
 using System;
 using Contracts.DAL.Base;
+using DAL.Base;
 
 namespace Domain
 {
-    public class AvailabilityPolicies : IDomainEntityBaseMetadata
+    public class AvailabilityPolicies : AvailabilityPolicies<Guid>, IDomainEntityBaseMetadata
     {
-        public Guid Id { get; set; }
+        
+    }
+    public class AvailabilityPolicies<TKey> : DomainEntityBaseMetadata<TKey>
+        where TKey: IEquatable<TKey>
+    {
+        public TKey Id { get; set; }
 
         public Guid AvailabilityId { get; set; }
         public Availability? Availability { get; set; }

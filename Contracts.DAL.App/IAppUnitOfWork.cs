@@ -11,6 +11,7 @@ namespace Contracts.DAL.App
         IAvailabilityRepository Availabilities { get; }
         
         IAvailabilityPoliciesRepository AvailabilityPolicies { get; }
+        IReservationRoomsRepository ReservationRooms { get; }
 
         IExtraRepository Extras { get; }
 

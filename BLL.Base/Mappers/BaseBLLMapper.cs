@@ -25,10 +25,12 @@ namespace BLL.Base.Mappers
                 config.CreateMap<DAL.App.DTO.Property, BLL.App.DTO.Property>();
                 config.CreateMap<DAL.App.DTO.Facility, BLL.App.DTO.Facility>();
                 config.CreateMap<DAL.App.DTO.Availability, BLL.App.DTO.Availability>();
+                config.CreateMap<DAL.App.DTO.ReservationRooms, BLL.App.DTO.ReservationRooms>();
+                config.CreateMap<DAL.App.DTO.AvailabilityPolicies, BLL.App.DTO.AvailabilityPolicies>();
+
                 // config.CreateMap<DAL.App.DTO.Availability, BLL.App.DTO.Availability>().ForMember(availability => availability.Policies, opt=> opt.Ignore());
 
                 config.CreateMap<DAL.App.DTO.Policy, BLL.App.DTO.Policy>();
-                config.CreateMap<DAL.App.DTO.AvailabilityPolicies, BLL.App.DTO.AvailabilityPolicies>();
                 config.CreateMap<DAL.App.DTO.Reservation, BLL.App.DTO.Reservation>();
                 config.CreateMap<DAL.App.DTO.Review, BLL.App.DTO.Review>();
             }).CreateMapper();

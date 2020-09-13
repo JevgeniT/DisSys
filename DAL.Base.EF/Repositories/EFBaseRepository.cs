@@ -46,36 +46,28 @@ namespace DAL.Base.EF.Repositories
             return RepoDbSet.ToList().Select(domainEntity => Mapper.Map(domainEntity));
         }
 
-        public virtual async Task<IEnumerable<TDALEntity>> AllAsync()
+        public virtual async Task<IEnumerable<TDALEntity>> AllAsync(object? userId = null)
         {
             return (await RepoDbSet.ToListAsync()).Select(domainEntity => Mapper.Map(domainEntity));
         }
+        
 
-        public virtual TDALEntity Find(params object[] id)
+        public virtual async Task<TDALEntity> FirstOrDefaultAsync(TKey id, object? userId = null)
         {
-            return Mapper.Map(RepoDbSet.Find(id));
-        }
-
-        public virtual async Task<TDALEntity> FindAsync(params object[] id)
-        {
-            return Mapper.Map(await RepoDbSet.FindAsync(id));
+            return Mapper.Map(await RepoDbSet.FirstOrDefaultAsync(e => e.Id.Equals(id)));
         }
 
         public virtual TDALEntity Add(TDALEntity entity)
         {
-
             var dalEntity = Mapper.Map<TDALEntity, TDomainEntity>(entity);
-
             var trackedEntity = RepoDbSet.Add(dalEntity).Entity;
             RepoDbContext.AddToEntityTracker(trackedEntity,dalEntity);
-
             var result = Mapper.Map(trackedEntity);
             return result;
         }
 
         public virtual TDALEntity Update(TDALEntity entity)
         {
-
             return Mapper.Map(RepoDbSet.Update(Mapper.Map<TDALEntity, TDomainEntity>(entity)).Entity);
         }
 
@@ -84,11 +76,22 @@ namespace DAL.Base.EF.Repositories
             return Mapper.Map(RepoDbSet.Remove(Mapper.Map<TDALEntity, TDomainEntity>(entity)).Entity);
         }
 
-        public virtual TDALEntity Remove(params object[] id)
+        public virtual async Task <TDALEntity> RemoveAsync(params object[] id)
         {
-            return  Mapper.Map(RepoDbSet.Remove(RepoDbSet.Find(id)).Entity);
+            return Mapper.Map(RepoDbSet.Remove(await RepoDbSet.FindAsync(id)).Entity);
         }
 
-      
+        public virtual async Task<bool> ExistsAsync(TKey id, object? userId = null)
+        {
+            return await RepoDbSet.AnyAsync(e => e.Id.Equals(id));
+        }
+
+        protected IQueryable<TDomainEntity> PrepareQuery(object? userId = null)
+        {
+            var query = RepoDbSet.AsQueryable();
+            return query;
+
+        }
+
     }
 }

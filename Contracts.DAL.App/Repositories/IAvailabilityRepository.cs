@@ -11,18 +11,16 @@ namespace Contracts.DAL.App.Repositories
         IBaseRepository<Availability>
     {
     }
+    
     public interface IAvailabilityRepository<TKey, TDALEntity> : IBaseRepository<TKey,TDALEntity> 
         where TDALEntity : class, IDomainBaseEntity<TKey>, new() 
         where TKey : IEquatable<TKey>
     {
-  
-   
-        Task<IEnumerable<TDALEntity>> AllAsync(Guid? roomId = null);
-        Task<TDALEntity> FirstOrDefaultAsync(Guid id);
-
-        Task<bool> ExistsAsync(Guid id);
-        Task DeleteAsync(Guid id);
         
+        Task<IEnumerable<TDALEntity>> AllAsync(Guid? roomId = null);
+
+        Task<bool> ExistsAsync(DateTime from, DateTime to);
+
         Task<IEnumerable<TDALEntity>> FindAvailableDates(DateTime from, DateTime to, Guid? propertyId = null);
         
     }

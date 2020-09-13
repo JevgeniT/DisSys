@@ -142,7 +142,7 @@ namespace WebApp.ApiControllers._1._0
                 return NotFound();
             }
 
-            await _bll.Properties.DeleteAsync(id);
+            await _bll.Properties.RemoveAsync(id);
             await _bll.SaveChangesAsync();
 
             return Ok(property);

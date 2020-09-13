@@ -16,8 +16,9 @@ namespace DAL.App.EF
         public IRoomRepository Rooms => GetRepository<IRoomRepository>(() => new RoomRepository(UOWDbContext));
 
         public IAvailabilityRepository Availabilities => GetRepository<IAvailabilityRepository>(() => new AvailabilityRepository(UOWDbContext));
-        
         public IAvailabilityPoliciesRepository AvailabilityPolicies => GetRepository<IAvailabilityPoliciesRepository>(() => new AvailabilityPoliciesRepository(UOWDbContext));
+
+        public IReservationRoomsRepository ReservationRooms => GetRepository<IReservationRoomsRepository>(() => new ReservationRoomsRepository(UOWDbContext));
 
         public IExtraRepository Extras => GetRepository<IExtraRepository>(() => new ExtraRepository(UOWDbContext));
         public IFacilityRepository Facilities => GetRepository<IFacilityRepository>(() => new FacilityRepository(UOWDbContext));

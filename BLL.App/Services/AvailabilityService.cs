@@ -23,32 +23,19 @@ namespace BLL.App.Services
         {
             return (await ServiceRepository.AllAsync( roomId)).Select( dalEntity => Mapper.Map(dalEntity) );
         }
-
-        public async Task<Availability> FirstOrDefaultAsync(Guid id)
-        {
-            return  Mapper.Map(await ServiceRepository.FirstOrDefaultAsync(id));        
-        }
-
+        
         public async Task<IEnumerable<Availability>> FindAvailableDates(DateTime @from, DateTime to, Guid? PropertyId = null)
         {
-           
-            
             return (await ServiceRepository.FindAvailableDates(from, to, PropertyId)).Select( dalEntity => Mapper.Map(dalEntity) );
         }
         
-        public async Task<bool> ExistsAsync(Guid id)
+        public async Task<bool> ExistsAsync(DateTime from, DateTime to)
         {
-            return  await ServiceRepository.ExistsAsync(id);
-        }
-
-        public async Task DeleteAsync(Guid id)
-        {
-            await ServiceRepository.DeleteAsync(id);
+            return  await ServiceRepository.ExistsAsync(from, to);
         }
         
-        public  void ParseDate(List<Availability> list, DateTime From, DateTime To)
+        public async Task ParseDate(List<Availability> list, DateTime From, DateTime To) // TODO
         {
-             
             foreach (var available in list)
             {
                 if ((available.From == From && available.To > To) || (available.To == To && available.From>From))
@@ -63,7 +50,7 @@ namespace BLL.App.Services
                         // PolicyId = available.PolicyId
 
                     };
-                    
+                            
                         Add(availability);
                 } 
                 
@@ -93,6 +80,8 @@ namespace BLL.App.Services
 
                 }
             }
+
+            
         }
         
         

@@ -14,7 +14,7 @@ namespace Public.DTO
         
         public DateTime CheckOutDate { get; set; }
         
-        public ICollection<RoomDTO>? Rooms { get; set; }
+        // public ICollection<RoomDTO>? Rooms { get; set; }
 
         public Guid PropertyId { get; set; }
 
@@ -26,7 +26,8 @@ namespace Public.DTO
         
         public int Children { get; set; }
 
-        public Dictionary<string, int>? RoomsOrdered { get; set; }
+        // public Dictionary<string, int>? RoomsOrdered { get; set; }
+        public ICollection<RoomDTO>? RoomDtos { get; set; }
         public string? ReservedBy { get; set; }
     }
 }

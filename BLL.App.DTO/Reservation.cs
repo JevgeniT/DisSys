@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -18,15 +18,14 @@ namespace BLL.App.DTO
         where TKey: IEquatable<TKey>
     {
 
-        public  int ReservationNumber { get; set; }
+        public int ReservationNumber { get; set; }
 
         public  DateTime CheckInDate{ get; set; }
         
         public  DateTime CheckOutDate { get; set; }
 
-        public Guid RoomId { get; set; }
         
-        public ICollection<Room>? Rooms { get; set; }
+        public ICollection<ReservationRooms>? ReservationRooms { get; set; }
 
         public Guid PropertyId { get; set; }
         public decimal TotalPrice { get; set; }

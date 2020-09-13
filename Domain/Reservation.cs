@@ -5,7 +5,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Contracts.DAL.Base;
 using DAL.Base;
 using Domain.Identity;
-using Domain.Validation;
 
 namespace Domain
 {
@@ -22,19 +21,15 @@ namespace Domain
         
         public int ReservationNumber { get; set; }
 
-        [Availability]
         [Column(TypeName = "date")]
         [DataType(DataType.Date)]
         public DateTime CheckInDate{ get; set; }
         
-        [Availability]
         [Column(TypeName = "date")]
         [DataType(DataType.Date)]
         public DateTime CheckOutDate { get; set; }
-
-        public Guid RoomId { get; set; }
-
-        public ICollection<Room>? Rooms { get; set; }
+        
+        public ICollection<ReservationRooms>? ReservationRooms { get; set; }
 
         public Guid PropertyId { get; set; }
         public Property Property { get; set; }

@@ -34,6 +34,8 @@ namespace DAL.App.EF.Repositories
         {
 
             var res =  (await RepoDbContext.Reservations.Include(reservation => reservation.AppUser)
+                .Include(reservation => reservation.ReservationRooms)
+                .ThenInclude(rooms => rooms.Room)
                 .Where(reservation => reservation.PropertyId == propertyId && reservation.Property.AppUserId == userId)
                 .ToListAsync());
             return res.Select(reservation => Mapper.Map(reservation));

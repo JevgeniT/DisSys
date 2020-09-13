@@ -20,8 +20,8 @@ namespace DAL.App.EF.Repositories
         public async Task<IEnumerable< DAL.App.DTO.Availability>> AllAsync(Guid? roomId = null)
         {
             return (await RepoDbContext.Availabilities.Include(availability => availability.Room)
-                .Include(availability => availability.AvailabilityPolicies)
-                .ThenInclude(policies => policies.Policy)
+                // .Include(availability => availability.AvailabilityPolicies)
+                // .ThenInclude(policies => policies.Policy)
                 .Where(availability => availability.RoomId == roomId)
                 .ToListAsync()).Select(a => Mapper.Map(a));
         }
@@ -36,22 +36,21 @@ namespace DAL.App.EF.Repositories
         {
             var dates = $"'{from}' and '{to}'";
             
-            var query =   RepoDbSet.FromSqlRaw("select * from Availabilities where [FROM] between " + dates + " or [To] between " + dates)
+            var query = RepoDbSet.FromSqlRaw("select * from Availabilities where [FROM] between " + dates + " or [To] between " + dates)
                 .Include(availability => availability.Room)
-                // .Include(availability => availability.Policy)
+                .Include(availability => availability.AvailabilityPolicies)
+                .ThenInclude(policies => policies.Policy)
                 .Where(availability => availability.Room.PropertyId == propertyId);
-            
-            query.AsNoTracking();
+             query.AsNoTracking();
             
             return  (query.Where(a=> !a.IsUsed).AsNoTracking().Select(e => Mapper.Map(e)));
         }
-        
 
-        public async Task<bool> ExistsAsync(Guid id )
-        {
-            return await RepoDbSet.AnyAsync(a => a.Id == id);
-        }
         
+        public async Task<bool> ExistsAsync(DateTime from, DateTime to)
+        {
+            return await RepoDbSet.AnyAsync(a => a.From == from && a.To == to && a.IsUsed == false);
+        }
         public async Task DeleteAsync(Guid id)
         {
             var availability = await FirstOrDefaultAsync(id);

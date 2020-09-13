@@ -20,9 +20,7 @@ namespace BLL.Base.Services
     {
         public BaseEntityService( TUnitOfWork unitOfWork , IBaseBLLMapper<TDALEntity,TBLLEntity> mapper, TServiceRepository serviceRepository )
             :base(unitOfWork, mapper, serviceRepository)
-        {
-            
-        }
+        { }
     }
     
 
@@ -51,18 +49,19 @@ namespace BLL.Base.Services
         }
 
 
-        public virtual IEnumerable<TBLLEntity> All() =>
-            ServiceRepository.All().Select(entity => Mapper.Map<TDALEntity, TBLLEntity>(entity));
-
-        public virtual async Task<IEnumerable<TBLLEntity>> AllAsync() =>
+        public virtual async Task<IEnumerable<TBLLEntity>> AllAsync(object? userId = null) =>
             (await ServiceRepository.AllAsync()).Select(entity => Mapper.Map<TDALEntity, TBLLEntity>(entity));
 
-        public virtual TBLLEntity Find(params object[] id) =>
-            Mapper.Map<TDALEntity, TBLLEntity>(ServiceRepository.Find(id));
 
-        public virtual async Task<TBLLEntity> FindAsync(params object[] id) =>
-            Mapper.Map<TDALEntity, TBLLEntity>(await ServiceRepository.FindAsync(id));
+     
 
+        public virtual async Task<TBLLEntity> FirstOrDefaultAsync(TKey id, object? userId = null)
+        {
+            var dalEntity = await ServiceRepository.FirstOrDefaultAsync(id, userId);
+            var result = Mapper.Map(dalEntity);
+            return result;
+        }
+        
         public virtual TBLLEntity Add(TBLLEntity entity)
         {
             var dalEntity = Mapper.Map<TBLLEntity, TDALEntity>(entity);
@@ -80,7 +79,11 @@ namespace BLL.Base.Services
             Mapper.Map<TDALEntity, TBLLEntity>(ServiceRepository.Remove(Mapper.Map<TBLLEntity, TDALEntity>(entity)));
 
 
-        public virtual TBLLEntity Remove(params object[] id) =>
-            Mapper.Map<TDALEntity, TBLLEntity>(ServiceRepository.Remove(id));
+        public virtual async Task <TBLLEntity> RemoveAsync(params object[] id) =>
+            Mapper.Map<TDALEntity, TBLLEntity>(await ServiceRepository.RemoveAsync(id));
+        
+        public virtual async Task <bool> ExistsAsync(TKey id, object? userId = null) =>
+            await ServiceRepository.ExistsAsync(id, userId);
+        
     }
 }

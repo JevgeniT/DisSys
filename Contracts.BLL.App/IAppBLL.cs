@@ -18,8 +18,9 @@ namespace Contracts.BLL.App
         public IReviewService  Reviews{ get; }
 
         public IAvailabilityService Availabilities { get; }
-
         public IAvailabilityPoliciesService AvailabilityPolicies { get; }
+
+        public IReservationRoomsService ReservationRooms { get; }
 
 
 

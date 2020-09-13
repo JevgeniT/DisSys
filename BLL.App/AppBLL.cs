@@ -27,5 +27,8 @@ using Contracts.DAL.App;
         public IAvailabilityService Availabilities => GetService<IAvailabilityService>(() => new AvailabilityService(UnitOfWork));
         
         public IAvailabilityPoliciesService AvailabilityPolicies => GetService<IAvailabilityPoliciesService>(() => new AvailabilityPoliciesService(UnitOfWork));
+
+        
+        public IReservationRoomsService ReservationRooms => GetService<IReservationRoomsService>(() => new ReservationRoomsService(UnitOfWork));
     }
 } 

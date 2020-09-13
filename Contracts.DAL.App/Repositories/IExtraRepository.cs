@@ -7,24 +7,16 @@ using DAL.App.DTO;
  
 namespace Contracts.DAL.App.Repositories
 {
- public interface IExtraRepository : IExtraRepository<Guid, Extra>,
-  IBaseRepository<Extra>
- {
- }
- public interface IExtraRepository<TKey, TDALEntity> : IBaseRepository<TKey,TDALEntity> 
-  where TDALEntity : class, IDomainBaseEntity<TKey>, new() 
-  where TKey : IEquatable<TKey>
- {
-  
-   
-  Task<IEnumerable<TDALEntity>> AllAsync(Guid? userId = null);
-  Task<TDALEntity> FirstOrDefaultAsync(Guid id, Guid? userId = null);
+      public interface IExtraRepository : IExtraRepository<Guid, Extra>,
+        IBaseRepository<Extra>
+      {
+      }
+      public interface IExtraRepository<TKey, TDALEntity> : IBaseRepository<TKey,TDALEntity> 
+        where TDALEntity : class, IDomainBaseEntity<TKey>, new() 
+        where TKey : IEquatable<TKey>
+      {
 
-  Task<bool> ExistsAsync(Guid id, Guid? userId = null);
-  Task DeleteAsync(Guid id, Guid? userId = null);
-        
-     
- }
+      }
 
   
 }

@@ -43,7 +43,7 @@ namespace WebApp.ApiControllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ReviewDTO>>> GetReviews([FromQuery] Guid pId)
         {
-            // var reviews = (await _bll.Reviews.AllAsync()).Select(r=> _mapper.Map(r));             
+            // var reviews = (await _bll.Reviews.AllAsync()).Select(r=> _mapper.Map(r));
             var reviews = (await _bll.Reviews.PropertyReviews(pId)).Select(r=> _mapper.Map(r));
             return Ok(reviews);
         }
@@ -57,7 +57,7 @@ namespace WebApp.ApiControllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ReviewDTO>> GetReview(Guid id)
         {
-            var review = await _bll.Reviews.FindAsync(id);
+            var review = await _bll.Reviews.FirstOrDefaultAsync(id);
 
             if (review == null)
             {

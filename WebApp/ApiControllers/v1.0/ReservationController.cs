@@ -41,7 +41,7 @@ namespace WebApp.ApiControllers._1._0
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ReservationDTO>>> GetReservations([FromQuery]Guid? pId)
         {
-            var reservations = (await _bll.Reservations.AllForPropertyAsync(User.UserGuidId(), pId))
+            var reservations = (await _bll.Reservations.AllForPropertyAsync(User.UserGuidId(), pId)) // todo
                 .Select(res => _mapper.Map(res));
             return Ok(reservations);
         }
@@ -98,21 +98,26 @@ namespace WebApp.ApiControllers._1._0
         [HttpPost]
         public async Task<ActionResult<ReservationDTO>> PostReservation(ReservationDTO reservation)
         {
-          
             var bllReservation = _mapper.Map(reservation);
-            
-            var available = await _bll.Availabilities.FindAvailableDates(bllReservation.CheckInDate,bllReservation.CheckOutDate,bllReservation.PropertyId);
-            
-            _bll.Availabilities.ParseDate(new List<Availability>(available.ToList()), bllReservation.CheckInDate, bllReservation.CheckOutDate);
+            var available = await _bll.Availabilities.FindAvailableDates(bllReservation.CheckInDate,bllReservation.CheckOutDate,bllReservation.PropertyId); // todo 
             
             if (!available.Any())
             {
                 return BadRequest(new MessageDTO("No dates available"));
             }
-
+            
+            await  _bll.Availabilities.ParseDate(new List<Availability>(available.ToList()), bllReservation.CheckInDate, bllReservation.CheckOutDate);
+            
+            bllReservation.AppUserId = User.UserGuidId();
             _bll.Reservations.Add(bllReservation);
             await _bll.SaveChangesAsync();
 
+            foreach (var room in reservation.RoomDtos)
+            {
+                _bll.ReservationRooms.Add(new ReservationRooms(){ReservationId = bllReservation.Id , RoomId = room.Id});
+            }
+            
+            await _bll.SaveChangesAsync();
             reservation.Id = bllReservation.Id;
             
             return CreatedAtAction("GetReservation", new { id = reservation.Id }, reservation);

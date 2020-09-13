@@ -26,18 +26,8 @@ namespace BLL.App.Services
 
         public async Task<Policy> FirstOrDefaultAsync(Guid id, Guid? propertyId = null)
         {
-            return    Mapper.Map(await ServiceRepository.FirstOrDefaultAsync(id, propertyId));        
+            return   Mapper.Map(await ServiceRepository.FirstOrDefaultAsync(id, propertyId));        
         }
 
-        public async Task<bool> ExistsAsync(Guid id)
-        {
-            return  await ServiceRepository.ExistsAsync(id);
-        }
-
-        public async Task DeleteAsync(Guid id, Guid? userId = null)
-        {
-            await ServiceRepository.DeleteAsync(id, userId);
-           
-        }
     }
 }

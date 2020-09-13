@@ -23,8 +23,8 @@ namespace DAL.App.DTO
         
         public DateTime CheckOutDate { get; set; }
 
-        public Guid RoomId { get; set; }
-
+        public ICollection<ReservationRooms>? ReservationRooms { get; set; }
+        
         public decimal TotalPrice { get; set; }
 
         public  Guid PropertyId { get; set; }        

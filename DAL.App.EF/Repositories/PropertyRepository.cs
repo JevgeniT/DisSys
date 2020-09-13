@@ -18,18 +18,16 @@ namespace DAL.App.EF.Repositories
         {
         }     
 
-        public async Task<IEnumerable<DAL.App.DTO.Property>> AllAsync(Guid? userId = null)
+        public override async Task<IEnumerable<DAL.App.DTO.Property>> AllAsync(object? userId = null)
         {
-            if (userId == null)
-            {
-                return await base.AllAsync();
-            }
-            return (await RepoDbSet.Where(o => o.AppUserId == userId)
-                .Include(property => property.PropertyRooms)
-                .ToListAsync()).Select(domainEntity => Mapper.Map(domainEntity));
-
+            
+            var query = PrepareQuery(userId);
+            var entities = await query.ToListAsync();
+            return entities.Select(domainEntity => Mapper.Map(domainEntity));
+            
         }
- 
+
+
         public  async Task<IEnumerable<DAL.App.DTO.Property>> FindAsync(DateTime? from, DateTime? to, string input)
         {
             if (from == null && to == null )
@@ -56,7 +54,7 @@ namespace DAL.App.EF.Repositories
         
         
         
-        public async Task<DAL.App.DTO.Property> FirstOrDefaultAsync(Guid id, Guid? userId = null)
+        public virtual async Task<DAL.App.DTO.Property> FirstOrDefaultAsync(Guid id, Guid? userId = null)
         {
             var query = RepoDbSet.Where(a => a.Id == id)     
                 .Include(p => p.Reviews)
@@ -75,26 +73,7 @@ namespace DAL.App.EF.Repositories
             
             return Mapper.Map(a);
         }
-
-      
-        public async Task<bool> ExistsAsync(Guid id, Guid? userId = null)
-        {
-            if (userId == null)
-            {
-                return await RepoDbSet.AnyAsync(a => a.Id == id);
-            }
-
-            return await RepoDbSet.AnyAsync(a => a.Id == id && a.Id == userId);
-        }
         
-        public async Task DeleteAsync(Guid id, Guid? userId = null)
-        {
-            var property = await FirstOrDefaultAsync(id, userId);
-            base.Remove(property);
-        }
-
-
-      
     }
        
 }

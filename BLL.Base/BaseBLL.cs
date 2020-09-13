@@ -17,7 +17,7 @@ namespace BLL.Base
             UnitOfWork = unitOfWork;
         }
         
-        public  Task<int> SaveChangesAsync()
+        public Task<int> SaveChangesAsync()
         {
             return  UnitOfWork.SaveChangesAsync();
         }

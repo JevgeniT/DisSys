@@ -7,8 +7,9 @@ using Domain.Identity;
 
 namespace Domain
 {
-    public class Property : Property<Guid, AppUser>, IDomainEntity
+    public class Property : Property<Guid, AppUser>, IDomainEntityBaseMetadata, IDomainEntityUser<AppUser>
     {
+        
     }
     public class Property<TKey, TUser> : DomainEntityBaseMetadata<TKey>, IDomainEntityUser<TKey, TUser>
         where TKey : IEquatable<TKey>

@@ -19,6 +19,7 @@ namespace Domain
 
 
         public TKey AppUserId { get; set; } = default!;
+        
         public TUser? AppUser { get; set; }
 
         public bool IsPaid { get; set; }

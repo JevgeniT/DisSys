@@ -15,24 +15,23 @@ namespace Public.DTO.Mappers
             MapperConfigurationExpression.CreateMap<Room, RoomViewDTO>();
 
             MapperConfigurationExpression.CreateMap<Property, PropertyViewDTO>()
-                .ForMember(dto => dto.Score, opt=> 
-                    opt.MapFrom(property => property.Reviews.Count==0? 0.0 :
-                        Math.Round(property.Reviews.Average(review => review.Score),1)));
+                .ForMember(dto => dto.Score, opt=> opt.MapFrom(property => property.Reviews.Count==0? 0.0 :
+                        Math.Round(property.Reviews.Average(review => review.Score),1)))
+                .ForMember(dto => dto.Room, opt=> 
+                    opt.MapFrom(property => property.PropertyRooms.OrderByDescending(room => 
+                        room.RoomAvailabilities.Min(availability => availability.PricePerNightForAdult)).Reverse().FirstOrDefault()));
+                ;
             
             MapperConfigurationExpression.CreateMap<Property, PropertyDTO>()
                 .ForMember(dto => dto.Score, opt=> 
                     opt.MapFrom(property => property.Reviews.Count==0? 0.0 :
                         Math.Round(property.Reviews.Average(review => review.Score),1)));
             
-            MapperConfigurationExpression.CreateMap<Property, PropertyViewDTO>().ForMember(
-                dto => dto.Room, opt=> 
+            MapperConfigurationExpression.CreateMap<Property, PropertyViewDTO>()
+                .ForMember(dto => dto.Room, opt=> 
                     opt.MapFrom(property => property.PropertyRooms.OrderByDescending(room => 
                         room.RoomAvailabilities.Min(availability => availability.PricePerNightForAdult)).Reverse().FirstOrDefault()));
 
-            MapperConfigurationExpression.CreateMap<Room, RoomViewDTO>().ForMember(
-                dto => dto.Price, opt=> 
-                    opt.MapFrom(room => room.RoomAvailabilities.Min(a => a.PricePerNightForAdult)));
-            
             Mapper = new Mapper(new MapperConfiguration(MapperConfigurationExpression));
         }
 

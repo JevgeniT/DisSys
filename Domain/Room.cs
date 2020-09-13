@@ -1,12 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using Contracts.DAL.Base;
+using DAL.Base;
 
 namespace Domain
 {
-    public class Room : IDomainEntityBaseMetadata
+    public class Room : Room<Guid>, IDomainEntityBaseMetadata
     {
-        public Guid Id { get; set; }
+        
+    }
+    public class Room<TKey> : DomainEntityBaseMetadata<TKey>
+        where TKey: IEquatable<TKey>
+    {
+        public TKey Id { get; set; }
         public string? Name { get; set; }
         
         public int AdultsOccupancy { get; set; }

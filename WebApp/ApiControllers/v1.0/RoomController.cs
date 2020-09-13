@@ -113,14 +113,13 @@ namespace WebApp.ApiControllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<RoomDTO>> DeleteRoom(Guid id)
         {
-            var room = await _bll.Rooms.FindAsync(id);
-            
+            var room = await _bll.Rooms.FirstOrDefaultAsync(id);
             if (room == null)
             {
                 return NotFound();
             }
         
-            await _bll.Rooms.DeleteAsync(id);
+            await _bll.Rooms.RemoveAsync(id);
             await _bll.SaveChangesAsync();
         
             return Ok(room);

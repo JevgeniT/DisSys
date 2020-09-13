@@ -3,9 +3,12 @@ using Contracts.DAL.Base;
 
 namespace DAL.App.DTO
 {
-    public class HouseRules : IDomainEntityBaseMetadata
+    public class HouseRules: HouseRules<Guid>, IDomainBaseEntity
+    {}
+    public class HouseRules<TKey> : IDomainBaseEntity<TKey>
+    where TKey: IEquatable<TKey>
     {
-        public Guid Id { get; set; }
+        public TKey Id { get; set; }
         public Guid PropertyId { get; set; }
         public DateTime CheckInFrom { get; set; }
         public DateTime CheckInTo { get; set; }
