@@ -8,7 +8,7 @@ using Domain;
 namespace DAL.App.EF.Repositories
 {
     public class AvailabilityPoliciesRepository : 
-        EFBaseRepository<AppDbContext,AvailabilityPolicies,  DAL.App.DTO.AvailabilityPolicies>,  IAvailabilityPoliciesRepository
+        EFBaseRepository<AppDbContext, Domain.Identity.AppUser,AvailabilityPolicies,  DAL.App.DTO.AvailabilityPolicies>,  IAvailabilityPoliciesRepository
     {
         public AvailabilityPoliciesRepository(AppDbContext dbContext) 
             :base(dbContext, new DALMapper<AvailabilityPolicies,  DAL.App.DTO.AvailabilityPolicies>())

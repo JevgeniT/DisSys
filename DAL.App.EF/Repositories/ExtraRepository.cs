@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.App.EF.Repositories
 {
-    public class ExtraRepository : EFBaseRepository<AppDbContext,Extra, DAL.App.DTO.Extra>,  IExtraRepository
+    public class ExtraRepository : EFBaseRepository<AppDbContext, Domain.Identity.AppUser, Extra, DAL.App.DTO.Extra>,  IExtraRepository
     {
         public ExtraRepository(AppDbContext dbContext) : base(dbContext, new BaseDALMapper<Extra, DAL.App.DTO.Extra>())
         {
@@ -47,7 +47,7 @@ namespace DAL.App.EF.Repositories
         public async Task DeleteAsync(Guid id, Guid? userId = null)
         {
             var extra = await FirstOrDefaultAsync(id, userId);
-            base.Remove(extra);
+            base.RemoveAsync(extra);
         }
     }
 }

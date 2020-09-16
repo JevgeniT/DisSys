@@ -17,5 +17,7 @@ namespace DAL.App.DTO
 
         public Guid PolicyId { get; set; }
         public Policy? Policy { get; set; }
+
+        public bool Active { get; set; }
     }
 }

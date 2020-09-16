@@ -29,7 +29,7 @@ namespace Domain
         public Room? Room { get; set; }
 
         public ICollection<AvailabilityPolicies>? AvailabilityPolicies { get; set; }
-        public bool IsUsed { get; set; } = false;
+        public bool Active { get; set; } = false;
         
         [Column(TypeName = "decimal(18,2)")]
         public decimal PricePerNightForAdult { get; set; }

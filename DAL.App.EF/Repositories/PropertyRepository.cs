@@ -11,7 +11,7 @@ using Property = Domain.Property;
 namespace DAL.App.EF.Repositories
 {
     public class PropertyRepository :
-        EFBaseRepository<AppDbContext, Property, DAL.App.DTO.Property>,  IPropertyRepository
+        EFBaseRepository<AppDbContext,Domain.Identity.AppUser, Property, DAL.App.DTO.Property>,  IPropertyRepository
     {
         public PropertyRepository(AppDbContext dbContext) :
             base(dbContext, new DALMapper<Property, DAL.App.DTO.Property>())
@@ -20,11 +20,9 @@ namespace DAL.App.EF.Repositories
 
         public override async Task<IEnumerable<DAL.App.DTO.Property>> AllAsync(object? userId = null)
         {
-            
             var query = PrepareQuery(userId);
-            var entities = await query.ToListAsync();
+            var entities = await query.Include(property => property.PropertyRooms).ToListAsync();
             return entities.Select(domainEntity => Mapper.Map(domainEntity));
-            
         }
 
 
@@ -34,46 +32,36 @@ namespace DAL.App.EF.Repositories
             {
                 return (await RepoDbSet
                     .Where(o => o.Country!.Contains(input) 
-                                || o.Name!.Contains(input))
+                                || o.Name!.Contains(input)
+                                || o.Address.Contains(input))
                     .Include(p=>p.Reviews)
-                    .ToListAsync())
-                    .Select(domainEntity => Mapper.Map(domainEntity));
+                    .ToListAsync()).Select(domainEntity => Mapper.Map(domainEntity));
             }
 
             return (await RepoDbSet
                     .Include(p=>p.Reviews)
                     .Include(p=>p.PropertyRooms)
                     .ThenInclude(r => r.RoomAvailabilities)
-                    .Where(o => o.Country!.Contains(input) || o.Name!.Contains(input) && 
-                                    o.PropertyRooms.Any(room => room.RoomAvailabilities.Any(availability => 
-                                        availability.From >= from && availability.To >= to && availability.From.Month == from.Value.Month))) // todo fix upper bound
+                    .Where(o => o.Country!.Contains(input) || o.Name!.Contains(input) 
+                        && o.PropertyRooms.Any(room => room.RoomAvailabilities.Any(availability => 
+                                        availability.From >= from 
+                                        && availability.To >= to
+                                        && availability.From.Month == from.Value.Month))) // todo fix upper bound
                     .ToListAsync())
                 .Select(domainEntity => Mapper.Map(domainEntity));
 
         }
         
-        
-        
-        public virtual async Task<DAL.App.DTO.Property> FirstOrDefaultAsync(Guid id, Guid? userId = null)
+        public override async Task<DAL.App.DTO.Property> FirstOrDefaultAsync(Guid id, object? userId = null)
         {
-            var query = RepoDbSet.Where(a => a.Id == id)     
-                .Include(p => p.Reviews)
-                .AsNoTracking();
-            
-            if (userId != null)
-            {
-                query = query.Where(a => a.Id == userId);
-            }
-            
-            var a = (await query.FirstOrDefaultAsync());
-            a.PropertyRooms = (await RepoDbContext.Rooms
-                .Include(room => room.RoomFacilities)
-                .AsNoTracking().Where(room => room.PropertyId == id)
-                .ToListAsync());
-            
-            return Mapper.Map(a);
+            var query = (await RepoDbSet
+                    .AsNoTracking()
+                    .Include(p => p.Reviews)
+                    .Include(property => property.PropertyRooms)
+                    .ThenInclude(room => room.RoomFacilities)
+                    .FirstOrDefaultAsync(a => a.Id == id));
+            return Mapper.Map(query);
         }
-        
     }
        
 }

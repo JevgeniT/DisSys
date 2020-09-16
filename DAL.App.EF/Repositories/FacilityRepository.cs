@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.App.EF.Repositories
 {
-    public class FacilityRepository : EFBaseRepository<AppDbContext, Facility, DAL.App.DTO.Facility>,  IFacilityRepository
+    public class FacilityRepository : EFBaseRepository<AppDbContext,Domain.Identity.AppUser, Facility, DAL.App.DTO.Facility>,  IFacilityRepository
     {
         public FacilityRepository(AppDbContext dbContext) :  base(dbContext, new BaseDALMapper<Facility, DAL.App.DTO.Facility>())
         {
@@ -45,7 +45,7 @@ namespace DAL.App.EF.Repositories
         public async Task DeleteAsync(Guid id, Guid? userId = null)
         {
             var facility = await FirstOrDefaultAsync(id, userId);
-            base.Remove(facility);
+            base.RemoveAsync(facility);
         }
     }
 }

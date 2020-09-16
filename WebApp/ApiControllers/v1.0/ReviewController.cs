@@ -88,7 +88,7 @@ namespace WebApp.ApiControllers
 
             }
 
-            _bll.Reviews.Update(_mapper.Map(review));
+            await _bll.Reviews.UpdateAsync(_mapper.Map(review));
             await _bll.SaveChangesAsync();
             return NoContent();
         }
@@ -130,7 +130,7 @@ namespace WebApp.ApiControllers
                 return NotFound();
             }
 
-            _bll.Reviews.Remove(review);
+            await _bll.Reviews.RemoveAsync(review);
             
             await _bll.SaveChangesAsync();
 

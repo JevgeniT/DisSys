@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.App.EF.Repositories
 {
-    public class ReservationRepository : EFBaseRepository<AppDbContext,Reservation, DAL.App.DTO.Reservation>,  IReservationRepository
+    public class ReservationRepository : EFBaseRepository<AppDbContext, Domain.Identity.AppUser,Reservation, DAL.App.DTO.Reservation>,  IReservationRepository
     {
         public ReservationRepository(AppDbContext dbContext) : base(dbContext, new DALMapper<Reservation, DAL.App.DTO.Reservation>())
         {
@@ -64,7 +64,7 @@ namespace DAL.App.EF.Repositories
         public async Task DeleteAsync(Guid id, Guid? userId = null)
         {
             var reservation = await FirstOrDefaultAsync(id, userId);
-            base.Remove(reservation);
+            base.RemoveAsync(reservation);
         }
      
     }

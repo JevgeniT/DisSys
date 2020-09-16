@@ -10,7 +10,7 @@ using Public.DTO;
 
 namespace DAL.App.EF.Repositories
 {
-    public class  RoomRepository : EFBaseRepository<AppDbContext,Room, DAL.App.DTO.Room>,  IRoomRepository
+    public class  RoomRepository : EFBaseRepository<AppDbContext,Domain.Identity.AppUser,Room, DAL.App.DTO.Room>,  IRoomRepository
     {
         public RoomRepository(AppDbContext dbContext) :base(dbContext, new DALMapper<Room, DAL.App.DTO.Room>())
         {
@@ -56,7 +56,7 @@ namespace DAL.App.EF.Repositories
         public async Task DeleteAsync(Guid id, Guid? userId = null)
         {
             var room = await FirstOrDefaultAsync(id, userId);
-            base.Remove(room);
+            base.RemoveAsync(room);
         }
        
     }

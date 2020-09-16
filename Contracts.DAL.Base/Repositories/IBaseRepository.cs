@@ -13,12 +13,12 @@ namespace Contracts.DAL.Base.Repositories
         where TDALEntity : class, IDomainBaseEntity<TKey>, new() 
         where TKey : IEquatable<TKey>
     {
-        Task<IEnumerable<TDALEntity>> AllAsync(object? userId = null);
         TDALEntity Add(TDALEntity entity);
+        Task<IEnumerable<TDALEntity>> AllAsync(object? userId = null);
         Task<TDALEntity> FirstOrDefaultAsync(TKey id, object? userId = null);
-        TDALEntity Update(TDALEntity entity);
-        TDALEntity Remove(TDALEntity entity);
-        Task <TDALEntity> RemoveAsync(params object[] id);
+        Task<TDALEntity>  UpdateAsync(TDALEntity entity, object? userId = null);
+        Task<TDALEntity>  RemoveAsync(TDALEntity entity, object? userId = null);
+        Task <TDALEntity> RemoveAsync(TKey id, object? userId = null);
         Task<bool> ExistsAsync(TKey id, object? userId = null);
     }
 }

@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.App.EF.Repositories
 {
-    public class ReviewRepository : EFBaseRepository<AppDbContext,Review, DAL.App.DTO.Review>,  IReviewRepository
+    public class ReviewRepository : EFBaseRepository<AppDbContext,Domain.Identity.AppUser,Review, DAL.App.DTO.Review>,  IReviewRepository
     {
         public ReviewRepository(AppDbContext dbContext) : base(dbContext, new BaseDALMapper<Review, DAL.App.DTO.Review>())
         {
@@ -54,7 +54,7 @@ namespace DAL.App.EF.Repositories
         public async Task DeleteAsync(Guid id, Guid? userId = null)
         {
             var review = await FirstOrDefaultAsync(id, userId);
-            base.Remove(review);
+            base.RemoveAsync(review);
         }
        
     }

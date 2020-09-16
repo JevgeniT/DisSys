@@ -45,7 +45,7 @@ namespace BLL.App.Services
                         From = From == available.From ? To : available.From,
                         To = To == available.To ? From : available.To,
                         PricePerNightForAdult = available.PricePerNightForAdult,
-                        IsUsed = false,
+                        Active = false,
                         RoomId = available.RoomId,
                         // PolicyId = available.PolicyId
 
@@ -58,7 +58,7 @@ namespace BLL.App.Services
                 {
                     Add(new Availability{ 
                             From = available.From, To = From,
-                            IsUsed = false, 
+                            Active = false, 
                             PricePerNightForAdult = available.PricePerNightForAdult,
                             RoomId = available.RoomId,
                             // PolicyId = available.PolicyId
@@ -67,7 +67,7 @@ namespace BLL.App.Services
                     Add(new Availability
                         {
                             From = available.To, To = available.To,
-                            IsUsed = false, 
+                            Active = false, 
                             PricePerNightForAdult = available.PricePerNightForAdult ,
                             RoomId = available.RoomId,
                             // PolicyId = available.PolicyId
@@ -75,8 +75,8 @@ namespace BLL.App.Services
                 }
                 else if (available.From == From && available.To == To)
                 {
-                    available.IsUsed = true;
-                    Update(available);
+                    available.Active = true;
+                    UpdateAsync(available);
 
                 }
             }

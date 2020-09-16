@@ -1,15 +1,15 @@
 #pragma warning disable 1591
 using System;
 using System.IdentityModel.Tokens.Jwt;
-using System.IO;
-using System.Reflection;
 using System.Text;
 using BLL.App;
+using Cache;
 using Contracts.BLL.App;
 using Contracts.DAL.App;
 using Contracts.DAL.Base;
 using DAL.App.EF;
 using Domain.Identity;
+using EasyCaching.Core.Configurations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Hosting;
@@ -21,6 +21,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using StackExchange.Redis;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using WebApp.Helpers;
 
@@ -28,8 +29,7 @@ namespace WebApp
 {
     public class Startup
     {
-        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-
+ 
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -43,20 +43,7 @@ namespace WebApp
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("MsSqlConnection")));
-            services.AddCors(options =>
-            {
-                options.AddPolicy(name: MyAllowSpecificOrigins,
-                    builder =>
-                    {
-                        builder.WithOrigins("https://localhost:5001/api/v1.0/",
-                            "http://localhost:8080");
-                    });
-            });
-            
-            services.AddCors(options => options.AddPolicy("ApiCorsPolicy", builder =>
-            {
-                builder.WithOrigins("https://localhost:8080/").AllowAnyMethod().AllowAnyHeader();
-            }));
+          
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddApiVersioning(options =>
             {
@@ -66,14 +53,16 @@ namespace WebApp
             services.AddVersionedApiExplorer( options => options.GroupNameFormat = "'v'VVV" );
             services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
             services.AddSwaggerGen();
-
-
+ 
             services.AddScoped<IAppUnitOfWork, AppUnitOfWork>();
             services.AddScoped<IUserNameProvider, UserNameProvider>();
             services.AddScoped<IAppBLL, AppBLL>();
+            services.AddResponseCaching();
+             services.AddSingleton<IConnectionMultiplexer>(_ =>
+                            ConnectionMultiplexer.Connect(Configuration.GetValue<string>("RedisCacheSettings")));
+            services.AddSingleton<IResponseCacheService, ResponseCacheService>();
 
-
-
+            services.AddSingleton<IResponseCacheService, ResponseCacheService>();
             services.AddIdentity<AppUser, AppRole>()
                  .AddDefaultUI()
                 .AddEntityFrameworkStores<AppDbContext>()
@@ -147,7 +136,7 @@ namespace WebApp
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseCors("CorsPolicy");
-            
+            app.UseResponseCaching();
             app.UseSwagger();
             app.UseSwaggerUI(options =>
             {

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.App.EF.Repositories
 {
-    public class InvoiceRepository : EFBaseRepository<AppDbContext,Domain.Invoice,DAL.App.DTO.Invoice>,  IInvoiceRepository
+    public class InvoiceRepository : EFBaseRepository<AppDbContext,Domain.Identity.AppUser,Domain.Invoice,DAL.App.DTO.Invoice>,  IInvoiceRepository
     {
         public InvoiceRepository(AppDbContext dbContext) : base(dbContext, new BaseDALMapper<Domain.Invoice, DAL.App.DTO.Invoice>())
         {
@@ -48,7 +48,7 @@ namespace DAL.App.EF.Repositories
         public async Task DeleteAsync(Guid id, Guid? userId = null)
         {
             var invoice = await FirstOrDefaultAsync(id, userId);
-            base.Remove(invoice);
+            base.RemoveAsync(invoice);
         }
         
          

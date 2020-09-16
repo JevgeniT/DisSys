@@ -17,6 +17,5 @@ namespace Contracts.DAL.App.Repositories
   {
 
         Task<IEnumerable<TDALEntity>> FindAsync(DateTime? from, DateTime? to, string input);
-        
-    }
+  }
 }

@@ -50,11 +50,9 @@ namespace BLL.Base.Services
 
 
         public virtual async Task<IEnumerable<TBLLEntity>> AllAsync(object? userId = null) =>
-            (await ServiceRepository.AllAsync()).Select(entity => Mapper.Map<TDALEntity, TBLLEntity>(entity));
+            (await ServiceRepository.AllAsync(userId)).Select(entity => Mapper.Map<TDALEntity, TBLLEntity>(entity));
 
-
-     
-
+        
         public virtual async Task<TBLLEntity> FirstOrDefaultAsync(TKey id, object? userId = null)
         {
             var dalEntity = await ServiceRepository.FirstOrDefaultAsync(id, userId);
@@ -71,15 +69,15 @@ namespace BLL.Base.Services
             return res;
         }
 
-        public virtual TBLLEntity Update(TBLLEntity entity) =>
-            Mapper.Map<TDALEntity, TBLLEntity>(ServiceRepository.Update(Mapper.Map<TBLLEntity, TDALEntity>(entity)));
+        public virtual async Task<TBLLEntity>UpdateAsync(TBLLEntity entity, object? userId = null) =>
+            Mapper.Map<TDALEntity, TBLLEntity>(await ServiceRepository.UpdateAsync(Mapper.Map<TBLLEntity, TDALEntity>(entity)));
         
 
-        public virtual TBLLEntity Remove(TBLLEntity entity) =>
-            Mapper.Map<TDALEntity, TBLLEntity>(ServiceRepository.Remove(Mapper.Map<TBLLEntity, TDALEntity>(entity)));
+        public virtual async Task<TBLLEntity> RemoveAsync(TBLLEntity entity, object? userId = null) =>
+            Mapper.Map<TDALEntity, TBLLEntity>(await ServiceRepository.RemoveAsync(Mapper.Map<TBLLEntity, TDALEntity>(entity)));
 
 
-        public virtual async Task <TBLLEntity> RemoveAsync(params object[] id) =>
+        public virtual async Task <TBLLEntity> RemoveAsync(TKey id, object? userId = null) =>
             Mapper.Map<TDALEntity, TBLLEntity>(await ServiceRepository.RemoveAsync(id));
         
         public virtual async Task <bool> ExistsAsync(TKey id, object? userId = null) =>

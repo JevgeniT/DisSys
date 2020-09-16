@@ -115,7 +115,7 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             } 
             
-            _bll.Availabilities.Update(_mapper.Map(availability));
+            _bll.Availabilities.UpdateAsync(_mapper.Map(availability));
             await _bll.SaveChangesAsync();
             return NoContent();
         }

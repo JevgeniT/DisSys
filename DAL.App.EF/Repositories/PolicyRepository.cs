@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.App.EF.Repositories
 {
-    public class PolicyRepository : EFBaseRepository<AppDbContext,Policy, DAL.App.DTO.Policy>,  IPolicyRepository
+    public class PolicyRepository : EFBaseRepository<AppDbContext, Domain.Identity.AppUser,Policy, DAL.App.DTO.Policy>,  IPolicyRepository
     {
         public PolicyRepository(AppDbContext dbContext) : base(dbContext, new DALMapper<Policy, DAL.App.DTO.Policy>())
         {
@@ -40,7 +40,7 @@ namespace DAL.App.EF.Repositories
         public async Task DeleteAsync(Guid id, Guid? propertyId = null)
         {
             var policy = await FirstOrDefaultAsync(id, propertyId);
-            base.Remove(policy);
+            base.RemoveAsync(policy);
         }
    
     }

@@ -25,7 +25,7 @@ namespace BLL.App.DTO
         public Room? Room { get; set; }
         
         public ICollection<AvailabilityPolicies>? AvailabilityPolicies { get; set; }
-        public bool IsUsed { get; set; }
+        public bool Active { get; set; }
         public decimal PricePerNightForAdult { get; set; }
         
         public decimal PricePerNightForChild { get; set; }

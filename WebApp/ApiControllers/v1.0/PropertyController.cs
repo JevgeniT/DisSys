@@ -2,13 +2,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Cache;
 using Contracts.BLL.App;
 using Microsoft.AspNetCore.Mvc;
 using Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.Memory;
+using Newtonsoft.Json;
 using Public.DTO;
 using Public.DTO.Mappers;
+using WebApp.Helpers;
 
 namespace WebApp.ApiControllers._1._0
 {
@@ -25,12 +30,13 @@ namespace WebApp.ApiControllers._1._0
     {
         private readonly IAppBLL _bll;
         private readonly PropertyMapper _mapper = new PropertyMapper();
-        
+        private readonly IResponseCacheService _cache;
         /// <summary>
         ///  Constructor
         /// </summary>
-        public PropertyController(IAppBLL bll)
+        public PropertyController(IAppBLL bll, IResponseCacheService cache)
         {
+            _cache = cache;
             _bll = bll;
         }
 
@@ -39,11 +45,23 @@ namespace WebApp.ApiControllers._1._0
         /// </summary>
         /// <returns>Array of properties</returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<PropertyDTO>>> GetProperties()
+        public async Task<ActionResult<IAsyncEnumerable<PropertyDTO>>> GetProperties()
         {
-            var properties = (await _bll.Properties.AllAsync(User.UserGuidId()))
-                .Select(bllEntity => _mapper.Map(bllEntity)) ;
-             return Ok(properties);
+            var key = User.UserGuidId().ToString();
+             
+             
+             
+            if (await _cache.GetCachedResponseAsync(key) == null)
+            {
+                var  properties = (await _bll.Properties.AllAsync(User.UserGuidId())).Select(bllEntity => _mapper.Map(bllEntity)) ;
+                     await _cache.CacheResponseAsync(key ,JsonConvert.SerializeObject(properties) );
+                     return Ok(properties);
+            }
+
+            var cache = await _cache.GetCachedResponseAsync(key);
+
+
+            return Ok(JsonConvert.DeserializeObject<ICollection<PropertyDTO>>(cache));
         }
 
         /// <summary>
@@ -56,7 +74,8 @@ namespace WebApp.ApiControllers._1._0
         [HttpGet]
         [AllowAnonymous]
         [Route("find")]
-        public async Task<ActionResult<IEnumerable<PropertyViewDTO>>> FindProperties([FromQuery] DateTime? from, [FromQuery] DateTime? to, [FromQuery] string input)
+        public async Task<ActionResult<IEnumerable<PropertyViewDTO>>> FindProperties([FromQuery] DateTime? from,
+            [FromQuery] DateTime? to, [FromQuery] string input)
         {
              var properties = (await _bll.Properties.FindAsync(from, to, input)); // TODO 
              return Ok(properties.Select(p=> _mapper.MapPropertyView(p)));
@@ -72,14 +91,13 @@ namespace WebApp.ApiControllers._1._0
         [AllowAnonymous]
         public async Task<ActionResult<PropertyDTO>> GetProperty(Guid id)
         {
-            var property = await _bll.Properties.FirstOrDefaultAsync(id);
+            var property =  _mapper.Map(await _bll.Properties.FirstOrDefaultAsync(id));
             
             if (property == null)
             {
-                return NotFound(new MessageDTO($"Property with id {id} not found"));
+                 return NotFound(new MessageDTO($"Property with id {id} not found"));
             }
- 
-            return Ok(_mapper.Map(property));
+            return Ok(property);
         }
 
         /// <summary>
@@ -101,7 +119,7 @@ namespace WebApp.ApiControllers._1._0
                 return BadRequest();
             } 
             
-            _bll.Properties.Update(_mapper.Map(property));
+            await _bll.Properties.UpdateAsync(_mapper.Map(property));
             await _bll.SaveChangesAsync();
             return NoContent();
         }

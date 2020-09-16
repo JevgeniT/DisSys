@@ -80,7 +80,7 @@ namespace WebApp.ApiControllers
                 return NotFound();
             }
 
-            _bll.Rooms.Update(_mapper.Map(room));
+            await _bll.Rooms.UpdateAsync(_mapper.Map(room));
             await _bll.SaveChangesAsync();
 
             return NoContent();

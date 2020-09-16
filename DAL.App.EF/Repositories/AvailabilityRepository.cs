@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 namespace DAL.App.EF.Repositories
 {
     public class AvailabilityRepository : 
-        EFBaseRepository<AppDbContext,Availability,  DAL.App.DTO.Availability>,  IAvailabilityRepository
+        EFBaseRepository<AppDbContext,Domain.Identity.AppUser, Availability,  DAL.App.DTO.Availability>,  IAvailabilityRepository
     {
         public AvailabilityRepository(AppDbContext dbContext) 
             :base(dbContext, new DALMapper<Availability,  DAL.App.DTO.Availability>())
@@ -42,19 +42,18 @@ namespace DAL.App.EF.Repositories
                 .ThenInclude(policies => policies.Policy)
                 .Where(availability => availability.Room.PropertyId == propertyId);
              query.AsNoTracking();
-            
-            return  (query.Where(a=> !a.IsUsed).AsNoTracking().Select(e => Mapper.Map(e)));
+             return  (query.Where(a=> !a.Active).AsNoTracking().Select(e => Mapper.Map(e)));
         }
 
         
         public async Task<bool> ExistsAsync(DateTime from, DateTime to)
         {
-            return await RepoDbSet.AnyAsync(a => a.From == from && a.To == to && a.IsUsed == false);
+            return await RepoDbSet.AnyAsync(a => a.From == from && a.To == to && a.Active == false);
         }
         public async Task DeleteAsync(Guid id)
         {
             var availability = await FirstOrDefaultAsync(id);
-            base.Remove(availability);
+            base.RemoveAsync(availability);
         }
 
     }

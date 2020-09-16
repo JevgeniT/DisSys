@@ -5,31 +5,35 @@ using System.Threading.Tasks;
 using Contracts.DAL.Base;
 using Contracts.DAL.Base.Mappers;
 using Contracts.DAL.Base.Repositories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Base.EF.Repositories
 {
-    public class EFBaseRepository<TDbContext, TDomainEntity, TDALEntity> : EFBaseRepository<Guid, TDbContext, TDomainEntity, TDALEntity>,
+    public class EFBaseRepository<TDbContext, TUser, TDomainEntity, TDALEntity> : EFBaseRepository<Guid, TDbContext, TUser, TDomainEntity, TDALEntity>,
         IBaseRepository<TDALEntity>
         where TDALEntity : class, IDomainBaseEntity<Guid>, new()
         where TDomainEntity : class, IDomainEntityBaseMetadata<Guid>, new()
         where TDbContext : DbContext,  IBaseEntityTracker
+        where TUser : IdentityUser<Guid>
     {
         public EFBaseRepository(TDbContext dbContext,  IBaseDALMapper<TDomainEntity, TDALEntity> mapper) : base(dbContext, mapper)
         {
         }
     }
 
-    public class EFBaseRepository<TKey, TDbContext, TDomainEntity, TDALEntity> : IBaseRepository<TKey, TDALEntity>
+    public class EFBaseRepository<TKey, TDbContext,TUser, TDomainEntity, TDALEntity> : IBaseRepository<TKey, TDALEntity>
         where TDALEntity : class, IDomainBaseEntity<TKey>, new()
         where TDomainEntity : class, IDomainEntityBaseMetadata<TKey>, new()
         where TDbContext : DbContext, IBaseEntityTracker<TKey>
         where TKey : IEquatable<TKey>
+        where TUser : IdentityUser<TKey>
+
     {
         protected TDbContext RepoDbContext;
         protected DbSet<TDomainEntity> RepoDbSet;
         protected IBaseDALMapper<TDomainEntity, TDALEntity> Mapper;
-
+        
         public EFBaseRepository(TDbContext dbContext, IBaseDALMapper<TDomainEntity, TDALEntity> mapper)
         {
             RepoDbContext = dbContext;
@@ -41,22 +45,6 @@ namespace DAL.Base.EF.Repositories
             }
         }
 
-        public virtual IEnumerable<TDALEntity> All()
-        {
-            return RepoDbSet.ToList().Select(domainEntity => Mapper.Map(domainEntity));
-        }
-
-        public virtual async Task<IEnumerable<TDALEntity>> AllAsync(object? userId = null)
-        {
-            return (await RepoDbSet.ToListAsync()).Select(domainEntity => Mapper.Map(domainEntity));
-        }
-        
-
-        public virtual async Task<TDALEntity> FirstOrDefaultAsync(TKey id, object? userId = null)
-        {
-            return Mapper.Map(await RepoDbSet.FirstOrDefaultAsync(e => e.Id.Equals(id)));
-        }
-
         public virtual TDALEntity Add(TDALEntity entity)
         {
             var dalEntity = Mapper.Map<TDALEntity, TDomainEntity>(entity);
@@ -65,32 +53,72 @@ namespace DAL.Base.EF.Repositories
             var result = Mapper.Map(trackedEntity);
             return result;
         }
-
-        public virtual TDALEntity Update(TDALEntity entity)
+        public virtual async Task<IEnumerable<TDALEntity>> AllAsync(object? userId = null)
         {
-            return Mapper.Map(RepoDbSet.Update(Mapper.Map<TDALEntity, TDomainEntity>(entity)).Entity);
+            return (await RepoDbSet.ToListAsync()).Select(domainEntity => Mapper.Map(domainEntity));
+        }
+        
+        public virtual async Task<TDALEntity> FirstOrDefaultAsync(TKey id, object? userId = null)
+        {
+            return Mapper.Map(await RepoDbSet.FirstOrDefaultAsync(e => e.Id.Equals(id)));
         }
 
-        public virtual TDALEntity Remove(TDALEntity entity)
+
+        public virtual async Task<TDALEntity> UpdateAsync(TDALEntity entity, object? userId = null)
         {
-            return Mapper.Map(RepoDbSet.Remove(Mapper.Map<TDALEntity, TDomainEntity>(entity)).Entity);
+            var domainEntity = Mapper.Map<TDALEntity, TDomainEntity>(entity);
+            await CheckDomainEntityOwnership(domainEntity);
+            var trackedDomainEntity = RepoDbSet.Update(domainEntity).Entity;
+            var result = Mapper.Map(trackedDomainEntity);
+            return result;
+         }
+
+        public virtual async Task<TDALEntity> RemoveAsync(TDALEntity entity, object? userId = null)
+        {
+            var domainEntity = Mapper.Map<TDALEntity, TDomainEntity>(entity);
+            await CheckDomainEntityOwnership(domainEntity, userId);
+            return Mapper.Map(RepoDbSet.Remove(domainEntity).Entity);
         }
 
-        public virtual async Task <TDALEntity> RemoveAsync(params object[] id)
+        public virtual async Task <TDALEntity> RemoveAsync(TKey id, object? userId = null)
         {
-            return Mapper.Map(RepoDbSet.Remove(await RepoDbSet.FindAsync(id)).Entity);
+            var query = PrepareQuery(userId);
+            var domainEntity = await query.FirstOrDefaultAsync(e => e.Id.Equals(id));
+            if (domainEntity == null)
+            {
+                throw new ArgumentException("Entity to be updated was not found in data source!");
+            }
+            return Mapper.Map(RepoDbSet.Remove(domainEntity).Entity);
         }
 
         public virtual async Task<bool> ExistsAsync(TKey id, object? userId = null)
         {
-            return await RepoDbSet.AnyAsync(e => e.Id.Equals(id));
+            var query = PrepareQuery(userId);
+            var recordExists = await query.AnyAsync(e => e.Id.Equals(id));
+            return recordExists;
         }
 
         protected IQueryable<TDomainEntity> PrepareQuery(object? userId = null)
         {
             var query = RepoDbSet.AsQueryable();
-            return query;
 
+            if (userId != null && typeof(IDomainEntityUser<TKey, TUser>).IsAssignableFrom(typeof(TDomainEntity)))
+            {
+                query = query.Where(e =>
+                    Microsoft.EntityFrameworkCore.EF.Property<TKey>(e, nameof(IDomainEntityUser<TKey, TUser>.AppUserId))
+                        .Equals((TKey) userId));
+            }
+            
+            return query;
+        }
+        
+        protected async Task CheckDomainEntityOwnership(TDomainEntity entity, object? userId = null)
+        {
+            var recordExists = await ExistsAsync(entity.Id, userId);
+            if (!recordExists)
+            {
+                throw new ArgumentException("Entity to be updated was not found in data source!");
+            }
         }
 
     }

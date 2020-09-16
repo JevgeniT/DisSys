@@ -83,7 +83,7 @@ namespace WebApp.ApiControllers._1._0
                 return BadRequest();
             }
             
-            _bll.Reservations.Update(_mapper.Map(reservation));
+            await _bll.Reservations.UpdateAsync(_mapper.Map(reservation));
             await _bll.SaveChangesAsync();
 
             return NoContent();

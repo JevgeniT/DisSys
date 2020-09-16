@@ -19,7 +19,7 @@ namespace DAL.App.DTO
 
         public  ICollection<AvailabilityPolicies>? AvailabilityPolicies { get; set; }
         
-        public bool IsUsed { get; set; }
+        public bool Active { get; set; }
         
         public Guid? RoomId { get; set; }
         
