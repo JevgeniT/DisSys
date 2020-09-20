@@ -28,14 +28,12 @@ namespace Domain
         [Column(TypeName = "date")]
         [DataType(DataType.Date)]
         public DateTime CheckOutDate { get; set; }
-        
         public ICollection<ReservationRooms>? ReservationRooms { get; set; }
-
         public Guid PropertyId { get; set; }
-        public Property Property { get; set; }
         
-        public bool IsCancelled { get; set; } = false;
-        
+        public Property? Property { get; set; }
+
+        public bool Active { get; set; } = true;
         public virtual TKey AppUserId { get; set; }
         public virtual TUser? AppUser { get; set; }
         

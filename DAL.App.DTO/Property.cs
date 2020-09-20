@@ -26,7 +26,7 @@ namespace DAL.App.DTO
 
         public ICollection<Room>? PropertyRooms { get; set; }
 
-        public PropertyType Type { get; set; }
+        public string Type { get; set; }
 
         public TKey AppUserId { get; set; }= default!;
         
@@ -34,8 +34,4 @@ namespace DAL.App.DTO
         
     }
 
-    public enum PropertyType
-    {
-        Hotel,Hostel, Apartments 
-    }
 }

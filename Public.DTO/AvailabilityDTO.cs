@@ -14,9 +14,10 @@ namespace Public.DTO
         
         public Guid RoomId { get; set; }
         public string? RoomName  { get; set; }
-        public  ICollection<PolicyDTO>? PolicyDtos { get; set; }
         
-        public bool IsUsed { get; set; }
+        public  ICollection<PolicyDTO>? PolicyDtos { get; set; }
+
+        public bool Active { get; set; }
         
         public decimal PricePerNightForAdult { get; set; }
         

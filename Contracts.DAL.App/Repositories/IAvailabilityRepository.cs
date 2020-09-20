@@ -20,8 +20,9 @@ namespace Contracts.DAL.App.Repositories
         Task<IEnumerable<TDALEntity>> AllAsync(Guid? roomId = null);
 
         Task<bool> ExistsAsync(DateTime from, DateTime to);
+        Task<bool> ExistsAsync(DateTime from, DateTime to, Guid propertyId);
 
-        Task<IEnumerable<TDALEntity>> FindAvailableDates(DateTime from, DateTime to, Guid? propertyId = null);
+        Task<IEnumerable<TDALEntity>> FindAvailableDates(DateTime from, DateTime to, Guid propertyId);
         
     }
     

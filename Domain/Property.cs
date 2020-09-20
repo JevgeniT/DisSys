@@ -17,19 +17,16 @@ namespace Domain
     {
         public string? Name { get; set; }
         public string? Address { get; set; }
+        
         public string Description { get; set; }
-        public string? Country { get; set; }
+        public string Country { get; set; }
         public ICollection<Review>? Reviews { get; set; }
         public ICollection<Room>? PropertyRooms { get; set; }
-        public PropertyType Type { get; set; }
+        public string Type { get; set; }
         
         public TKey AppUserId { get; set; }= default!;
         public TUser? AppUser { get; set; }
  
     }
 
-    public enum PropertyType
-    {
-        Hotel, Hostel, Apartments 
-    }
 }

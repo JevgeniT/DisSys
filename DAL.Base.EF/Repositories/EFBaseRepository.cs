@@ -10,16 +10,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Base.EF.Repositories
 {
-    public class EFBaseRepository<TDbContext, TUser, TDomainEntity, TDALEntity> : EFBaseRepository<Guid, TDbContext, TUser, TDomainEntity, TDALEntity>,
-        IBaseRepository<TDALEntity>
+    public class EFBaseRepository<TDbContext, TUser, TDomainEntity, TDALEntity> : 
+        EFBaseRepository<Guid, TDbContext, TUser, TDomainEntity, TDALEntity>, IBaseRepository<TDALEntity>
         where TDALEntity : class, IDomainBaseEntity<Guid>, new()
         where TDomainEntity : class, IDomainEntityBaseMetadata<Guid>, new()
         where TDbContext : DbContext,  IBaseEntityTracker
         where TUser : IdentityUser<Guid>
     {
         public EFBaseRepository(TDbContext dbContext,  IBaseDALMapper<TDomainEntity, TDALEntity> mapper) : base(dbContext, mapper)
-        {
-        }
+        { }
     }
 
     public class EFBaseRepository<TKey, TDbContext,TUser, TDomainEntity, TDALEntity> : IBaseRepository<TKey, TDALEntity>
@@ -53,9 +52,22 @@ namespace DAL.Base.EF.Repositories
             var result = Mapper.Map(trackedEntity);
             return result;
         }
+
+        public async Task<IEnumerable<TDALEntity>> AddRange(IEnumerable<TDALEntity> entities)
+        {
+            var dalEntities = entities.Select(entity => Mapper.Map<TDALEntity, TDomainEntity>(entity));
+            
+            await RepoDbContext.AddRangeAsync(dalEntities);
+
+            return dalEntities.Select(entity => Mapper.Map(entity));
+
+        }
+
         public virtual async Task<IEnumerable<TDALEntity>> AllAsync(object? userId = null)
         {
-            return (await RepoDbSet.ToListAsync()).Select(domainEntity => Mapper.Map(domainEntity));
+            var query = PrepareQuery(userId);
+            var entities = (await query.ToListAsync()).Select(domainEntity => Mapper.Map(domainEntity));
+            return entities;
         }
         
         public virtual async Task<TDALEntity> FirstOrDefaultAsync(TKey id, object? userId = null)

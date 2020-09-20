@@ -22,20 +22,12 @@ namespace BLL.App.DTO
 
         public ICollection<Room>? PropertyRooms { get; set; }
         
-        public PropertyType Type { get; set; }
+        public string Type { get; set; }
         
         public TKey AppUserId { get; set; } = default!;
         
         public Identity.AppUser<TKey>? AppUser { get; set; }
 
-    }
-
-    public enum PropertyType
-    {
-        [EnumMember(Value = "Hotel")]
-        Hotel,
-        Hostel,
-        Apartments 
     }
 }
 

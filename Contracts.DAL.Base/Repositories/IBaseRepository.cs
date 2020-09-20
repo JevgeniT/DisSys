@@ -14,6 +14,8 @@ namespace Contracts.DAL.Base.Repositories
         where TKey : IEquatable<TKey>
     {
         TDALEntity Add(TDALEntity entity);
+        
+        Task<IEnumerable<TDALEntity>> AddRange(IEnumerable<TDALEntity> entities);
         Task<IEnumerable<TDALEntity>> AllAsync(object? userId = null);
         Task<TDALEntity> FirstOrDefaultAsync(TKey id, object? userId = null);
         Task<TDALEntity>  UpdateAsync(TDALEntity entity, object? userId = null);

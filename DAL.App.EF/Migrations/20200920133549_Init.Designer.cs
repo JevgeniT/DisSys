@@ -10,14 +10,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.App.EF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200910140856_Init")]
+    [Migration("20200920133549_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.6")
+                .HasAnnotation("ProductVersion", "3.1.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -26,6 +26,9 @@ namespace DAL.App.EF.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime>("ChangedAt")
                         .HasColumnType("datetime2");
@@ -41,9 +44,6 @@ namespace DAL.App.EF.Migrations
 
                     b.Property<DateTime>("From")
                         .HasColumnType("date");
-
-                    b.Property<bool>("IsUsed")
-                        .HasColumnType("bit");
 
                     b.Property<decimal>("PricePerNightForAdult")
                         .HasColumnType("decimal(18,2)");
@@ -75,6 +75,9 @@ namespace DAL.App.EF.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
 
                     b.Property<Guid>("AvailabilityId")
                         .HasColumnType("uniqueidentifier");
@@ -372,6 +375,7 @@ namespace DAL.App.EF.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Country")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
@@ -404,6 +408,9 @@ namespace DAL.App.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
                     b.Property<int>("Adults")
                         .HasColumnType("int");
 
@@ -430,9 +437,6 @@ namespace DAL.App.EF.Migrations
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsCancelled")
-                        .HasColumnType("bit");
 
                     b.Property<Guid>("PropertyId")
                         .HasColumnType("uniqueidentifier");

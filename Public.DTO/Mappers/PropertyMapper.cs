@@ -26,11 +26,6 @@ namespace Public.DTO.Mappers
                 .ForMember(dto => dto.Score, opt=> 
                     opt.MapFrom(property => property.Reviews.Count==0? 0.0 :
                         Math.Round(property.Reviews.Average(review => review.Score),1)));
-            
-            MapperConfigurationExpression.CreateMap<Property, PropertyViewDTO>()
-                .ForMember(dto => dto.Room, opt=> 
-                    opt.MapFrom(property => property.PropertyRooms.OrderByDescending(room => 
-                        room.RoomAvailabilities.Min(availability => availability.PricePerNightForAdult)).Reverse().FirstOrDefault()));
 
             Mapper = new Mapper(new MapperConfiguration(MapperConfigurationExpression));
         }

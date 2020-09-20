@@ -24,9 +24,9 @@ namespace BLL.App.Services
             return (await ServiceRepository.AllAsync( roomId)).Select( dalEntity => Mapper.Map(dalEntity) );
         }
         
-        public async Task<IEnumerable<Availability>> FindAvailableDates(DateTime @from, DateTime to, Guid? PropertyId = null)
+        public async Task<IEnumerable<Availability>> FindAvailableDates(DateTime @from, DateTime to, Guid propertyId)
         {
-            return (await ServiceRepository.FindAvailableDates(from, to, PropertyId)).Select( dalEntity => Mapper.Map(dalEntity) );
+            return (await ServiceRepository.FindAvailableDates(from, to, propertyId)).Select( dalEntity => Mapper.Map(dalEntity) );
         }
         
         public async Task<bool> ExistsAsync(DateTime from, DateTime to)
@@ -34,50 +34,52 @@ namespace BLL.App.Services
             return  await ServiceRepository.ExistsAsync(from, to);
         }
         
-        public async Task ParseDate(List<Availability> list, DateTime From, DateTime To) // TODO
+        
+        public async Task<bool> ExistsAsync(DateTime from, DateTime to, Guid propertyId)
+        {
+            return  await ServiceRepository.ExistsAsync(from, to, propertyId);
+        }
+        
+        public async Task ParseDate(List<Availability> list, DateTime @from, DateTime to) // TODO
         {
             foreach (var available in list)
             {
-                if ((available.From == From && available.To > To) || (available.To == To && available.From>From))
+                if ((available.From == @from && available.To > to) || (available.To == to && available.From>@from))
                 {
                     Availability availability = new Availability
                     {
-                        From = From == available.From ? To : available.From,
-                        To = To == available.To ? From : available.To,
+                        From = @from == available.From ? to : available.From,
+                        To = to == available.To ? @from : available.To,
                         PricePerNightForAdult = available.PricePerNightForAdult,
-                        Active = false,
+                        Active = true,
                         RoomId = available.RoomId,
-                        // PolicyId = available.PolicyId
-
                     };
                             
                         Add(availability);
                 } 
                 
-                else if (available.From< From && available.To > To)  
+                else if (available.From< @from && available.To > to)  
                 {
                     Add(new Availability{ 
-                            From = available.From, To = From,
-                            Active = false, 
+                            From = available.From, To = @from,
+                            Active = true, 
                             PricePerNightForAdult = available.PricePerNightForAdult,
                             RoomId = available.RoomId,
-                            // PolicyId = available.PolicyId
-                        
-                        });
+                    });
                     Add(new Availability
                         {
                             From = available.To, To = available.To,
-                            Active = false, 
+                            Active = true, 
                             PricePerNightForAdult = available.PricePerNightForAdult ,
                             RoomId = available.RoomId,
-                            // PolicyId = available.PolicyId
                         });
                 }
-                else if (available.From == From && available.To == To)
+                else if (available.From == @from && available.To == to)
                 {
-                    available.Active = true;
-                    UpdateAsync(available);
-
+                    available.Active = false; 
+                    await  UpdateAsync(available);
+                    
+                    
                 }
             }
 

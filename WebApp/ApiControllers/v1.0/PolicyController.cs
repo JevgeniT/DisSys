@@ -86,7 +86,7 @@ namespace WebApp.ApiControllers
                 return NotFound();
             }
             
-            _bll.Policies.UpdateAsync(_mapper.Map(policy));
+            await _bll.Policies.UpdateAsync(_mapper.Map(policy));
             await _bll.SaveChangesAsync();
            
 

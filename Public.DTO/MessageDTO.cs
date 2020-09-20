@@ -6,7 +6,6 @@ namespace Public.DTO
     {
         public MessageDTO()
         {
-            
         }
 
         public MessageDTO(params string[] messages)

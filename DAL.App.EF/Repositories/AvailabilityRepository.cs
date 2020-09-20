@@ -19,42 +19,39 @@ namespace DAL.App.EF.Repositories
         
         public async Task<IEnumerable< DAL.App.DTO.Availability>> AllAsync(Guid? roomId = null)
         {
-            return (await RepoDbContext.Availabilities.Include(availability => availability.Room)
-                // .Include(availability => availability.AvailabilityPolicies)
-                // .ThenInclude(policies => policies.Policy)
-                .Where(availability => availability.RoomId == roomId)
+            var a = (await RepoDbContext.Availabilities.Include(availability => availability.Room)
                 .ToListAsync()).Select(a => Mapper.Map(a));
+            Console.WriteLine(a.First().Room.Name);
+            return a;
         }
+    
         
-        public async Task< DAL.App.DTO.Availability> FirstOrDefaultAsync(Guid id)
+        public async Task<IEnumerable< DAL.App.DTO.Availability>> FindAvailableDates(DateTime from, DateTime to, Guid propertyId)
         {
-            var query = RepoDbSet.Where(a => a.Id == id).AsQueryable();
-            return Mapper.Map(await query.FirstOrDefaultAsync());
-        }
-        
-        public async Task<IEnumerable< DAL.App.DTO.Availability>> FindAvailableDates(DateTime from, DateTime to, Guid? propertyId = null)
-        {
-            var dates = $"'{from}' and '{to}'";
-            
-            var query = RepoDbSet.FromSqlRaw("select * from Availabilities where [FROM] between " + dates + " or [To] between " + dates)
-                .Include(availability => availability.Room)
-                .Include(availability => availability.AvailabilityPolicies)
-                .ThenInclude(policies => policies.Policy)
-                .Where(availability => availability.Room.PropertyId == propertyId);
-             query.AsNoTracking();
-             return  (query.Where(a=> !a.Active).AsNoTracking().Select(e => Mapper.Map(e)));
+            var query = await RepoDbContext.Availabilities
+                .Include(a => a.Room)
+                .Where(a => a.Active
+                            && a.Room.PropertyId == propertyId
+                            && (a.From >= from && a.From <= to)
+                            || (a.To >= from && a.To <= to))
+                .ToListAsync();
+            return query.Select(e => Mapper.Map(e));
         }
 
         
-        public async Task<bool> ExistsAsync(DateTime from, DateTime to)
+        public  async Task<bool> ExistsAsync(DateTime from, DateTime to)
         {
-            return await RepoDbSet.AnyAsync(a => a.From == from && a.To == to && a.Active == false);
-        }
-        public async Task DeleteAsync(Guid id)
-        {
-            var availability = await FirstOrDefaultAsync(id);
-            base.RemoveAsync(availability);
+            return await RepoDbSet.AnyAsync(a => a.Active && 
+                                                 (a.From >= from && a.From <= to)
+                                                 || (a.To >= from && a.To <= to));
         }
 
+        public  async Task<bool> ExistsAsync(DateTime from, DateTime to, Guid propertyId)
+        {
+            return await RepoDbSet.AnyAsync(a => a.Active && 
+                                                 a.Room.PropertyId == propertyId 
+                                                 && (a.From >= from && a.From <= to)
+                                                 || (a.To >= from && a.To <= to));
+        }
     }
 }

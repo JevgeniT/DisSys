@@ -23,7 +23,5 @@ namespace Contracts.DAL.App.Repositories
 
    Task<IEnumerable<TDALEntity>> AllAsync(Guid? userId = null, Guid? propertyId = null);
    
-   Task<IEnumerable<TDALEntity>> AllForPropertyAsync(Guid? userId = null, Guid? propertyId = null);
-   
   }
 }

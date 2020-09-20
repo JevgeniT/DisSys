@@ -13,7 +13,6 @@ namespace DAL.App.DTO
     {
         public TKey Id { get; set; }= default!;
         
-        [Range(0,10)]
         public int Score { get; set; }
         
         public string? Comment { get; set; }

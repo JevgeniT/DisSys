@@ -47,10 +47,10 @@ namespace DAL.App.EF
            builder.Entity<Reservation>()
                .Property(b => b.ReservationNumber)
                .ValueGeneratedOnAdd();
-
-           builder.Entity<Property>().Property(property => property.Type).HasConversion(type => type.ToString(),
-               type =>  (PropertyType)Enum.Parse(typeof(PropertyType),type));
-           
+           //
+           // builder.Entity<Property>().Property(property => property.Type).HasConversion(type => type.ToString(),
+           //     type =>  (PropertyType)Enum.Parse(typeof(PropertyType),type));
+           //
            builder.Entity<Room>().Property(room => room.Bed).HasConversion(type => type.ToString(),
                type =>  (BedType)Enum.Parse(typeof(BedType),type));
            

@@ -21,10 +21,7 @@ namespace DAL.App.EF
             MapperConfigurationExpression.CreateMap<Domain.Review , DAL.App.DTO.Review>();
             MapperConfigurationExpression.CreateMap<Domain.Reservation, DAL.App.DTO.Reservation>();
             MapperConfigurationExpression.CreateMap<Domain.ReservationRooms, DAL.App.DTO.ReservationRooms>();
-
             MapperConfigurationExpression.CreateMap<Domain.Identity.AppUser, DAL.App.DTO.Identity.AppUser>();
-
-
             
             Mapper = new Mapper(new MapperConfiguration(MapperConfigurationExpression));
         }

@@ -187,7 +187,7 @@ namespace DAL.App.EF.Migrations
                     Name = table.Column<string>(nullable: true),
                     Address = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: false),
-                    Country = table.Column<string>(nullable: true),
+                    Country = table.Column<string>(nullable: false),
                     Type = table.Column<string>(nullable: false),
                     AppUserId = table.Column<Guid>(nullable: false)
                 },
@@ -216,7 +216,7 @@ namespace DAL.App.EF.Migrations
                     CheckInDate = table.Column<DateTime>(type: "date", nullable: false),
                     CheckOutDate = table.Column<DateTime>(type: "date", nullable: false),
                     PropertyId = table.Column<Guid>(nullable: false),
-                    IsCancelled = table.Column<bool>(nullable: false),
+                    Active = table.Column<bool>(nullable: false),
                     AppUserId = table.Column<Guid>(nullable: false),
                     TotalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Adults = table.Column<int>(nullable: false),
@@ -349,7 +349,7 @@ namespace DAL.App.EF.Migrations
                     From = table.Column<DateTime>(type: "date", nullable: false),
                     To = table.Column<DateTime>(type: "date", nullable: false),
                     RoomId = table.Column<Guid>(nullable: false),
-                    IsUsed = table.Column<bool>(nullable: false),
+                    Active = table.Column<bool>(nullable: false),
                     PricePerNightForAdult = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     PricePerNightForChild = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     PricePerPerson = table.Column<bool>(nullable: false),
@@ -435,7 +435,8 @@ namespace DAL.App.EF.Migrations
                     ChangedBy = table.Column<string>(nullable: true),
                     ChangedAt = table.Column<DateTime>(nullable: false),
                     AvailabilityId = table.Column<Guid>(nullable: false),
-                    PolicyId = table.Column<Guid>(nullable: false)
+                    PolicyId = table.Column<Guid>(nullable: false),
+                    Active = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {

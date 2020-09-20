@@ -7,6 +7,7 @@ using Contracts.BLL.App;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Internal;
 using Public.DTO;
 using Public.DTO.Mappers;
 
@@ -44,8 +45,8 @@ namespace WebApp.ApiControllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AvailabilityDTO>>> GetDates([FromQuery] Guid rId)
         {
-            var availability = (await _bll.Availabilities.AllAsync(rId)); 
-            return Ok(availability.Select(a=> _mapper.Map(a)));
+            var availability = (await _bll.Availabilities.AllAsync(rId)).Select(a=> _mapper.Map(a)); 
+            return Ok(availability);
         }
 
         /// <summary>
@@ -61,7 +62,8 @@ namespace WebApp.ApiControllers
         public async Task<ActionResult<IEnumerable<AvailabilityDTO>>> CheckDates([FromQuery]DateTime from, [FromQuery]DateTime to, [FromQuery]Guid pId)
         {
             var availability = (await _bll.Availabilities.FindAvailableDates(from, to, pId)).Select(bllEntity => _mapper.Map(bllEntity));
-            return Ok(availability);
+            var ok = availability.GroupBy(availability => availability.RoomId).Select(e => e.First());
+            return Ok(ok);
         }
        
         /// <summary>
@@ -78,18 +80,8 @@ namespace WebApp.ApiControllers
                 return BadRequest(new MessageDTO("Dates exist"));
             }
        
-            var entity = _mapper.Map(availability);
+            var entity = _mapper.Map(availability); 
             _bll.Availabilities.Add(entity);
-            await _bll.SaveChangesAsync();
-            
-            foreach (var dto in availability.PolicyDtos)
-            {
-                _bll.AvailabilityPolicies.Add(new AvailabilityPolicies()
-                {
-                    PolicyId = dto.Id,
-                    AvailabilityId = entity.Id
-                });
-            }
 
             await _bll.SaveChangesAsync();
             availability.Id = entity.Id;
@@ -115,7 +107,7 @@ namespace WebApp.ApiControllers
                 return BadRequest();
             } 
             
-            _bll.Availabilities.UpdateAsync(_mapper.Map(availability));
+            await _bll.Availabilities.UpdateAsync(_mapper.Map(availability));
             await _bll.SaveChangesAsync();
             return NoContent();
         }

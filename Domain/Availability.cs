@@ -27,15 +27,14 @@ namespace Domain
         public DateTime To { get => _to.Date; set => _to = value.Date; }
         public Guid RoomId { get; set; }
         public Room? Room { get; set; }
-
+        
         public ICollection<AvailabilityPolicies>? AvailabilityPolicies { get; set; }
-        public bool Active { get; set; } = false;
+        public bool Active { get; set; } = true;
         
         [Column(TypeName = "decimal(18,2)")]
         public decimal PricePerNightForAdult { get; set; }
 
         [Column(TypeName = "decimal(18,2)")]
-
         public decimal PricePerNightForChild { get; set; }
 
         public bool PricePerPerson { get; set; }

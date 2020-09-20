@@ -57,12 +57,12 @@ namespace WebApp
             services.AddScoped<IAppUnitOfWork, AppUnitOfWork>();
             services.AddScoped<IUserNameProvider, UserNameProvider>();
             services.AddScoped<IAppBLL, AppBLL>();
-            services.AddResponseCaching();
-             services.AddSingleton<IConnectionMultiplexer>(_ =>
-                            ConnectionMultiplexer.Connect(Configuration.GetValue<string>("RedisCacheSettings")));
-            services.AddSingleton<IResponseCacheService, ResponseCacheService>();
+            
+            // services.AddResponseCaching();
+            //  services.AddSingleton<IConnectionMultiplexer>(_ =>
+            //                 ConnectionMultiplexer.Connect(Configuration.GetValue<string>("RedisCacheSettings")));
+            // services.AddSingleton<IResponseCacheService, ResponseCacheService>();
 
-            services.AddSingleton<IResponseCacheService, ResponseCacheService>();
             services.AddIdentity<AppUser, AppRole>()
                  .AddDefaultUI()
                 .AddEntityFrameworkStores<AppDbContext>()

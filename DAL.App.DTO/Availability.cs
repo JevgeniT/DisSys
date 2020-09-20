@@ -17,7 +17,7 @@ namespace DAL.App.DTO
 
         public DateTime To { get; set; }
 
-        public  ICollection<AvailabilityPolicies>? AvailabilityPolicies { get; set; }
+        public ICollection<AvailabilityPolicies>? AvailabilityPolicies { get; set; }
         
         public bool Active { get; set; }
         
@@ -30,6 +30,7 @@ namespace DAL.App.DTO
         public decimal PricePerNightForChild { get; set; }
 
         public bool PricePerPerson { get; set; }
+        
         public int RoomsAvailable { get; set; }
 
     }

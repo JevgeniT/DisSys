@@ -34,17 +34,18 @@ namespace WebApp.ApiControllers._1._0
         }
 
         /// <summary>
-        /// Get all property reservations
+        /// Get all reservations
         /// </summary>
-        /// <param name="pId">Property Id</param>
+        /// <param name="pId">Property Id if present</param>
         /// <returns>Arrays of reservations</returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ReservationDTO>>> GetReservations([FromQuery]Guid? pId)
         {
-            var reservations = (await _bll.Reservations.AllForPropertyAsync(User.UserGuidId(), pId)) // todo
+            var reservations = (await _bll.Reservations.AllAsync(User.UserGuidId(), pId))
                 .Select(res => _mapper.Map(res));
             return Ok(reservations);
         }
+        
         
         /// <summary>
         /// Get single Reservation
@@ -96,29 +97,27 @@ namespace WebApp.ApiControllers._1._0
         /// <param name="reservation"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult<ReservationDTO>> PostReservation(ReservationDTO reservation)
+        public async Task<ActionResult<ReservationDTO>> PostReservation(ReservationDTO reservation) // todo more refactor, update dates on save
         {
             var bllReservation = _mapper.Map(reservation);
-            var available = await _bll.Availabilities.FindAvailableDates(bllReservation.CheckInDate,bllReservation.CheckOutDate,bllReservation.PropertyId); // todo 
             
-            if (!available.Any())
+            if (!await _bll.Availabilities.ExistsAsync(reservation.CheckInDate, reservation.CheckOutDate, reservation.PropertyId))
             {
                 return BadRequest(new MessageDTO("No dates available"));
             }
             
-            await  _bll.Availabilities.ParseDate(new List<Availability>(available.ToList()), bllReservation.CheckInDate, bllReservation.CheckOutDate);
             
             bllReservation.AppUserId = User.UserGuidId();
+            
             _bll.Reservations.Add(bllReservation);
-            await _bll.SaveChangesAsync();
-
-            foreach (var room in reservation.RoomDtos)
-            {
-                _bll.ReservationRooms.Add(new ReservationRooms(){ReservationId = bllReservation.Id , RoomId = room.Id});
-            }
             
             await _bll.SaveChangesAsync();
+            await _bll.ReservationRooms.AddRange(reservation.RoomDtos.Select(e => new ReservationRooms {RoomId = e.Id, ReservationId = bllReservation.Id}));
+            
+            await _bll.SaveChangesAsync();
+            
             reservation.Id = bllReservation.Id;
+            reservation.ReservationNumber = bllReservation.ReservationNumber;
             
             return CreatedAtAction("GetReservation", new { id = reservation.Id }, reservation);
         }
