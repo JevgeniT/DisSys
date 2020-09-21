@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Public.DTO;
 using Public.DTO.Mappers;
 
@@ -57,10 +58,18 @@ namespace WebApp.ApiControllers._1._0
         [HttpGet]
         [AllowAnonymous]
         [Route("find")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<PropertyViewDTO>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(MessageDTO))]
         public async Task<ActionResult<IEnumerable<PropertyViewDTO>>> FindProperties([FromQuery] DateTime? from,
             [FromQuery] DateTime? to, [FromQuery] string input)
         {
              var properties = (await _bll.Properties.FindAsync(from, to, input)); // TODO 
+
+             if (properties == null)
+             {
+                 return NotFound(new MessageDTO("Nothing was found"));
+             }
              return Ok(properties.Select(p=> _mapper.MapPropertyView(p)));
         }
         
@@ -72,6 +81,9 @@ namespace WebApp.ApiControllers._1._0
         /// <returns>Property object</returns>
         [HttpGet("{id}")]
         [AllowAnonymous]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PropertyDTO))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(MessageDTO))]
         public async Task<ActionResult<PropertyDTO>> GetProperty(Guid id)
         {
             
@@ -93,6 +105,11 @@ namespace WebApp.ApiControllers._1._0
         /// <param name="property"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
+        [Produces("application/json")]
+        [Consumes("application/json")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(MessageDTO))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(MessageDTO))]
         public async Task<IActionResult> PutProperty(Guid id, PropertyDTO property)
         {
             if (id != property.Id)
@@ -102,7 +119,7 @@ namespace WebApp.ApiControllers._1._0
 
             if (!await _bll.Properties.ExistsAsync(id))
             {
-                return BadRequest();
+                return BadRequest(new MessageDTO($"Property was not found"));
             } 
             
             await _bll.Properties.UpdateAsync(_mapper.Map(property));
@@ -117,6 +134,9 @@ namespace WebApp.ApiControllers._1._0
         /// <param name="property"></param>
         /// <returns></returns>
         [HttpPost]
+        [Produces("application/json")]
+        [Consumes("application/json")]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(PropertyDTO))]
         public async Task<ActionResult<PropertyDTO>> PostProperty(PropertyDTO property)
         {
 
@@ -137,13 +157,16 @@ namespace WebApp.ApiControllers._1._0
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PropertyDTO))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(MessageDTO))]
         public async Task<ActionResult<PropertyDTO>> DeleteProperty(Guid id)
         {
             var property = await _bll.Properties.FirstOrDefaultAsync(id);
             
             if (property == null)
             {
-                return NotFound();
+                return NotFound(new MessageDTO($"Property with id {id} was not found"));
             }
 
             await _bll.Properties.RemoveAsync(id);

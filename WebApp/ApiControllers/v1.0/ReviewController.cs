@@ -10,6 +10,7 @@ using DAL.App.EF;
 using Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Public.DTO;
 
 namespace WebApp.ApiControllers
@@ -41,9 +42,10 @@ namespace WebApp.ApiControllers
         /// <param name="pId">property Id</param>
         /// <returns>Array of reviews</returns>
         [HttpGet]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ReviewDTO>))]
         public async Task<ActionResult<IEnumerable<ReviewDTO>>> GetReviews([FromQuery] Guid pId)
         {
-            // var reviews = (await _bll.Reviews.AllAsync()).Select(r=> _mapper.Map(r));
             var reviews = (await _bll.Reviews.PropertyReviews(pId)).Select(r=> _mapper.Map(r));
             return Ok(reviews);
         }
@@ -55,6 +57,9 @@ namespace WebApp.ApiControllers
         /// <param name="id">Review Id</param>
         /// <returns>Array of reviews</returns>
         [HttpGet("{id}")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ReviewDTO))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(MessageDTO))]
         public async Task<ActionResult<ReviewDTO>> GetReview(Guid id)
         {
             var review = await _bll.Reviews.FirstOrDefaultAsync(id);
@@ -75,6 +80,11 @@ namespace WebApp.ApiControllers
         /// <param name="review">Review to update</param>
         /// <returns></returns>
         [HttpPut("{id}")]
+        [Produces("application/json")]
+        [Consumes("application/json")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(MessageDTO))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(MessageDTO))]
         public async Task<IActionResult> PutReview(Guid id, ReviewDTO review)
         {
             if (id != review.Id)
@@ -84,7 +94,7 @@ namespace WebApp.ApiControllers
 
             if (!await _bll.Reviews.ExistsAsync(id))
             {
-                return BadRequest();
+                return BadRequest(new MessageDTO("Review does not exists"));
 
             }
 
@@ -100,13 +110,13 @@ namespace WebApp.ApiControllers
         /// <param name="review"></param>
         /// <returns></returns>
         [HttpPost]
+        [Produces("application/json")]
+        [Consumes("application/json")]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ReviewDTO))] 
         public async Task<ActionResult<ReviewDTO>> PostReview(ReviewDTO review)
         {
             review.AppUserId = User.UserGuidId();
-            review.CreatedAt = DateTime.Now;
-            
             var entity = _mapper.Map(review);
-
             _bll.Reviews.Add(entity);
             await _bll.SaveChangesAsync();
 
@@ -121,15 +131,17 @@ namespace WebApp.ApiControllers
         /// <param name="id">Review id to delete</param>
         /// <returns>Review just deleted</returns>
         [HttpDelete("{id}")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ReviewDTO))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(MessageDTO))]
         public async Task<ActionResult<ReviewDTO>> DeleteReview(Guid id)
         {
             var review = await _bll.Reviews.FirstOrDefaultAsync(id);
             
             if (review == null)
             {
-                return NotFound();
+                return NotFound(new MessageDTO($"Review with id {id} was not found"));
             }
-
             await _bll.Reviews.RemoveAsync(review);
             
             await _bll.SaveChangesAsync();

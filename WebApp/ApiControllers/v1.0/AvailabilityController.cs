@@ -6,6 +6,7 @@ using BLL.App.DTO;
 using Contracts.BLL.App;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Internal;
 using Public.DTO;
@@ -43,9 +44,16 @@ namespace WebApp.ApiControllers
         /// <param name="rId">Room Id</param>
         /// <returns>Array of availabilities</returns>
         [HttpGet]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<AvailabilityDTO>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(MessageDTO))]
         public async Task<ActionResult<IEnumerable<AvailabilityDTO>>> GetDates([FromQuery] Guid rId)
         {
-            var availability = (await _bll.Availabilities.AllAsync(rId)).Select(a=> _mapper.Map(a)); 
+            var availability = (await _bll.Availabilities.AllAsync(rId)).Select(a=> _mapper.Map(a));
+            if (availability == null)
+            {
+                return NotFound(new MessageDTO("No availabilities were found"));
+            }
             return Ok(availability);
         }
 
@@ -59,11 +67,18 @@ namespace WebApp.ApiControllers
         [HttpGet]
         [Route("checkdates")]
         [AllowAnonymous]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<AvailabilityDTO>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(MessageDTO))]
         public async Task<ActionResult<IEnumerable<AvailabilityDTO>>> CheckDates([FromQuery]DateTime from, [FromQuery]DateTime to, [FromQuery]Guid pId)
         {
             var availability = (await _bll.Availabilities.FindAvailableDates(from, to, pId)).Select(bllEntity => _mapper.Map(bllEntity));
-            var ok = availability.GroupBy(availability => availability.RoomId).Select(e => e.First());
-            return Ok(ok);
+            if (availability == null)
+            {
+                return NotFound(new MessageDTO("No availabilities were found"));
+            }
+            var result = availability.GroupBy(availability => availability.RoomId).Select(e => e.First());
+            return Ok(result);
         }
        
         /// <summary>
@@ -73,11 +88,14 @@ namespace WebApp.ApiControllers
         /// <returns></returns>
         [HttpPost]
         [Consumes("application/json")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(AvailabilityDTO))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(MessageDTO))]
         public async Task<ActionResult<AvailabilityDTO>> PostAvailability(AvailabilityDTO availability)
         {
             if (await _bll.Availabilities.ExistsAsync(availability.From.Date, availability.To.Date))
             {
-                return BadRequest(new MessageDTO("Dates exist"));
+                return BadRequest(new MessageDTO("Dates already exist"));
             }
        
             var entity = _mapper.Map(availability); 
@@ -95,6 +113,11 @@ namespace WebApp.ApiControllers
         /// <param name="availability"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
+        [Produces("application/json")]
+        [Consumes("application/json")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(MessageDTO))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(MessageDTO))]
         public async Task<IActionResult> PutAvailability(Guid id, AvailabilityDTO availability)
         {
             if (id != availability.Id)
@@ -104,7 +127,7 @@ namespace WebApp.ApiControllers
 
             if (!await _bll.Availabilities.ExistsAsync(id))
             {
-                return BadRequest();
+                return NotFound(new MessageDTO($"Availability with id {id} was not found"));
             } 
             
             await _bll.Availabilities.UpdateAsync(_mapper.Map(availability));

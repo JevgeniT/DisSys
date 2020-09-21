@@ -15,11 +15,9 @@ namespace Public.DTO
 
         public string? Description { get; set; }
         
-        public string PropertyType { get; set; }
-
-        // public string Type { get { return PropertyType.ToString();} }
-        public double Score { get; set; } = 0;
-
+        public string Type { get; set; }
+        public double Score { get; set; }
+        
         public int ReviewsCount { get; set; }
         
         public ICollection<RoomDTO>? PropertyRooms { get; set; }
