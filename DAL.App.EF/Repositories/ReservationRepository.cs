@@ -9,9 +9,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.App.EF.Repositories
 {
-    public class ReservationRepository : EFBaseRepository<AppDbContext, Domain.Identity.AppUser,Reservation, DAL.App.DTO.Reservation>,  IReservationRepository
+    public class ReservationRepository 
+        : EFBaseRepository<AppDbContext, Domain.Identity.AppUser,Reservation, DAL.App.DTO.Reservation>,  IReservationRepository
     {
-        public ReservationRepository(AppDbContext dbContext) : base(dbContext, new DALMapper<Reservation, DAL.App.DTO.Reservation>())
+        public ReservationRepository(AppDbContext dbContext) 
+            : base(dbContext, new DALMapper<Reservation, DAL.App.DTO.Reservation>())
         {
         }
 
@@ -25,6 +27,15 @@ namespace DAL.App.EF.Repositories
                    .ToListAsync())
                    .Select(reservation => Mapper.Map(reservation));
         }
-        
+
+        public override async Task<DTO.Reservation> FirstOrDefaultAsync(Guid id, object? userId = null)
+        {
+             var reservation = (await RepoDbContext.Reservations
+                .Include(reservation => reservation.AppUser)
+                .Include(reservation => reservation.ReservationRooms)
+                .ThenInclude(rooms => rooms.Room).FirstAsync());
+            
+            return Mapper.Map(reservation);
+        }
     }
 }

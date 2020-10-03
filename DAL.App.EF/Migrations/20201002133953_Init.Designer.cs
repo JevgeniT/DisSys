@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.App.EF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200921101412_Init")]
+    [Migration("20201002133953_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -20,91 +20,6 @@ namespace DAL.App.EF.Migrations
                 .HasAnnotation("ProductVersion", "3.1.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("Domain.Availability", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("Active")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("ChangedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ChangedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("From")
-                        .HasColumnType("date");
-
-                    b.Property<decimal>("PricePerNightForAdult")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("PricePerNightForChild")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<bool>("PricePerPerson")
-                        .HasColumnType("bit");
-
-                    b.Property<Guid>("RoomId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("RoomsAvailable")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("To")
-                        .HasColumnType("date");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RoomId");
-
-                    b.ToTable("Availabilities");
-                });
-
-            modelBuilder.Entity("Domain.AvailabilityPolicies", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("Active")
-                        .HasColumnType("bit");
-
-                    b.Property<Guid>("AvailabilityId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("ChangedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ChangedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("PolicyId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AvailabilityId");
-
-                    b.HasIndex("PolicyId");
-
-                    b.ToTable("AvailabilitiyPolicies");
-                });
 
             modelBuilder.Entity("Domain.Extra", b =>
                 {
@@ -476,7 +391,7 @@ namespace DAL.App.EF.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("PolicyId")
+                    b.Property<Guid>("PolicyId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("ReservationId")
@@ -692,30 +607,6 @@ namespace DAL.App.EF.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Domain.Availability", b =>
-                {
-                    b.HasOne("Domain.Room", "Room")
-                        .WithMany("RoomAvailabilities")
-                        .HasForeignKey("RoomId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Domain.AvailabilityPolicies", b =>
-                {
-                    b.HasOne("Domain.Availability", "Availability")
-                        .WithMany("AvailabilityPolicies")
-                        .HasForeignKey("AvailabilityId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Policy", "Policy")
-                        .WithMany()
-                        .HasForeignKey("PolicyId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Domain.Extra", b =>
                 {
                     b.HasOne("Domain.Facility", "Facility")
@@ -777,7 +668,8 @@ namespace DAL.App.EF.Migrations
                     b.HasOne("Domain.Policy", null)
                         .WithMany("PolicyAvailabilities")
                         .HasForeignKey("PolicyId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("Domain.Reservation", "Reservation")
                         .WithMany("ReservationRooms")

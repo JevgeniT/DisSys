@@ -4,14 +4,14 @@ using BLL.Base;
 using Contracts.BLL.App;
 using Contracts.BLL.App.Services;
 using Contracts.DAL.App;
- 
-  namespace BLL.App
+using DAL.App.NoSQL;
+
+namespace BLL.App
 {
     public class AppBLL:BaseBLL<IAppUnitOfWork>,IAppBLL
     {
         public AppBLL(IAppUnitOfWork unitOfWork) : base(unitOfWork)
         {
-            
         }
 
         public IPropertyService Properties => GetService<IPropertyService>(() => new PropertyService(UnitOfWork));
@@ -25,10 +25,9 @@ using Contracts.DAL.App;
         public IPolicyService Policies => GetService<IPolicyService>(() => new PolicyService(UnitOfWork));
         public IReviewService Reviews => GetService<IReviewService>(() => new ReviewService(UnitOfWork));
         public IAvailabilityService Availabilities => GetService<IAvailabilityService>(() => new AvailabilityService(UnitOfWork));
-        
-        public IAvailabilityPoliciesService AvailabilityPolicies => GetService<IAvailabilityPoliciesService>(() => new AvailabilityPoliciesService(UnitOfWork));
+        public IMongoAvailabilityService MongoAvailabilities =>  GetService<IMongoAvailabilityService>(() => new MongoAvailabilityService(UnitOfWork));
 
-        
+        public IAvailabilityPoliciesService AvailabilityPolicies => GetService<IAvailabilityPoliciesService>(() => new AvailabilityPoliciesService(UnitOfWork));
         public IReservationRoomsService ReservationRooms => GetService<IReservationRoomsService>(() => new ReservationRoomsService(UnitOfWork));
     }
 } 

@@ -145,8 +145,8 @@ namespace WebApp.ApiControllers._1._0
             
              _bll.Properties.Add(entity);
              
-            await _bll.SaveChangesAsync();
-
+            await _bll.SaveChangesAsync(); 
+            await _bll.MongoAvailabilities.CreateNew(entity.Id);
             property.Id = entity.Id;
             return CreatedAtAction("GetProperty", new { id = property.Id }, property);
         }

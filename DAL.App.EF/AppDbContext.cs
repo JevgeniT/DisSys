@@ -28,9 +28,9 @@ namespace DAL.App.EF
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Policy> Policies { get; set; }
         
-        public DbSet<AvailabilityPolicies> AvailabilitiyPolicies { get; set; }
+        // public DbSet<AvailabilityPolicies> AvailabilitiyPolicies { get; set; }
 
-        public DbSet<Availability> Availabilities { get; set; }
+        // public DbSet<Availability> Availabilities { get; set; }
         public DbSet<Property> Properties { get; set; }
         public DbSet<Room> Rooms { get; set; }
 

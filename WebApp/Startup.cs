@@ -6,8 +6,11 @@ using BLL.App;
 using Cache;
 using Contracts.BLL.App;
 using Contracts.DAL.App;
+using Contracts.DAL.App.Repositories;
 using Contracts.DAL.Base;
 using DAL.App.EF;
+using DAL.App.EF.Repositories;
+using DAL.App.NoSQL;
 using Domain.Identity;
 using EasyCaching.Core.Configurations;
 using Microsoft.AspNetCore.Builder;
@@ -43,6 +46,12 @@ namespace WebApp
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("MsSqlConnection")));
+            
+            services.Configure<MongoConnectionSettings>(
+                Configuration.GetSection(nameof(MongoConnectionSettings)));
+
+            services.AddSingleton<INoSqlConnectionSettings>(sp =>
+                sp.GetRequiredService<IOptions<MongoConnectionSettings>>().Value);
           
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddApiVersioning(options =>
@@ -57,11 +66,8 @@ namespace WebApp
             services.AddScoped<IAppUnitOfWork, AppUnitOfWork>();
             services.AddScoped<IUserNameProvider, UserNameProvider>();
             services.AddScoped<IAppBLL, AppBLL>();
-            
-            // services.AddResponseCaching();
-            //  services.AddSingleton<IConnectionMultiplexer>(_ =>
-            //                 ConnectionMultiplexer.Connect(Configuration.GetValue<string>("RedisCacheSettings")));
-            // services.AddSingleton<IResponseCacheService, ResponseCacheService>();
+            services.AddScoped<MongoContext>();
+            // services.AddScoped<IMongoAvailabilityRepository, MongoAvailabilityRepository>();
 
             services.AddIdentity<AppUser, AppRole>()
                  .AddDefaultUI()

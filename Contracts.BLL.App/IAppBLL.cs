@@ -2,6 +2,7 @@
 using Contracts.BLL.App.Services;
 using Contracts.BLL.Base;
 using Contracts.DAL.App.Repositories;
+using DAL.App.NoSQL;
 
 namespace Contracts.BLL.App
 {
@@ -16,8 +17,9 @@ namespace Contracts.BLL.App
         public IFacilityService Facilities { get; }
         public IPolicyService Policies { get; }
         public IReviewService  Reviews{ get; }
-
         public IAvailabilityService Availabilities { get; }
+        public IMongoAvailabilityService MongoAvailabilities { get; }
+
         public IAvailabilityPoliciesService AvailabilityPolicies { get; }
 
         public IReservationRoomsService ReservationRooms { get; }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using BLL.App.DTO;
 using Contracts.BLL.App;
 using Microsoft.AspNetCore.Mvc;
@@ -76,7 +77,7 @@ namespace WebApp.ApiControllers._1._0
                 return NotFound(new MessageDTO($"Reservation with id {id} was not found"));
             }
 
-            return Ok(reservation);
+            return Ok(_mapper.Map(reservation));
         }
 
         /// <summary>
@@ -112,8 +113,6 @@ namespace WebApp.ApiControllers._1._0
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ReservationDTO))]
         public async Task<ActionResult<ReservationDTO>> PostReservation(ReservationCreateDTO reservation) // todo more refactor, update dates on save
         {
-            
-            
             if (!await _bll.Availabilities.ExistsAsync(reservation.CheckInDate, reservation.CheckOutDate, reservation.PropertyId))
             {
                 return BadRequest(new MessageDTO("No dates available"));
@@ -129,7 +128,10 @@ namespace WebApp.ApiControllers._1._0
              
             _bll.Reservations.Add(bllReservation);
             
+            await  _bll.Availabilities.SaveOnChangeAsync(reservation.CheckInDate, reservation.CheckOutDate);
+            
             await _bll.SaveChangesAsync();
+            
             await _bll.ReservationRooms.AddRange(reservation.RoomDtos.Select(e => new ReservationRooms {RoomId = e.RoomId, ReservationId = bllReservation.Id, PolicyId = e.PolicyId}));
             
             await _bll.SaveChangesAsync();

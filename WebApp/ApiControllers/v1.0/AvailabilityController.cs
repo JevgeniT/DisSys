@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BLL.App.DTO;
 using Contracts.BLL.App;
+using Contracts.DAL.App.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -27,16 +28,16 @@ namespace WebApp.ApiControllers
     public class AvailabilityController : ControllerBase
     {
         private readonly IAppBLL _bll;
-        private readonly DTOMapper<Availability, AvailabilityDTO> _mapper = new DTOMapper<Availability, AvailabilityDTO>();
+         private readonly DTOMapper<Availability, AvailabilityDTO> _mapper = new DTOMapper<Availability, AvailabilityDTO>();
         
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="bll"></param>
-        public AvailabilityController(IAppBLL bll)
+        public AvailabilityController(IAppBLL bll )
         {
             _bll = bll;
-        }
+         }
 
         /// <summary>
         /// Get all room availabilities
@@ -97,12 +98,12 @@ namespace WebApp.ApiControllers
             {
                 return BadRequest(new MessageDTO("Dates already exist"));
             }
-       
+            
             var entity = _mapper.Map(availability); 
             _bll.Availabilities.Add(entity);
-
-            await _bll.SaveChangesAsync();
+             await _bll.SaveChangesAsync();
             availability.Id = entity.Id;
+            
             return CreatedAtAction("GetDates", new { id = availability.Id }, availability);
         }
         

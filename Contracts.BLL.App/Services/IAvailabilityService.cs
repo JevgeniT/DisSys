@@ -8,7 +8,7 @@ namespace Contracts.BLL.App.Services
 {
     public interface IAvailabilityService : IAvailabilityRepository<Guid,Availability>
     {
-        Task ParseDate(List<Availability> list, DateTime from, DateTime to);
+        Task SaveOnChangeAsync( DateTime from, DateTime to);
 
     }
 }

@@ -19,11 +19,17 @@ namespace BLL.App.Services
         {
         }
 
-        public async  Task<IEnumerable<Reservation>> AllAsync(Guid? userId = null, Guid? propertyId = null)
+        public async Task<IEnumerable<Reservation>> AllAsync(Guid? userId = null, Guid? propertyId = null)
         {
             return (await ServiceRepository.AllAsync(userId, propertyId)).Select( dalEntity => Mapper.Map(dalEntity) );
         }
 
+        public override async Task<Reservation> FirstOrDefaultAsync(Guid id, object? userId = null)
+        {
+            return Mapper.Map(await ServiceRepository.FirstOrDefaultAsync(id, userId));
+        }
+        
+ 
     }
     
     

@@ -13,7 +13,6 @@ namespace BLL.App.DTO
         public TKey Id { get; set; }
 
         public Guid ReservationId { get; set; }
-        public Reservation? Reservation { get; set; }
         public Guid PolicyId { get; set; }
         public Guid RoomId { get; set; }
         public Room? Room { get; set; }

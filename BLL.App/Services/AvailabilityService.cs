@@ -8,7 +8,7 @@ using BLL.Base.Services;
 using Contracts.BLL.App.Services;
 using Contracts.DAL.App;
 using Contracts.DAL.App.Repositories;
-
+ 
 namespace BLL.App.Services
 {
     public class AvailabilityService : 
@@ -39,52 +39,60 @@ namespace BLL.App.Services
         {
             return  await ServiceRepository.ExistsAsync(from, to, propertyId);
         }
-        
-        public async Task ParseDate(List<Availability> list, DateTime @from, DateTime to) // TODO
-        {
-            foreach (var available in list)
-            {
-                if ((available.From == @from && available.To > to) || (available.To == to && available.From>@from))
-                {
-                    Availability availability = new Availability
-                    {
-                        From = @from == available.From ? to : available.From,
-                        To = to == available.To ? @from : available.To,
-                        PricePerNightForAdult = available.PricePerNightForAdult,
-                        Active = true,
-                        RoomId = available.RoomId,
-                    };
-                            
-                        Add(availability);
-                } 
-                
-                else if (available.From< @from && available.To > to)  
-                {
-                    Add(new Availability{ 
-                            From = available.From, To = @from,
-                            Active = true, 
-                            PricePerNightForAdult = available.PricePerNightForAdult,
-                            RoomId = available.RoomId,
-                    });
-                    Add(new Availability
-                        {
-                            From = available.To, To = available.To,
-                            Active = true, 
-                            PricePerNightForAdult = available.PricePerNightForAdult ,
-                            RoomId = available.RoomId,
-                        });
-                }
-                else if (available.From == @from && available.To == to)
-                {
-                    available.Active = false; 
-                    await  UpdateAsync(available);
-                    
-                    
-                }
-            }
 
-            
+        public Task SaveOnChangeAsync(DateTime @from, DateTime to)
+        {
+            throw new NotImplementedException();
         }
+        // public async Task SaveOnChangeAsync( DateTime @from, DateTime to) // TODO
+        // {
+        //     var list = ServiceRepository.FindAvailableDates(from, to, Guid.Parse("ECBF12D4-A554-4223-114E-08D85E1A7C82")).Result.ToList(); 
+        //     foreach (var available in list)
+        //     {
+        //         available.Room = null;
+        //         if ((available.From == @from && available.To > to) || (available.To == to && available.From>@from))
+        //         {
+        //             Availability availability = new Availability
+        //             {
+        //                 From = @from == available.From ? to : available.From,
+        //                 To = to == available.To ? @from : available.To,
+        //                 PricePerNightForAdult = available.PricePerNightForAdult,
+        //                 Active = true,
+        //                 RoomId = available.RoomId,
+        //             };
+        //             
+        //             Add(availability);
+        //             
+        //             available.Active = false;
+        //             await UpdateAsync(Mapper.Map(available));
+        //         } 
+        //         
+        //         else if (available.From< @from && available.To > to)  
+        //         {
+        //             Add(new Availability{ 
+        //                     From = available.From, To = @from,
+        //                     Active = true, 
+        //                     PricePerNightForAdult = available.PricePerNightForAdult,
+        //                     RoomId = available.RoomId,
+        //             });
+        //             Add(new Availability
+        //                 {
+        //                     From = available.To, To = available.To,
+        //                     Active = true, 
+        //                     PricePerNightForAdult = available.PricePerNightForAdult,
+        //                     RoomId = available.RoomId,
+        //                 });
+        //         }
+        //         else if (available.From == @from && available.To == to)
+        //         {
+        //             available.Active = false; 
+        //             await  UpdateAsync(Mapper.Map(available));
+        //             
+        //         }
+        //     }
+        //
+        //     
+        // }
         
         
     }
