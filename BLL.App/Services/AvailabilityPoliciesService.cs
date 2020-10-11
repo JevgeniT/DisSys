@@ -7,12 +7,11 @@ using Contracts.DAL.App.Repositories;
 
 namespace BLL.App.Services
 {
-    public class AvailabilityPoliciesService :
-        BaseEntityService<IAvailabilityPoliciesRepository, IAppUnitOfWork, DAL.App.DTO.AvailabilityPolicies, AvailabilityPolicies>, IAvailabilityPoliciesService
+    public class AvailabilityPoliciesService : BaseEntityService<IAvailabilityPoliciesRepository, IAppUnitOfWork, DAL.App.DTO.AvailabilityPolicies, AvailabilityPolicies>, IAvailabilityPoliciesService
     {
      
         public AvailabilityPoliciesService(IAppUnitOfWork unitOfWork) 
-            : base(unitOfWork, new BaseBLLMapper<DAL.App.DTO.AvailabilityPolicies, AvailabilityPolicies>(), unitOfWork.AvailabilityPolicies)
+             : base(unitOfWork, new BaseBLLMapper<DAL.App.DTO.AvailabilityPolicies, AvailabilityPolicies>(), unitOfWork.AvailabilityPolicies)
         {
         }
 

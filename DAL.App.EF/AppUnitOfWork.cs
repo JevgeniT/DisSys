@@ -3,6 +3,7 @@ using Contracts.DAL.App;
 using Contracts.DAL.App.Repositories;
 using DAL.App.EF.Repositories;
 using DAL.App.NoSQL;
+using DAL.App.NoSQL.Repositories;
 using DAL.Base.EF;
 
 namespace DAL.App.EF
@@ -15,7 +16,6 @@ namespace DAL.App.EF
         public IPropertyRepository Properties => GetRepository<IPropertyRepository>(() => new PropertyRepository(UOWDbContext));
         public IRoomRepository Rooms => GetRepository<IRoomRepository>(() => new RoomRepository(UOWDbContext));
         public IAvailabilityRepository Availabilities => GetRepository<IAvailabilityRepository>(() => new AvailabilityRepository(UOWDbContext));
-        
         public IMongoAvailabilityRepository MongoAvailabilities => GetRepository<IMongoAvailabilityRepository>(() => new MongoAvailabilityRepository(new MongoContext(new MongoConnectionSettings())));
         public IAvailabilityPoliciesRepository AvailabilityPolicies => GetRepository<IAvailabilityPoliciesRepository>(() => new AvailabilityPoliciesRepository(UOWDbContext));
         public IReservationRoomsRepository ReservationRooms => GetRepository<IReservationRoomsRepository>(() => new ReservationRoomsRepository(UOWDbContext));

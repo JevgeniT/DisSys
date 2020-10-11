@@ -142,11 +142,9 @@ namespace WebApp.ApiControllers._1._0
 
             property.AppUserId = User.UserGuidId();
             var entity = _mapper.Map(property);
-            
-             _bll.Properties.Add(entity);
+            _bll.Properties.Add(entity);
              
             await _bll.SaveChangesAsync(); 
-            await _bll.MongoAvailabilities.CreateNew(entity.Id);
             property.Id = entity.Id;
             return CreatedAtAction("GetProperty", new { id = property.Id }, property);
         }

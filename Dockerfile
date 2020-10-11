@@ -18,12 +18,9 @@ COPY DAL.App.DTO/*.csproj ./DAL.App.DTO/
 COPY DAL.App.EF/*.csproj ./DAL.App.EF/
 COPY DAL.Base/*.csproj ./DAL.Base/
 COPY DAL.Base.EF/*.csproj ./DAL.Base.EF/
-
-COPY Domain/*.csproj ./Domain/
-                                                                                                                                                                                                                                                 
+COPY Domain/*.csproj ./Domain/                                                                                                                                                                                                                 
 COPY Public.DTO/*.csproj ./Public.DTO/
 COPY Extensions/*.csproj ./Extensions/
-    
 COPY WebApp/*.csproj ./WebApp/
     
 RUN dotnet restore

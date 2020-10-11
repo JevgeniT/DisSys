@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BLL.App.DTO;
 using Contracts.BLL.App;
+using Contracts.DAL.App;
 using DAL.App.EF;
 using Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

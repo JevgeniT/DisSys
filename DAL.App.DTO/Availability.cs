@@ -16,43 +16,26 @@ namespace DAL.App.DTO
         where TKey : IEquatable<TKey>
     {
         public TKey Id { get; set; } = default!;
-        // public DateTime From { get; set; }
-        // public DateTime To { get; set; }
-
+        public DateTime From { get; set; }
+        public DateTime To { get; set; }
         public ICollection<AvailabilityPolicies>? AvailabilityPolicies { get; set; }
+        public bool Active { get; set; }
+        public Guid RoomId { get; set; }
+        public Room? Room { get; set; }
+        public decimal PricePerNightForAdult { get; set; }
         
-        public Dictionary<string, Month> Years { get; set; }
-        // public bool Active { get; set; }
-        // public Guid RoomId { get; set; }
-        // public Room? Room { get; set; }
-        // public decimal PricePerNightForAdult { get; set; }
-        //
-        // public decimal PricePerNightForChild { get; set; }
-        //
-        // public bool PricePerPerson { get; set; }
-        //
-        // public int RoomsAvailable { get; set; }
-    }
-    
-    public class Month
-    {
-        public string Name { get; set; }
-        public List<Day> Days { get; set; }
+        public decimal PricePerNightForChild { get; set; }
         
-    }
-    
-    
-    public class Day
-    {
-        public string Name { get; set; }
-        public List<RoomPrice> RoomPrices { get; set; }
-         
-    }
-    
-    public class RoomPrice
-    {
-        [BsonRepresentation(BsonType.String)]
-        public string RoomId { get; set; }
-        public decimal Price { get; set; }
+        public bool PricePerPerson { get; set; }
+        
+        public int RoomsAvailable { get; set; }
+        public Availability ShallowCopy()
+        {
+            return (Availability) this.MemberwiseClone();
+        }
+        public Availability DeepCopy()
+        {
+            return (Availability) this.MemberwiseClone();
+        }
     }
 }

@@ -30,7 +30,7 @@ namespace DAL.App.EF
         
         // public DbSet<AvailabilityPolicies> AvailabilitiyPolicies { get; set; }
 
-        // public DbSet<Availability> Availabilities { get; set; }
+        public DbSet<Availability> Availabilities { get; set; }
         public DbSet<Property> Properties { get; set; }
         public DbSet<Room> Rooms { get; set; }
 
@@ -47,7 +47,7 @@ namespace DAL.App.EF
            builder.Entity<Reservation>()
                .Property(b => b.ReservationNumber)
                .ValueGeneratedOnAdd();
-           //
+           
            // builder.Entity<Property>().Property(property => property.Type).HasConversion(type => type.ToString(),
            //     type =>  (PropertyType)Enum.Parse(typeof(PropertyType),type));
            //

@@ -13,15 +13,18 @@ namespace BLL.App.DTO
         where TKey: IEquatable<TKey>
     {
         public TKey Id { get; set; }= default!;
-        public int ReservationNumber { get; set; }
+
+        public int ReservationNumber { get; set; } = 1;
         public DateTime CheckInDate{ get; set; }
         public DateTime CheckOutDate { get; set; }
         
         public DateTime CreatedAt { get; set; }
+        public int Adults { get; set; }
+        public int Children { get; set; }
         public ICollection<ReservationRooms>? ReservationRooms { get; set; }
         public Guid PropertyId { get; set; }
-
-        public bool Active { get; set; } = true;
+        public Property? Property { get; set; }
+        public bool Active { get; set; } = true;    
         
         public decimal TotalPrice { get; set; }
         public TKey AppUserId { get; set; } = default!;

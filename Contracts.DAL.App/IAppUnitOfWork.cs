@@ -1,6 +1,5 @@
 using Contracts.DAL.App.Repositories;
 using Contracts.DAL.Base;
-using DAL.App.NoSQL;
 
 namespace Contracts.DAL.App
 {
@@ -10,7 +9,6 @@ namespace Contracts.DAL.App
         IRoomRepository Rooms { get; }
         IAvailabilityRepository Availabilities { get; }
         IMongoAvailabilityRepository MongoAvailabilities { get; }
-
         IAvailabilityPoliciesRepository AvailabilityPolicies { get; }
         IReservationRoomsRepository ReservationRooms { get; }
         IExtraRepository Extras { get; }

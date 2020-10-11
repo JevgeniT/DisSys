@@ -66,7 +66,7 @@ namespace WebApp.ApiControllers
         /// <param name="to">Check out date</param>
         /// <returns>Array of availabilities</returns>
         [HttpGet]
-        [Route("checkdates")]
+        [Route("check")]
         [AllowAnonymous]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<AvailabilityDTO>))]

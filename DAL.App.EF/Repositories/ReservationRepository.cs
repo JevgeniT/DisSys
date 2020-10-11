@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Contracts.DAL.App;
 using Contracts.DAL.App.Repositories;
 using DAL.Base.EF.Repositories;
 using Domain;
@@ -19,23 +20,22 @@ namespace DAL.App.EF.Repositories
 
         public async Task<IEnumerable<DAL.App.DTO.Reservation>> AllAsync(Guid? userId = null, Guid? propertyId = null)
         {
-            return (await RepoDbContext.Reservations
-                   .Include(reservation => reservation.AppUser)
-                   .Include(reservation => reservation.ReservationRooms)
+            return (await RepoDbContext.Reservations 
+                   .Include(res=>res.Property)
+                   .Include(res => res.AppUser)
+                   .Include(res => res.ReservationRooms)
                    .ThenInclude(rooms =>  rooms.Room)
-                   .Where(reservation => reservation.PropertyId == propertyId || reservation.AppUserId == userId)
-                   .ToListAsync())
-                   .Select(reservation => Mapper.Map(reservation));
+                   .Where(res => res.PropertyId == propertyId || res.AppUserId == userId)
+                   .ToListAsync()).Select(res => Mapper.Map(res));
         }
 
         public override async Task<DTO.Reservation> FirstOrDefaultAsync(Guid id, object? userId = null)
         {
-             var reservation = (await RepoDbContext.Reservations
-                .Include(reservation => reservation.AppUser)
-                .Include(reservation => reservation.ReservationRooms)
+            var reservation = (await RepoDbContext.Reservations
+                .Include(r => r.AppUser)
+                .Include(r => r.ReservationRooms)
                 .ThenInclude(rooms => rooms.Room).FirstAsync());
-            
-            return Mapper.Map(reservation);
+             return Mapper.Map(reservation);
         }
     }
 }

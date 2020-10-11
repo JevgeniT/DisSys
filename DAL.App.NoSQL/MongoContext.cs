@@ -11,8 +11,8 @@ namespace DAL.App.NoSQL
         private MongoClient _mongoClient { get; set; }
         public MongoContext(INoSqlConnectionSettings settings)
         {
-            var client = new MongoClient("mongodb://localhost:27017/dissys");
-            var database = client.GetDatabase("dissys");
+            var client = new MongoClient("mongodb://localhost:27017/mongodissys");
+            var database = client.GetDatabase("mongodissys");
             _collection = database.GetCollection<Availability>("availability");
         }
 

@@ -39,61 +39,38 @@ namespace BLL.App.Services
         {
             return  await ServiceRepository.ExistsAsync(from, to, propertyId);
         }
-
-        public Task SaveOnChangeAsync(DateTime @from, DateTime to)
+        
+        
+        public async Task SaveOnChangeAsync(DateTime @from, DateTime to, Guid propertyId, List<Guid>? roomIds) // TODO
         {
-            throw new NotImplementedException();
+            var list = ServiceRepository.FindAvailableDates(from, to, propertyId).Result.ToList();
+            
+            foreach (var available in list.Where(available => roomIds.Contains(available.RoomId)))
+            {
+                if ((available.From == @from && available.To > to) || (available.To == to && available.From<@from))
+                {
+                    available.From = @from == available.From ? to : available.From;
+                    available.To = to == available.To ? @from : available.To;
+                }
+                else if (available.From< @from && available.To > to)  
+                {
+                    var first = available.DeepCopy();
+                    first.Id = Guid.NewGuid();
+                    first.To = from;
+                    Add(Mapper.Map(first));
+
+                    var second = available.DeepCopy();
+                    second.From = to;
+                    second.Id = Guid.NewGuid();
+                    Add(Mapper.Map(second));
+                    available.Active = false;
+                }
+                else
+                {
+                    available.Active = false;
+                }
+                await UpdateAsync(Mapper.Map(available));
+            }
         }
-        // public async Task SaveOnChangeAsync( DateTime @from, DateTime to) // TODO
-        // {
-        //     var list = ServiceRepository.FindAvailableDates(from, to, Guid.Parse("ECBF12D4-A554-4223-114E-08D85E1A7C82")).Result.ToList(); 
-        //     foreach (var available in list)
-        //     {
-        //         available.Room = null;
-        //         if ((available.From == @from && available.To > to) || (available.To == to && available.From>@from))
-        //         {
-        //             Availability availability = new Availability
-        //             {
-        //                 From = @from == available.From ? to : available.From,
-        //                 To = to == available.To ? @from : available.To,
-        //                 PricePerNightForAdult = available.PricePerNightForAdult,
-        //                 Active = true,
-        //                 RoomId = available.RoomId,
-        //             };
-        //             
-        //             Add(availability);
-        //             
-        //             available.Active = false;
-        //             await UpdateAsync(Mapper.Map(available));
-        //         } 
-        //         
-        //         else if (available.From< @from && available.To > to)  
-        //         {
-        //             Add(new Availability{ 
-        //                     From = available.From, To = @from,
-        //                     Active = true, 
-        //                     PricePerNightForAdult = available.PricePerNightForAdult,
-        //                     RoomId = available.RoomId,
-        //             });
-        //             Add(new Availability
-        //                 {
-        //                     From = available.To, To = available.To,
-        //                     Active = true, 
-        //                     PricePerNightForAdult = available.PricePerNightForAdult,
-        //                     RoomId = available.RoomId,
-        //                 });
-        //         }
-        //         else if (available.From == @from && available.To == to)
-        //         {
-        //             available.Active = false; 
-        //             await  UpdateAsync(Mapper.Map(available));
-        //             
-        //         }
-        //     }
-        //
-        //     
-        // }
-        
-        
     }
 }

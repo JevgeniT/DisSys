@@ -1,6 +1,5 @@
 using System;
-using System.Text.Json.Serialization;
-
+ 
 namespace Public.DTO
 {
     public class FacilityDTO

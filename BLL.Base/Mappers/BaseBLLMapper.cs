@@ -28,7 +28,7 @@ namespace BLL.Base.Mappers
                 config.CreateMap<DAL.App.DTO.ReservationRooms, BLL.App.DTO.ReservationRooms>();
                 config.CreateMap<DAL.App.DTO.AvailabilityPolicies, BLL.App.DTO.AvailabilityPolicies>();
 
-                // config.CreateMap<DAL.App.DTO.Availability, BLL.App.DTO.Availability>().ForMember(availability => availability.Policies, opt=> opt.Ignore());
+                config.CreateMap<DAL.App.DTO.Availability, BLL.App.DTO.Availability>().ForMember(availability => availability.Room, opt=> opt.Ignore());
 
                 config.CreateMap<DAL.App.DTO.Policy, BLL.App.DTO.Policy>();
                 config.CreateMap<DAL.App.DTO.Reservation, BLL.App.DTO.Reservation>();

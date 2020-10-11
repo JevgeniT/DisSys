@@ -26,12 +26,17 @@ namespace DAL.App.DTO
         public DateTime CheckOutDate { get; set; }
 
         public DateTime CreatedAt { get; set; }
+        
+        public int Adults { get; set; }
+        
+        public int Children { get; set; }
 
         public ICollection<ReservationRooms>? ReservationRooms { get; set; }
 
         public decimal TotalPrice { get; set; }
 
         public Guid PropertyId { get; set; }
+        public Property? Property { get; set; }
 
         public bool Active { get; set; }
 

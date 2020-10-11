@@ -44,8 +44,8 @@ namespace WebApp
         {
             
             services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("MsSqlConnection")));
+                options.UseMySql(
+                    Configuration.GetConnectionString("MySqlConnection")));
             
             services.Configure<MongoConnectionSettings>(
                 Configuration.GetSection(nameof(MongoConnectionSettings)));
@@ -128,7 +128,6 @@ namespace WebApp
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
             }
             else
             {

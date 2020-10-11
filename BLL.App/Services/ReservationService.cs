@@ -18,7 +18,7 @@ namespace BLL.App.Services
             : base(unitOfWork, new BaseBLLMapper<DAL.App.DTO.Reservation, Reservation>(), unitOfWork.Reservations)
         {
         }
-
+        
         public async Task<IEnumerable<Reservation>> AllAsync(Guid? userId = null, Guid? propertyId = null)
         {
             return (await ServiceRepository.AllAsync(userId, propertyId)).Select( dalEntity => Mapper.Map(dalEntity) );
@@ -28,9 +28,5 @@ namespace BLL.App.Services
         {
             return Mapper.Map(await ServiceRepository.FirstOrDefaultAsync(id, userId));
         }
-        
- 
     }
-    
-    
 }

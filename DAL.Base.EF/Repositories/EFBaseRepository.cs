@@ -113,7 +113,7 @@ namespace DAL.Base.EF.Repositories
         protected IQueryable<TDomainEntity> PrepareQuery(object? userId = null)
         {
             var query = RepoDbSet.AsQueryable();
-
+            query.AsNoTracking();
             if (userId != null && typeof(IDomainEntityUser<TKey, TUser>).IsAssignableFrom(typeof(TDomainEntity)))
             {
                 query = query.Where(e =>

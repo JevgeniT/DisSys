@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Contracts.DAL.Base;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
@@ -20,6 +21,7 @@ namespace BLL.App.DTO
         public DateTime From { get; set; }
         
         [DataType(DataType.Date)]
+        
         public DateTime To { get; set; }
         
         public Guid RoomId { get; set; }
@@ -28,36 +30,19 @@ namespace BLL.App.DTO
         public ICollection<AvailabilityPolicies>? AvailabilityPolicies { get; set; }
         public bool Active { get; set; }
         public decimal PricePerNightForAdult { get; set; }
-        
+         
         public decimal PricePerNightForChild { get; set; }
 
         public bool PricePerPerson { get; set; }
         
         public int RoomsAvailable { get; set; }
 
+
+        public Availability ShallowCopy()
+        {
+            return (Availability) this.MemberwiseClone();
+        }
+
     }
     
-    
-    public class Month
-    {
-        public string Name { get; set; }
-        public List<Day> Days { get; set; }
-        
-    }
-    
-    
-    public class Day
-    {
-        public string Name { get; set; }
-        public List<RoomPrice> RoomPrices { get; set; }
-         
-    }
-    
-    public class RoomPrice
-    {
-        [BsonRepresentation(BsonType.String)]
-        public string RoomId { get; set; }
-        public decimal Price { get; set; }
-    }
-     
 }

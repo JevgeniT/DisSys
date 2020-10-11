@@ -15,7 +15,6 @@ namespace BLL.App.DTO
         public TKey Id { get; set; } = default!;
         public string? Name { get; set; }
         public string? Address { get; set; }
-        
         public string? Description { get; set; }
         public string? Country { get; set; }
         public ICollection<Review>? Reviews { get; set; }

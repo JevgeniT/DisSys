@@ -1,5 +1,6 @@
 using System.Linq;
 using AutoMapper;
+using Public.DTO.Reservation;
 using Bll = BLL.App.DTO;
 
 namespace Public.DTO.Mappers
@@ -14,8 +15,7 @@ namespace Public.DTO.Mappers
             MapperConfigurationExpression.CreateMap<Bll.Room, RoomDTO>();
             MapperConfigurationExpression.CreateMap<Bll.Facility, FacilityDTO>();
             MapperConfigurationExpression.CreateMap<Bll.Availability, AvailabilityDTO>()
-                // .ForMember(availability => availability.PolicyDtos, opt => opt.MapFrom(src=>src.AvailabilityPolicies.Select(p=>p.Policy)))
-                .ForMember(dto => dto.RoomName, opt => opt.MapFrom(r  =>  r.Room.Name));
+                 .ForMember(dto => dto.RoomName, opt => opt.MapFrom(r  =>  r.Room.Name));
             
             MapperConfigurationExpression.CreateMap<Bll.AvailabilityPolicies, AvailabilityPoliciesDTO>();
             MapperConfigurationExpression.CreateMap<Bll.Policy, AvailabilityPoliciesDTO>();

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
 using Contracts.DAL.Base;
 
 namespace BLL.App.DTO
@@ -10,8 +9,7 @@ namespace BLL.App.DTO
     // }
     public class Room : IDomainBaseEntity
     {
-        public Guid Id { get; set; } 
-
+        public Guid Id { get; set; }
         public string? Name { get; set; }
         public int AdultsOccupancy { get; set; }
         public int ChildOccupancy { get; set; }

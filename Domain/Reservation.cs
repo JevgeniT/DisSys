@@ -18,8 +18,10 @@ namespace Domain
         where TKey : struct, IEquatable<TKey>
             where TUser : AppUser<TKey>
     {
-        
-        public int ReservationNumber { get; set; }
+
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        // [DefaultValue(0)]
+        public int ReservationNumber { get; set; } 
 
         [Column(TypeName = "date")]
         [DataType(DataType.Date)]
@@ -38,7 +40,6 @@ namespace Domain
         public virtual TUser? AppUser { get; set; }
         
         [Column(TypeName = "decimal(18,2)")]
-
         public decimal TotalPrice { get; set; }
         public int Adults { get; set; }
         public int Children { get; set; }

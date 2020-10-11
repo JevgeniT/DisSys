@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Contracts.DAL.App;
 using Contracts.DAL.App.Repositories;
 using DAL.Base.EF.Repositories;
 using Domain;
@@ -19,39 +20,39 @@ namespace DAL.App.EF.Repositories
         
         public async Task<IEnumerable< DAL.App.DTO.Availability>> AllAsync(Guid? roomId = null)
         {
-           // return (await RepoDbContext.Availabilities.Include(availability => availability.Room)
-           //     .Where(availability => availability.RoomId == roomId)
-           //      .ToListAsync()).Select(a => Mapper.Map(a));
-           throw new NotImplementedException();
+            return (await RepoDbContext.Availabilities.Include(availability => availability.Room)
+                .Where(availability => availability.RoomId == roomId)
+                .ToListAsync()).Select(a => Mapper.Map(a));
         }
     
         
         public async Task<IEnumerable< DAL.App.DTO.Availability>> FindAvailableDates(DateTime from, DateTime to, Guid propertyId)
         {
-            // var query = await RepoDbContext.Availabilities.AsNoTracking()
-            //     .Include(a => a.Room)
-            //     .Where(a => a.Active && a.Room.PropertyId == propertyId &&
-            //                 ((a.From >= from && a.From <= to) || (a.To >= from && a.To <= to)))
-            //     .ToListAsync();
-            // return query.Select(e => Mapper.Map(e));
-            throw new NotImplementedException();
-
+            var query = await RepoDbContext.Availabilities.AsNoTracking()
+                .Include(a => a.Room)
+                .Where(a => a.Active && 
+                            a.Room.PropertyId == propertyId 
+                            && ((from >= a.From && to<=a.To) 
+                            || (from>=a.From && to<= a.To)))
+                .ToListAsync();
+            return query.Select(e => Mapper.Map(e));
+ 
         }
 
         
         public  async Task<bool> ExistsAsync(DateTime from, DateTime to)
         {
-            return await RepoDbSet.AnyAsync(a => a.Active &&
-                                                 ((a.From >= from && a.From <= to)
-                                                  || (a.To >= from && a.To <= to)));
+            return await RepoDbSet.AnyAsync(a => a.Active 
+                                                 && (( from >= a.From &&  to<=a.To ) 
+                                                     || (from>=a.From   &&  to<= a.To)));
         }
 
         public  async Task<bool> ExistsAsync(DateTime from, DateTime to, Guid propertyId)
         {
             return await RepoDbSet.AnyAsync(a => a.Active && 
                                                  a.Room.PropertyId == propertyId 
-                                                 && ((a.From >= from && a.From <= to)
-                                                     || (a.To >= from && a.To <= to)));
+                                                 && (( from >= a.From &&  to<=a.To ) 
+                                                     || (from>=a.From   &&  to<= a.To)));
         }
     }
 }

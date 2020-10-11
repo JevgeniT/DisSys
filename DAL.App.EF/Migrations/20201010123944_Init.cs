@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DAL.App.EF.Migrations
@@ -74,7 +75,7 @@ namespace DAL.App.EF.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     RoleId = table.Column<Guid>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
@@ -95,7 +96,7 @@ namespace DAL.App.EF.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     UserId = table.Column<Guid>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
@@ -211,8 +212,7 @@ namespace DAL.App.EF.Migrations
                     CreatedAt = table.Column<DateTime>(nullable: false),
                     ChangedBy = table.Column<string>(nullable: true),
                     ChangedAt = table.Column<DateTime>(nullable: false),
-                    ReservationNumber = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ReservationNumber = table.Column<int>(nullable: false),
                     CheckInDate = table.Column<DateTime>(type: "date", nullable: false),
                     CheckOutDate = table.Column<DateTime>(type: "date", nullable: false),
                     PropertyId = table.Column<Guid>(nullable: false),
@@ -338,6 +338,35 @@ namespace DAL.App.EF.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Availabilities",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    CreatedBy = table.Column<string>(nullable: true),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    ChangedBy = table.Column<string>(nullable: true),
+                    ChangedAt = table.Column<DateTime>(nullable: false),
+                    From = table.Column<DateTime>(type: "date", nullable: false),
+                    To = table.Column<DateTime>(type: "date", nullable: false),
+                    RoomId = table.Column<Guid>(nullable: false),
+                    Active = table.Column<bool>(nullable: false),
+                    PricePerNightForAdult = table.Column<decimal>(type: "decimal(5, 2)", nullable: false),
+                    PricePerNightForChild = table.Column<decimal>(type: "decimal(5, 2)", nullable: false),
+                    PricePerPerson = table.Column<bool>(nullable: false),
+                    RoomsAvailable = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Availabilities", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Availabilities_Rooms_RoomId",
+                        column: x => x.RoomId,
+                        principalTable: "Rooms",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Facilities",
                 columns: table => new
                 {
@@ -397,6 +426,36 @@ namespace DAL.App.EF.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AvailabilityPolicies",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    CreatedBy = table.Column<string>(nullable: true),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    ChangedBy = table.Column<string>(nullable: true),
+                    ChangedAt = table.Column<DateTime>(nullable: false),
+                    AvailabilityId = table.Column<Guid>(nullable: false),
+                    PolicyId = table.Column<Guid>(nullable: false),
+                    Active = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AvailabilityPolicies", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AvailabilityPolicies_Availabilities_AvailabilityId",
+                        column: x => x.AvailabilityId,
+                        principalTable: "Availabilities",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_AvailabilityPolicies_Policies_PolicyId",
+                        column: x => x.PolicyId,
+                        principalTable: "Policies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Extras",
                 columns: table => new
                 {
@@ -429,8 +488,7 @@ namespace DAL.App.EF.Migrations
                 name: "RoleNameIndex",
                 table: "AspNetRoles",
                 column: "NormalizedName",
-                unique: true,
-                filter: "[NormalizedName] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserClaims_UserId",
@@ -456,8 +514,22 @@ namespace DAL.App.EF.Migrations
                 name: "UserNameIndex",
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
-                unique: true,
-                filter: "[NormalizedUserName] IS NOT NULL");
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Availabilities_RoomId",
+                table: "Availabilities",
+                column: "RoomId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AvailabilityPolicies_AvailabilityId",
+                table: "AvailabilityPolicies",
+                column: "AvailabilityId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AvailabilityPolicies_PolicyId",
+                table: "AvailabilityPolicies",
+                column: "PolicyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Extras_FacilityId",
@@ -548,6 +620,9 @@ namespace DAL.App.EF.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "AvailabilityPolicies");
+
+            migrationBuilder.DropTable(
                 name: "Extras");
 
             migrationBuilder.DropTable(
@@ -561,6 +636,9 @@ namespace DAL.App.EF.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Availabilities");
 
             migrationBuilder.DropTable(
                 name: "Facilities");
