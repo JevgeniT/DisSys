@@ -17,19 +17,15 @@ namespace DAL.App.EF
 
         private readonly Dictionary<IDomainBaseEntity<Guid>, IDomainBaseEntity<Guid>> _entityTracker =
             new Dictionary<IDomainBaseEntity<Guid>, IDomainBaseEntity<Guid>>();
-        //
+        
         public DbSet<Extra> Extras { get; set; }
         public DbSet<Facility> Facilities { get; set; }
         public DbSet<Invoice> Invoices { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
-        
         public DbSet<ReservationRooms> ReservationRooms { get; set; }
-
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Policy> Policies { get; set; }
-        
-        // public DbSet<AvailabilityPolicies> AvailabilitiyPolicies { get; set; }
-
+        public DbSet<RoomFacilities> RoomFacilities { get; set; }
         public DbSet<Availability> Availabilities { get; set; }
         public DbSet<Property> Properties { get; set; }
         public DbSet<Room> Rooms { get; set; }
@@ -44,17 +40,14 @@ namespace DAL.App.EF
         protected override void OnModelCreating(ModelBuilder builder)
         {
            base.OnModelCreating(builder);
-           builder.Entity<Reservation>()
-               .Property(b => b.ReservationNumber)
-               .ValueGeneratedOnAdd();
-           
-           // builder.Entity<Property>().Property(property => property.Type).HasConversion(type => type.ToString(),
-           //     type =>  (PropertyType)Enum.Parse(typeof(PropertyType),type));
-           //
+            
            builder.Entity<Room>().Property(room => room.Bed).HasConversion(type => type.ToString(),
                type =>  (BedType)Enum.Parse(typeof(BedType),type));
            
+           BaseDateProvider.SeedIdentity(builder);
            
+           BaseDateProvider.SeedFacilities(builder);
+
            foreach (var relationship in builder.Model
                .GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
            {

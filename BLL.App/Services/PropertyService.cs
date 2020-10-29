@@ -14,15 +14,17 @@ namespace BLL.App.Services
     public class PropertyService :
         BaseEntityService<IPropertyRepository, IAppUnitOfWork, DAL.App.DTO.Property, Property>, IPropertyService
     {
-        public async Task<IEnumerable<Property>> FindAsync(DateTime? from, DateTime? to, string input)
-        {
-            return (await ServiceRepository.FindAsync(from, to, input)).Select(dalEntity => Mapper.Map(dalEntity));
-        }
-
         public PropertyService(IAppUnitOfWork unitOfWork) 
             : base(unitOfWork, new BaseBLLMapper<DAL.App.DTO.Property, Property>(), unitOfWork.Properties)
         {
         }
+
+        public async Task<IEnumerable<Property>> FindAsync(DateTime? from, DateTime? to, string input)
+        {
+            return (await ServiceRepository.FindAsync(from, to, input)).Select(dalEntity => Mapper.Map(dalEntity));
+        }
+        
+        
         
     }
 }

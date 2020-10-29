@@ -21,10 +21,10 @@ namespace DAL.App.EF.Repositories
         public async Task<IEnumerable<DAL.App.DTO.Reservation>> AllAsync(Guid? userId = null, Guid? propertyId = null)
         {
             return (await RepoDbContext.Reservations 
-                   .Include(res=>res.Property)
+                   .Include(res=> res.Property)
                    .Include(res => res.AppUser)
                    .Include(res => res.ReservationRooms)
-                   .ThenInclude(rooms =>  rooms.Room)
+                   .ThenInclude(rooms => rooms.Room)
                    .Where(res => res.PropertyId == propertyId || res.AppUserId == userId)
                    .ToListAsync()).Select(res => Mapper.Map(res));
         }
@@ -32,9 +32,11 @@ namespace DAL.App.EF.Repositories
         public override async Task<DTO.Reservation> FirstOrDefaultAsync(Guid id, object? userId = null)
         {
             var reservation = (await RepoDbContext.Reservations
+                .Include(r=> r.Review)
+                .Include(r=> r.Property)
                 .Include(r => r.AppUser)
                 .Include(r => r.ReservationRooms)
-                .ThenInclude(rooms => rooms.Room).FirstAsync());
+                .ThenInclude(rooms => rooms.Room).FirstOrDefaultAsync(r=> r.Id.Equals(id)));
              return Mapper.Map(reservation);
         }
     }

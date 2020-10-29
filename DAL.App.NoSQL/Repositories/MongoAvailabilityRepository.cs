@@ -51,7 +51,7 @@ namespace DAL.App.NoSQL.Repositories
 
         }
 
-        public Task<IEnumerable<Availability>> AddRange(IEnumerable<Availability> entities)
+        public Task<IEnumerable<Availability>> AddRangeAsync(IEnumerable<Availability> entities)
         {
             throw new NotImplementedException();
         }

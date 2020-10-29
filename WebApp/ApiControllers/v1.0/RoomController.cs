@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using BLL.App.DTO;
@@ -117,11 +118,13 @@ namespace WebApp.ApiControllers
         public async Task<ActionResult<RoomDTO>> PostRoom(RoomDTO room)
         {
             var entity = _mapper.Map(room);
-           _bll.Rooms.Add(entity);
-
+            _bll.Rooms.Add(entity);
             await  _bll.SaveChangesAsync();
+ 
+            await _bll.RoomFacilities.AddRangeAsync(room.FacilityDtos.Select(f => new RoomFacilities{FacilityId = f.Id,RoomId = entity.Id}).ToList());
             room.Id = entity.Id;
-            
+            await  _bll.SaveChangesAsync();
+
             return CreatedAtAction("GetRoom", new { id = room.Id }, room);
         }
         

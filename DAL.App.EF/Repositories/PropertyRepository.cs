@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Contracts.DAL.App;
 using Contracts.DAL.App.Repositories;
+using DAL.App.DTO;
 using DAL.Base.EF.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Public.DTO;
@@ -22,7 +23,10 @@ namespace DAL.App.EF.Repositories
         public override async Task<IEnumerable<DAL.App.DTO.Property>> AllAsync(object? userId = null)
         {
             var query = PrepareQuery(userId);
-            var entities = await query.Include(property => property.PropertyRooms).ToListAsync();
+            var entities = await query.Include(property => property.PropertyRooms)
+                .ThenInclude(room => room.RoomFacilities)
+                .ThenInclude(rf=> rf.Facility)
+                .ToListAsync();
             return entities.Select(domainEntity => Mapper.Map(domainEntity));
         }
 

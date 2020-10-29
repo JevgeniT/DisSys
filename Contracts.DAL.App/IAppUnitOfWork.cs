@@ -11,6 +11,8 @@ namespace Contracts.DAL.App
         IMongoAvailabilityRepository MongoAvailabilities { get; }
         IAvailabilityPoliciesRepository AvailabilityPolicies { get; }
         IReservationRoomsRepository ReservationRooms { get; }
+        IRoomFacilitiesRepository RoomFacilities { get; }
+
         IExtraRepository Extras { get; }
         IFacilityRepository Facilities { get; }
         IReviewRepository Reviews { get; }

@@ -1,5 +1,6 @@
 using System.Linq;
 using AutoMapper;
+using Public.DTO;
 using Public.DTO.Reservation;
 using Bll = BLL.App.DTO;
 

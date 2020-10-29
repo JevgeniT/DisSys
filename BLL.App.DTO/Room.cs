@@ -4,9 +4,7 @@ using Contracts.DAL.Base;
 
 namespace BLL.App.DTO
 {
-    // public class Room : Room<Guid>, IDomainBaseEntity
-    // {
-    // }
+   
     public class Room : IDomainBaseEntity
     {
         public Guid Id { get; set; }

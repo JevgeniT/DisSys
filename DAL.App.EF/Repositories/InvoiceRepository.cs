@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Contracts.DAL.App;
 using Contracts.DAL.App.Repositories;
 using DAL.App.DTO;
 using DAL.Base.EF.Mappers;
@@ -12,7 +13,7 @@ namespace DAL.App.EF.Repositories
 {
     public class InvoiceRepository : EFBaseRepository<AppDbContext,Domain.Identity.AppUser,Domain.Invoice,DAL.App.DTO.Invoice>,  IInvoiceRepository
     {
-        public InvoiceRepository(AppDbContext dbContext) : base(dbContext, new BaseDALMapper<Domain.Invoice, DAL.App.DTO.Invoice>())
+        public InvoiceRepository(AppDbContext dbContext) : base(dbContext, new DALMapper<Domain.Invoice, DAL.App.DTO.Invoice>())
         {
         }
 

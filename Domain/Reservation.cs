@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Contracts.DAL.Base;
@@ -19,9 +20,7 @@ namespace Domain
             where TUser : AppUser<TKey>
     {
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        // [DefaultValue(0)]
-        public int ReservationNumber { get; set; } 
+        public int ReservationNumber { get; set; } = 0;
 
         [Column(TypeName = "date")]
         [DataType(DataType.Date)]
@@ -32,8 +31,9 @@ namespace Domain
         public DateTime CheckOutDate { get; set; }
         public ICollection<ReservationRooms>? ReservationRooms { get; set; }
         public Guid PropertyId { get; set; }
-        
         public Property? Property { get; set; }
+
+        public Review? Review { get; set; }
 
         public bool Active { get; set; } = true;
         public virtual TKey AppUserId { get; set; }

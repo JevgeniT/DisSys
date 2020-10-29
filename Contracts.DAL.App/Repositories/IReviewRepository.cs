@@ -16,8 +16,7 @@ namespace Contracts.DAL.App.Repositories
         where TKey : IEquatable<TKey>
     {
         Task<IEnumerable<TDALEntity>> PropertyReviews(Guid? propertyId);
-
-        
+        Task<bool> ExistsAsync(Guid reservationId, object? userId = null);
     }
     
   

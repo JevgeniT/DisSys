@@ -1,4 +1,5 @@
 using System;
+using Public.DTO;
 
 namespace Public.DTO
 {

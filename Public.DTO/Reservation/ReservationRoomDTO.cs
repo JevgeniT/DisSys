@@ -1,7 +1,7 @@
 using System;
 using AutoMapper.Configuration.Annotations;
 
-namespace Public.DTO
+namespace Public.DTO.Reservation
 {
     public class ReservationRoomDTO
     {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using BLL.App.DTO.Identity;
 using Contracts.DAL.Base;
    
 namespace BLL.App.DTO
@@ -22,9 +23,10 @@ namespace BLL.App.DTO
         public Guid PropertyId { get; set; }
         
         public Property? Property { get; set; }
-
         public Guid ReservationId { get; set; }
         public TKey AppUserId { get; set; }= default!;
+
+        public AppUser AppUser { get; set; }
         
      }
     

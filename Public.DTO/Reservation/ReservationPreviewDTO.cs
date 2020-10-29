@@ -1,6 +1,4 @@
-
 using System;
-using System.Collections.Generic;
 
 namespace Public.DTO.Reservation
 {
@@ -15,6 +13,6 @@ namespace Public.DTO.Reservation
         public string PropertyName { get; set; }
         // public int Adults { get; set; }
         // public int Children { get; set; }
-        // public string? ReservedBy { get; set; }
+        public string? ReservedBy { get; set; }
     }
 }

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
- 
+using Public.DTO;
+
 namespace Public.DTO
 {
     public class PropertyDTO

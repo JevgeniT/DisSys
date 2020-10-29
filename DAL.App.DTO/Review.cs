@@ -1,7 +1,8 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using Contracts.DAL.Base;
-   
+using DAL.App.DTO.Identity;
+
 namespace DAL.App.DTO
 {
     public class Review : Review<Guid>, IDomainBaseEntity
@@ -22,10 +23,12 @@ namespace DAL.App.DTO
         public Guid PropertyId { get; set; }
         
         public Property? Property { get; set; }
-        
+
         public Guid ReservationId { get; set; }
 
         public TKey AppUserId { get; set; }= default!;
+        public AppUser AppUser { get; set; }
+        
         
      }
     

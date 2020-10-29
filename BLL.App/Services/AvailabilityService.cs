@@ -21,7 +21,7 @@ namespace BLL.App.Services
 
         public async  Task<IEnumerable<Availability>> AllAsync(Guid? roomId = null)
         {
-            return (await ServiceRepository.AllAsync( roomId)).Select( dalEntity => Mapper.Map(dalEntity) );
+             return (await ServiceRepository.AllAsync( roomId)).Select( dalEntity => Mapper.Map(dalEntity) );
         }
         
         public async Task<IEnumerable<Availability>> FindAvailableDates(DateTime @from, DateTime to, Guid propertyId)
@@ -29,15 +29,15 @@ namespace BLL.App.Services
             return (await ServiceRepository.FindAvailableDates(from, to, propertyId)).Select( dalEntity => Mapper.Map(dalEntity) );
         }
         
-        public async Task<bool> ExistsAsync(DateTime from, DateTime to)
+        public async Task<bool> ExistsAsync(Availability availability)
         {
-            return  await ServiceRepository.ExistsAsync(from, to);
+            return  await ServiceRepository.ExistsAsync(Mapper.Map<Availability,DAL.App.DTO.Availability>(availability));
         }
         
         
-        public async Task<bool> ExistsAsync(DateTime from, DateTime to, Guid propertyId)
+        public async Task<bool> ExistsAsync(DateTime from, DateTime to, List<Guid> roomIds)
         {
-            return  await ServiceRepository.ExistsAsync(from, to, propertyId);
+            return  await ServiceRepository.ExistsAsync(from, to, roomIds);
         }
         
         
@@ -47,6 +47,7 @@ namespace BLL.App.Services
             
             foreach (var available in list.Where(available => roomIds.Contains(available.RoomId)))
             {
+                available.Room = null;
                 if ((available.From == @from && available.To > to) || (available.To == to && available.From<@from))
                 {
                     available.From = @from == available.From ? to : available.From;
@@ -69,6 +70,7 @@ namespace BLL.App.Services
                 {
                     available.Active = false;
                 }
+
                 await UpdateAsync(Mapper.Map(available));
             }
         }

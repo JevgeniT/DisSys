@@ -29,7 +29,7 @@ namespace Domain
         
         public Property? Property { get; set; }
         // public ICollection<Availability>? RoomAvailabilities { get; set; }
-        public ICollection<Facility>? RoomFacilities { get; set; }
+        public ICollection<RoomFacilities>? RoomFacilities { get; set; }
     }
         public enum BedType { Large, Single, Double }
 }

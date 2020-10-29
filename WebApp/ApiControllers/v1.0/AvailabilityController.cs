@@ -4,12 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using BLL.App.DTO;
 using Contracts.BLL.App;
-using Contracts.DAL.App.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Internal;
 using Public.DTO;
 using Public.DTO.Mappers;
 
@@ -51,7 +49,7 @@ namespace WebApp.ApiControllers
         public async Task<ActionResult<IEnumerable<AvailabilityDTO>>> GetDates([FromQuery] Guid rId)
         {
             var availability = (await _bll.Availabilities.AllAsync(rId)).Select(a=> _mapper.Map(a));
-            if (availability == null)
+             if (!availability.Any())
             {
                 return NotFound(new MessageDTO("No availabilities were found"));
             }
@@ -94,12 +92,12 @@ namespace WebApp.ApiControllers
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(MessageDTO))]
         public async Task<ActionResult<AvailabilityDTO>> PostAvailability(AvailabilityDTO availability)
         {
-            if (await _bll.Availabilities.ExistsAsync(availability.From.Date, availability.To.Date))
+            var entity = _mapper.Map(availability);
+            if (await _bll.Availabilities.ExistsAsync(entity))
             {
                 return BadRequest(new MessageDTO("Dates already exist"));
             }
-            
-            var entity = _mapper.Map(availability); 
+
             _bll.Availabilities.Add(entity);
              await _bll.SaveChangesAsync();
             availability.Id = entity.Id;

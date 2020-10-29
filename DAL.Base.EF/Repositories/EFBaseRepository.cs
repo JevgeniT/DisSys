@@ -53,7 +53,7 @@ namespace DAL.Base.EF.Repositories
             return result;
         }
 
-        public async Task<IEnumerable<TDALEntity>> AddRange(IEnumerable<TDALEntity> entities)
+        public async Task<IEnumerable<TDALEntity>> AddRangeAsync(IEnumerable<TDALEntity> entities)
         {
             var dalEntities = entities.Select(entity => Mapper.Map<TDALEntity, TDomainEntity>(entity));
             

@@ -11,11 +11,13 @@ namespace Public.DTO.Reservation
         public DateTime CheckOutDate { get; set; }
         public DateTime CreatedAt { get; set; }
         public Guid PropertyId { get; set; }
+        public string PropertyName { get; set; }
+        public string PropertyLocation { get; set; }
         public bool Active { get; set; }
-        
         public decimal TotalPrice { get; set; }
         public int Adults { get; set; }
         public int Children { get; set; }
+        public ReviewDTO? Review { get; set; }
         public ICollection<RoomDTO>? RoomDtos { get; set; }
         public string? ReservedBy { get; set; }
     }

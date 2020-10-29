@@ -22,16 +22,11 @@ namespace Domain
         public Reservation? Reservation { get; set; }
 
         public string? Comment { get; set; }
-        
-        public DateTime CreatedAt { get; set; }
-        
         public Guid PropertyId { get; set; }
         
         public Property? Property { get; set; }
-        
         public TKey AppUserId { get; set; }= default!;
-        
-        public TUser? AppUser { get; set; }
+        public virtual TUser? AppUser { get; set; }
         
     }
 }

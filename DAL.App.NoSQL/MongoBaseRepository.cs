@@ -26,7 +26,7 @@ namespace DAL.App.NoSQL
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<TDALEntity>> AddRange(IEnumerable<TDALEntity> entities)
+        public Task<IEnumerable<TDALEntity>> AddRangeAsync(IEnumerable<TDALEntity> entities)
         {
             throw new NotImplementedException();
         }

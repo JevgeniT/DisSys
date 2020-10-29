@@ -25,6 +25,8 @@ namespace BLL.App
         public IPolicyService Policies => GetService<IPolicyService>(() => new PolicyService(UnitOfWork));
         public IReviewService Reviews => GetService<IReviewService>(() => new ReviewService(UnitOfWork));
         public IAvailabilityService Availabilities => GetService<IAvailabilityService>(() => new AvailabilityService(UnitOfWork));
+        public IRoomFacilitiesService RoomFacilities => GetService<IRoomFacilitiesService>(() => new RoomFacilitiesService(UnitOfWork));
+
         public IMongoAvailabilityService MongoAvailabilities =>  GetService<IMongoAvailabilityService>(() => new MongoAvailabilityService(UnitOfWork));
 
         public IAvailabilityPoliciesService AvailabilityPolicies => GetService<IAvailabilityPoliciesService>(() => new AvailabilityPoliciesService(UnitOfWork));

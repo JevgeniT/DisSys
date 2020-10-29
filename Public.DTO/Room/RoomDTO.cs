@@ -13,7 +13,7 @@ namespace Public.DTO
         public int AdultsOccupancy { get; set; }
         public int ChildOccupancy{ get; set; }
         public string? Description { get; set; }
-        public ICollection<FacilityDTO>? RoomFacilities { get; set; }
+        public ICollection<FacilityDTO>? FacilityDtos { get; set; }
 
     }
 }

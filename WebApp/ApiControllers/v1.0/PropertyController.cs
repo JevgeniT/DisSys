@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Public.DTO;
 using Public.DTO.Mappers;
 
+
 namespace WebApp.ApiControllers._1._0
 {
     /// <summary>
@@ -41,11 +42,8 @@ namespace WebApp.ApiControllers._1._0
         [HttpGet]
         public async Task<ActionResult<IAsyncEnumerable<PropertyDTO>>> GetProperties()
         {
-           
             var  properties = (await _bll.Properties.AllAsync(User.UserGuidId())).Select(bllEntity => _mapper.Map(bllEntity)) ;
-            
-             return Ok(properties);
-          
+            return Ok(properties);
         }
 
         /// <summary>
@@ -65,8 +63,7 @@ namespace WebApp.ApiControllers._1._0
             [FromQuery] DateTime? to, [FromQuery] string input)
         {
              var properties = (await _bll.Properties.FindAsync(from, to, input)); // TODO 
-
-             if (properties == null)
+             if (!properties.Any())
              {
                  return NotFound(new MessageDTO("Nothing was found"));
              }
@@ -86,15 +83,12 @@ namespace WebApp.ApiControllers._1._0
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(MessageDTO))]
         public async Task<ActionResult<PropertyDTO>> GetProperty(Guid id)
         {
-            
             var property =  _mapper.Map(await _bll.Properties.FirstOrDefaultAsync(id));
                
             if (property == null)
             {
                  return NotFound(new MessageDTO($"Property with id {id} not found"));
             }
-        
-            
             return Ok(property);
         }
 

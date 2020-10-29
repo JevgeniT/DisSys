@@ -15,7 +15,6 @@ namespace BLL.App.Services
         {
         }
 
-
         
     }
 }

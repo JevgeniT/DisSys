@@ -14,7 +14,6 @@ namespace DAL.Base.EF.Mappers
 
         public BaseDALMapper()
         {
-            
             _mapper = new MapperConfiguration(config =>
             {
                 config.CreateMap<TInObject, TOutObject>();
@@ -32,8 +31,6 @@ namespace DAL.Base.EF.Mappers
         public TMapOutObject Map<TMapInObject, TMapOutObject>(TMapInObject inObject) where TMapInObject : class
             where TMapOutObject : class, new()
         {
-            //return _mapper.Map<TMapOutObject>(inObject);
-
             var inProperties = inObject
                 .GetType()
                 .GetProperties()

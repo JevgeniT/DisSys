@@ -23,6 +23,11 @@ namespace BLL.App.Services
             return (await ServiceRepository.PropertyReviews(propertyId)).Select( dalEntity => Mapper.Map(dalEntity) );
         }
 
+        public override async Task<bool> ExistsAsync(Guid reservationId, object? userId = null)
+        {
+            return  await ServiceRepository.ExistsAsync(reservationId, userId);
+        }
+
     }
     
     

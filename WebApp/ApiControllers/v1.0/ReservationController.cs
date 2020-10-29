@@ -90,7 +90,7 @@ namespace WebApp.ApiControllers._1._0
         public async Task<IActionResult> PutReservation(Guid id, ReservationDTO reservation)
         {
             if (id != reservation.Id)
-            {
+            { 
                 return BadRequest(new MessageDTO("Ids does not match!"));
             }
             await _bll.Reservations.UpdateAsync(_mapper.Map(reservation));
@@ -111,7 +111,7 @@ namespace WebApp.ApiControllers._1._0
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ReservationDTO))]
         public async Task<ActionResult<ReservationDTO>> PostReservation(ReservationCreateDTO reservation) // todo more refactor, update dates on save
         {
-            if (!await _bll.Availabilities.ExistsAsync(reservation.CheckInDate, reservation.CheckOutDate, reservation.PropertyId))
+            if (!await _bll.Availabilities.ExistsAsync(reservation.CheckInDate, reservation.CheckOutDate, reservation.RoomDtos.Select(r=>r.RoomId).ToList()))
             {
                 return BadRequest(new MessageDTO("No dates available"));
             }
@@ -123,7 +123,7 @@ namespace WebApp.ApiControllers._1._0
             
             await _bll.SaveChangesAsync();
             
-            await _bll.ReservationRooms.AddRange(reservation.RoomDtos.Select(e => new ReservationRooms {RoomId = e.RoomId, ReservationId = bllReservation.Id, PolicyId = e.PolicyId}));
+            await _bll.ReservationRooms.AddRangeAsync(reservation.RoomDtos.Select(e => new ReservationRooms {RoomId = e.RoomId, ReservationId = bllReservation.Id, PolicyId = e.PolicyId}));
             
             await _bll.SaveChangesAsync();
 

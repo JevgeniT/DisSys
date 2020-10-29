@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using Contracts.DAL.Base;
 using DAL.App.DTO.Identity;
-using DAL.Base;
- 
+
 namespace DAL.App.DTO
 {
     
@@ -26,7 +23,7 @@ namespace DAL.App.DTO
         public DateTime CheckOutDate { get; set; }
 
         public DateTime CreatedAt { get; set; }
-        
+        public Review? Review { get; set; }
         public int Adults { get; set; }
         
         public int Children { get; set; }

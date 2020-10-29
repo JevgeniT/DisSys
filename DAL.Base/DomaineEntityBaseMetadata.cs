@@ -15,9 +15,9 @@ namespace DAL.Base
         [BsonIgnore]
         public virtual TKey Id { get; set; } = default!;
         public virtual string? CreatedBy { get; set; }
-        public virtual DateTime CreatedAt { get; set; }
+        public virtual DateTime CreatedAt { get; set; } = DateTime.Now;
         public virtual string? ChangedBy { get; set; }
-        public virtual DateTime ChangedAt { get; set; }
+        public virtual DateTime ChangedAt { get; set; } = DateTime.Now;
     }
 
 }
