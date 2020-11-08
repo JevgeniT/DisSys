@@ -8,6 +8,7 @@ using Domain;
 using Domain.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DAL.App.EF
 {
@@ -26,6 +27,7 @@ namespace DAL.App.EF
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Policy> Policies { get; set; }
         public DbSet<RoomFacilities> RoomFacilities { get; set; }
+        public DbSet<PropertyRules> PropertyRules { get; set; }
         public DbSet<Availability> Availabilities { get; set; }
         public DbSet<Property> Properties { get; set; }
         public DbSet<Room> Rooms { get; set; }
@@ -40,8 +42,18 @@ namespace DAL.App.EF
         protected override void OnModelCreating(ModelBuilder builder)
         {
            base.OnModelCreating(builder);
-            
-           builder.Entity<Room>().Property(room => room.Bed).HasConversion(type => type.ToString(),
+           
+           builder.Entity<Property>()
+               .HasOne(b => b.PropertyRules)
+               .WithOne(i => i.Property)
+               .HasForeignKey<PropertyRules>(b => b.Id);
+           
+           builder.Entity<PropertyRules>().Property(r=> r.PaymentMethodsAccepted).HasConversion(
+               v => string.Join(',', v),
+               v => v.Split(',', StringSplitOptions.RemoveEmptyEntries));
+           
+           builder.Entity<Room>().Property(room => room.Bed)
+               .HasConversion(type => type.ToString(),
                type =>  (BedType)Enum.Parse(typeof(BedType),type));
            
            BaseDateProvider.SeedIdentity(builder);

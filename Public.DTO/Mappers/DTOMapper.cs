@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using AutoMapper;
 using Public.DTO;
@@ -23,7 +24,13 @@ namespace Public.DTO.Mappers
             MapperConfigurationExpression.CreateMap<Bll.AvailabilityPolicies, PolicyDTO>();
             
             MapperConfigurationExpression.CreateMap<Bll.Policy, PolicyDTO>();
-            
+            MapperConfigurationExpression.CreateMap<Bll.PropertyRules, PropertyRulesDTO>()
+                .ForMember(d => d.CheckInFrom, opt => opt.MapFrom(d => TimeSpan.Parse(d.CheckInFrom.ToString())))
+                .ForMember(d => d.CheckInTo, opt => opt.MapFrom(d => TimeSpan.Parse(d.CheckInTo.ToString())))
+                .ForMember(d => d.CheckOutBefore, opt => opt.MapFrom(d => TimeSpan.Parse(d.CheckOutBefore.ToString())));
+
+            MapperConfigurationExpression.CreateMap<Bll.Extra, ExtraDTO>();
+
             MapperConfigurationExpression.CreateMap<Bll.Reservation, ReservationDTO>()
                 .ForMember(dto => dto.ReservedBy,opt => opt.MapFrom(r  => $"{r.AppUser.FirstName} {r.AppUser.LastName}"))
                 .ForMember(dto => dto.RoomDtos, opt => opt.MapFrom(r  =>  r.ReservationRooms.Select(rooms => rooms.Room)));

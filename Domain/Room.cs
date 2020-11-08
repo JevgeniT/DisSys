@@ -24,11 +24,11 @@ namespace Domain
         public string Description { get; set; }
 
         public bool AllowSmoking { get; set; }
-        public Guid PropertyId { get; set; }
+        public TKey PropertyId { get; set; }
         public BedType Bed { get; set; }
         
         public Property? Property { get; set; }
-        // public ICollection<Availability>? RoomAvailabilities { get; set; }
+        
         public ICollection<RoomFacilities>? RoomFacilities { get; set; }
     }
         public enum BedType { Large, Single, Double }

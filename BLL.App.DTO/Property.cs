@@ -13,18 +13,16 @@ namespace BLL.App.DTO
         where TKey: IEquatable<TKey>
     {
         public TKey Id { get; set; } = default!;
+        public string Type { get; set; }
         public string? Name { get; set; }
         public string? Address { get; set; }
         public string? Description { get; set; }
         public string? Country { get; set; }
         public ICollection<Review>? Reviews { get; set; }
-
         public ICollection<Room>? PropertyRooms { get; set; }
-        
-        public string Type { get; set; }
-        
+        public ICollection<Extra>? Extras { get; set; }
+        public PropertyRules? PropertyRules { get; set; }
         public TKey AppUserId { get; set; } = default!;
-        
         public Identity.AppUser<TKey>? AppUser { get; set; }
 
     }

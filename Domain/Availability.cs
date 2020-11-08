@@ -26,7 +26,7 @@ namespace Domain
         
         [Column(TypeName="date")]
         public DateTime To { get; set; }
-        public Guid RoomId { get; set; }
+        public TKey RoomId { get; set; }
         public Room? Room { get; set; }
  
         public ICollection<AvailabilityPolicies>? AvailabilityPolicies { get; set; }

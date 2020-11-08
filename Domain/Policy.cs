@@ -12,7 +12,7 @@ namespace Domain
     where TKey : IEquatable<TKey>
     {
         public TKey Id { get; set; }
-        public Guid PropertyId { get; set; }
+        public TKey PropertyId { get; set; }
         public string Name { get; set; }
         public int? CancellationBefore { get; set; }
         public int? PrepaymentBefore { get; set; }

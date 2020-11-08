@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BLL.App.DTO;
 using Contracts.BLL.App;
+using Domain;
 using Microsoft.AspNetCore.Mvc;
 using Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -82,9 +84,9 @@ namespace WebApp.ApiControllers._1._0
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PropertyDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(MessageDTO))]
         public async Task<ActionResult<PropertyDTO>> GetProperty(Guid id)
-        {
+        { 
             var property =  _mapper.Map(await _bll.Properties.FirstOrDefaultAsync(id));
-               
+  
             if (property == null)
             {
                  return NotFound(new MessageDTO($"Property with id {id} not found"));
@@ -133,13 +135,11 @@ namespace WebApp.ApiControllers._1._0
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(PropertyDTO))]
         public async Task<ActionResult<PropertyDTO>> PostProperty(PropertyDTO property)
         {
-
             property.AppUserId = User.UserGuidId();
             var entity = _mapper.Map(property);
             _bll.Properties.Add(entity);
-             
-            await _bll.SaveChangesAsync(); 
-            property.Id = entity.Id;
+              await _bll.SaveChangesAsync(); 
+            property.Id = entity.Id; 
             return CreatedAtAction("GetProperty", new { id = property.Id }, property);
         }
 

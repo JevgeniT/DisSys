@@ -15,6 +15,7 @@ namespace Contracts.DAL.App.Repositories
         where TDALEntity : class, IDomainBaseEntity<TKey>, new() 
         where TKey : IEquatable<TKey>
       {
+          Task<IEnumerable<TDALEntity>> AllAsync(Guid propertyId);
 
       }
 

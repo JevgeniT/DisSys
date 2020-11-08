@@ -13,6 +13,9 @@ using Public.DTO.Identity;
 
 namespace WebApp.ApiControllers._1._0.Identity
 {
+    /// <summary>
+    /// Api endpoint for registering new user and user log-in (jwt token generation)
+    /// </summary>
     [ApiController]
     [ApiVersion( "1.0" )]
     [Route("api/v{version:apiVersion}/[controller]/[action]")]
@@ -25,6 +28,14 @@ namespace WebApp.ApiControllers._1._0.Identity
         private readonly RoleManager<AppRole> _roleManager;
 
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="configuration"></param>
+        /// <param name="userManager"></param>
+        /// <param name="signInManager"></param>
+        /// <param name="roleManager"></param>
+        /// <param name="logger"></param>
         public AccountController(IConfiguration configuration, UserManager<AppUser> userManager,
             ILogger<AccountController> logger, SignInManager<AppUser> signInManager, RoleManager<AppRole> roleManager)
         {
@@ -35,6 +46,11 @@ namespace WebApp.ApiControllers._1._0.Identity
             _roleManager = roleManager;
         }
 
+        /// <summary>
+        /// Endpoint for user log-in (jwt generation)
+        /// </summary>
+        /// <param name="model">login data</param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult<string>> Login([FromBody] LoginDTO model)
         {
@@ -65,6 +81,12 @@ namespace WebApp.ApiControllers._1._0.Identity
             return StatusCode(403);
         }
 
+
+        /// <summary>
+        /// Endpoint for user registration and immediate log-in (jwt generation) 
+        /// </summary>
+        /// <param name="dto">user data</param>
+        /// <returns></returns>
 
         [HttpPost]
         public async Task<ActionResult<string>> Register([FromBody] RegisterDTO dto)

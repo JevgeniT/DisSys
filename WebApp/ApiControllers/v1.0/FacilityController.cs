@@ -17,7 +17,7 @@ namespace WebApp.ApiControllers.v1._0
 {
     
     /// <summary>
-    /// Availability controller
+    /// Facility controller
     /// </summary>
     [ApiController]
     [ApiVersion( "1.0" )]
@@ -48,7 +48,7 @@ namespace WebApp.ApiControllers.v1._0
         [Produces("application/json")]
         [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<FacilityDTO>))]
-        public async Task<ActionResult<IEnumerable<FacilityDTO>>> GetDates()
+        public async Task<ActionResult<IEnumerable<FacilityDTO>>> GetFacilities()
         {
             
             if (!_cache.TryGetValue(User.UserGuidId(),out var facilities))

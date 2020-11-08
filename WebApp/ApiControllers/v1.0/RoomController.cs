@@ -106,7 +106,7 @@ namespace WebApp.ApiControllers
         }
 
         
-        /// <summary>
+        /// <summary>3
         /// Post the new Room
         /// </summary>
         /// <param name="room"></param>

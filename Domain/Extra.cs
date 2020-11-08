@@ -14,15 +14,9 @@ namespace Domain
     {
         public TKey Id { get; set; }
         public string? Name { get; set; }
-
-        public Guid? FacilityId { get; set; }
-
-        public Facility? Facility { get; set; }
-
-
+        public TKey PropertyId { get; set; }
         [Column(TypeName = "decimal(18,2)")]
-
-        public decimal Fee { get; set; }
+        public decimal Price { get; set; }
     }
     
 }

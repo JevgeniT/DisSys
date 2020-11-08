@@ -67,7 +67,6 @@ namespace WebApp
             services.AddScoped<IUserNameProvider, UserNameProvider>();
             services.AddScoped<IAppBLL, AppBLL>();
             services.AddScoped<MongoContext>();
-            // services.AddScoped<IMongoAvailabilityRepository, MongoAvailabilityRepository>();
             services.AddMemoryCache();
 
             services.AddIdentity<AppUser, AppRole>()

@@ -19,6 +19,8 @@ namespace Contracts.BLL.App
         public IRoomFacilitiesService RoomFacilities { get;  }
         public IReservationRoomsService ReservationRooms { get; }
 
+        public IPropertyRulesService PropertyRules{ get; }
+
 
 
 

@@ -12,7 +12,7 @@ namespace Contracts.DAL.App
         IAvailabilityPoliciesRepository AvailabilityPolicies { get; }
         IReservationRoomsRepository ReservationRooms { get; }
         IRoomFacilitiesRepository RoomFacilities { get; }
-
+        IPropertyRulesRepository PropertyRules { get; }
         IExtraRepository Extras { get; }
         IFacilityRepository Facilities { get; }
         IReviewRepository Reviews { get; }

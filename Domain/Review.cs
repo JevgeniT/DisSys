@@ -17,12 +17,12 @@ namespace Domain
         [Range(1,10)]
         public int Score { get; set; }
 
-        public Guid ReservationId { get; set; }
+        public TKey ReservationId { get; set; }
         
         public Reservation? Reservation { get; set; }
 
         public string? Comment { get; set; }
-        public Guid PropertyId { get; set; }
+        public TKey PropertyId { get; set; }
         
         public Property? Property { get; set; }
         public TKey AppUserId { get; set; }= default!;

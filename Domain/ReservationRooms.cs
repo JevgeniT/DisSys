@@ -13,12 +13,12 @@ namespace Domain
     {
         public TKey Id { get; set; }
 
-        public Guid ReservationId { get; set; }
+        public TKey ReservationId { get; set; }
         public Reservation? Reservation { get; set; }
 
-        public Guid RoomId { get; set; }
+        public TKey RoomId { get; set; }
         public Room? Room { get; set; }
 
-        public Guid PolicyId { get; set; }
+        public TKey PolicyId { get; set; }
     }
 }

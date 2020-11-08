@@ -28,7 +28,7 @@ namespace Domain
 
         public decimal TotalPrice { get; set; }
         
-        public Guid ReservationId { get; set; }
+        public TKey ReservationId { get; set; }
         
         public Reservation? Reservation { get; set; }
         

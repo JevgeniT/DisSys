@@ -62,10 +62,12 @@ namespace DAL.App.EF.Repositories
             var query = (await RepoDbSet
                     .AsNoTracking()
                     .Include(p => p.Reviews)
+                    .Include(p => p.PropertyRules)
                     .Include(property => property.PropertyRooms)
                     .ThenInclude(room => room.RoomFacilities)
+                    .ThenInclude(rf => rf.Facility)
                     .FirstOrDefaultAsync(a => a.Id == id));
-            return Mapper.Map(query);
+             return Mapper.Map(query);
         }
     }
        

@@ -15,5 +15,7 @@ namespace Public.DTO
         public string? Description { get; set; }
         public ICollection<FacilityDTO>? FacilityDtos { get; set; }
 
+        public ICollection<string>? Facilities { get; set; }
+
     }
 }

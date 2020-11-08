@@ -28,8 +28,8 @@ namespace BLL.Base.Mappers
                 config.CreateMap<DAL.App.DTO.Policy, BLL.App.DTO.Policy>();
                 config.CreateMap<DAL.App.DTO.Reservation, BLL.App.DTO.Reservation>();
                 config.CreateMap<DAL.App.DTO.Review, BLL.App.DTO.Review>();
+                config.CreateMap<DAL.App.DTO.PropertyRules, BLL.App.DTO.PropertyRules>();
                 config.CreateMap<DAL.App.DTO.Identity.AppUser, BLL.App.DTO.Identity.AppUser>();
-
             }).CreateMapper();
     }
 
@@ -41,7 +41,7 @@ namespace BLL.Base.Mappers
     public TMapOutObject Map<TMapInObject, TMapOutObject>(TMapInObject inObject)
         where TMapInObject : class, new()
         where TMapOutObject : class, new()
-    {
+    { 
         return _mapper.Map<TMapInObject, TMapOutObject>(inObject);
     }
 

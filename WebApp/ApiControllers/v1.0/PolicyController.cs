@@ -70,7 +70,7 @@ namespace WebApp.ApiControllers
                 return NotFound(new MessageDTO($"Policy with id {id} not found"));
             }
 
-            return Ok(policy);
+            return Ok(_mapper.Map(policy));
         }
  
         /// <summary>

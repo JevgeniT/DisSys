@@ -48,6 +48,12 @@ namespace BLL.App.Services
             foreach (var available in list.Where(available => roomIds.Contains(available.RoomId)))
             {
                 available.Room = null;
+                if (available.RoomsAvailable>1)
+                {
+                    available.RoomsAvailable -= 1;
+                    await UpdateAsync(Mapper.Map(available));
+                    continue;
+                }
                 if ((available.From == @from && available.To > to) || (available.To == to && available.From<@from))
                 {
                     available.From = @from == available.From ? to : available.From;

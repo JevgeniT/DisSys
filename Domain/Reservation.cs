@@ -30,7 +30,7 @@ namespace Domain
         [DataType(DataType.Date)]
         public DateTime CheckOutDate { get; set; }
         public ICollection<ReservationRooms>? ReservationRooms { get; set; }
-        public Guid PropertyId { get; set; }
+        public TKey PropertyId { get; set; }
         public Property? Property { get; set; }
 
         public Review? Review { get; set; }

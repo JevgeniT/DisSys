@@ -26,7 +26,7 @@ namespace WebApp.ApiControllers
     public class AvailabilityController : ControllerBase
     {
         private readonly IAppBLL _bll;
-         private readonly DTOMapper<Availability, AvailabilityDTO> _mapper = new DTOMapper<Availability, AvailabilityDTO>();
+        private readonly DTOMapper<Availability, AvailabilityDTO> _mapper = new DTOMapper<Availability, AvailabilityDTO>();
         
         /// <summary>
         /// Constructor

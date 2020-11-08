@@ -14,10 +14,14 @@ namespace BLL.App.Services
     public class ExtraService : 
     BaseEntityService<IExtraRepository, IAppUnitOfWork, DAL.App.DTO.Extra, Extra>, IExtraService
     {
-    public ExtraService(IAppUnitOfWork unitOfWork) 
-        : base(unitOfWork, new BaseBLLMapper<DAL.App.DTO.Extra, Extra>(), unitOfWork.Extras)
-    {
-    }
+        public ExtraService(IAppUnitOfWork unitOfWork) 
+            : base(unitOfWork, new BaseBLLMapper<DAL.App.DTO.Extra, Extra>(), unitOfWork.Extras)
+        {
+        }
 
+        public async Task<IEnumerable<Extra>> AllAsync(Guid propertyId)
+        {
+            return (await ServiceRepository.AllAsync(propertyId)).Select(e => Mapper.Map(e));
+        }
     }
 }
