@@ -12,9 +12,9 @@ namespace Domain
     public class Extra<TKey> : DomainEntityBaseMetadata<TKey>
     where TKey: IEquatable<TKey>
     {
-        public TKey Id { get; set; }
+        public TKey Id { get; set; } = default!;
         public string? Name { get; set; }
-        public TKey PropertyId { get; set; }
+        public TKey PropertyId { get; set; } = default!;
         [Column(TypeName = "decimal(18,2)")]
         public decimal Price { get; set; }
     }

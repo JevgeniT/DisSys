@@ -11,9 +11,9 @@ namespace Domain
     public class Policy<TKey> : DomainEntityBaseMetadata<TKey>
     where TKey : IEquatable<TKey>
     {
-        public TKey Id { get; set; }
-        public TKey PropertyId { get; set; }
-        public string Name { get; set; }
+        public TKey Id { get; set; } = default!;
+        public TKey PropertyId { get; set; } = default!;
+        public string Name { get; set; } = default!;
         public int? CancellationBefore { get; set; }
         public int? PrepaymentBefore { get; set; }
 
@@ -21,7 +21,7 @@ namespace Domain
         
         public double PriceCoefficient { get; set; }
         
-        public ICollection<ReservationRooms> PolicyAvailabilities { get; set; }
+        public ICollection<ReservationRooms>? PolicyAvailabilities { get; set; }
 
     }
 }

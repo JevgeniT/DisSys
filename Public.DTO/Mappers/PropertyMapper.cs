@@ -27,16 +27,16 @@ namespace Public.DTO.Mappers
 
 
             MapperConfigurationExpression.CreateMap<Property, PropertyViewDTO>()
-                .ForMember(dto => dto.Score, opt=> opt.MapFrom(property => property.Reviews.Count==0? 0.0 :
-                    Math.Round(property.Reviews.Average(review => review.Score), 1)))
+                .ForMember(dto => dto.Score, opt=> opt.MapFrom(property => property.Reviews!.Count==0? 0.0 :
+                    Math.Round(property.Reviews!.Average(review => review.Score), 1)))
                 .ForMember(dto => dto.Room, opt=> 
-                    opt.MapFrom(property => property.PropertyRooms.OrderByDescending(room => 
-                        room.RoomAvailabilities.Min(availability => availability.PricePerNightForAdult)).Reverse().FirstOrDefault()));
+                    opt.MapFrom(property => property.PropertyRooms!.OrderByDescending(room => 
+                        room.RoomAvailabilities!.Min(availability => availability.PricePerNightForAdult)).Reverse().FirstOrDefault()));
             
             MapperConfigurationExpression.CreateMap<Property, PropertyDTO>()
                 .ForMember(dto => dto.Score, opt=> 
-                    opt.MapFrom(property => property.Reviews.Count==0? 0.0 :
-                        Math.Round(property.Reviews.Average(review => review.Score),1)));
+                    opt.MapFrom(property => property.Reviews!.Count==0? 0.0 :
+                        Math.Round(property.Reviews!.Average(review => review.Score),1)));
 
             Mapper = new Mapper(new MapperConfiguration(MapperConfigurationExpression));
         }

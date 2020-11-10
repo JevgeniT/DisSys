@@ -7,8 +7,8 @@ namespace DAL.App.NoSQL
     public class MongoContext
     {
         private readonly IMongoCollection<Availability> _collection;
-        private IMongoDatabase _db { get; set; }
-        private MongoClient _mongoClient { get; set; }
+        private IMongoDatabase? _db { get; set; }
+        private MongoClient? _mongoClient { get; set; }
         public MongoContext(INoSqlConnectionSettings settings)
         {
             var client = new MongoClient("mongodb://localhost:27017/mongodissys");
@@ -25,7 +25,7 @@ namespace DAL.App.NoSQL
         
         public IMongoCollection<T> GetCollection<T>(string name)
         {
-            return _db.GetCollection<T>(name);
+            return _db!.GetCollection<T>(name);
         }
     }
 }

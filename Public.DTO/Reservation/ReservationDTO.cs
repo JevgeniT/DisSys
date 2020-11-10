@@ -11,8 +11,8 @@ namespace Public.DTO.Reservation
         public DateTime CheckOutDate { get; set; }
         public DateTime CreatedAt { get; set; }
         public Guid PropertyId { get; set; }
-        public string PropertyName { get; set; }
-        public string PropertyLocation { get; set; }
+        public string PropertyName { get; set; }= default!;
+        public string PropertyLocation { get; set; }= default!;
         public bool Active { get; set; }
         public decimal TotalPrice { get; set; }
         public int Adults { get; set; }

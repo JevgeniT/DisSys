@@ -11,7 +11,7 @@ namespace Public.DTO.Mappers
         {
             MapperConfigurationExpression.CreateMap<Review, ReviewDTO>();
             MapperConfigurationExpression.CreateMap<Review, ReviewPublicDTO>()
-                .ForMember(r => r.UserName, opt => opt.MapFrom(review => review.AppUser.FirstName))
+                .ForMember(r => r.UserName, opt => opt.MapFrom(review => review.AppUser!.FirstName))
                 .ForMember(r=>r.CreatedAt, opt => opt.MapFrom(review => GetMonthAndYear(review.CreatedAt)));
 
             Mapper = new Mapper(new MapperConfiguration(MapperConfigurationExpression));

@@ -15,7 +15,7 @@ namespace DAL.App.DTO
         public TKey Id { get; set; } = default!;
         public TKey AppUserId { get; set; }= default!;
         public AppUser<TKey>? AppUser { get; set; }
-        public string Type { get; set; }
+        public string Type { get; set; } = default!;
         public string? Name { get; set; }
         public string? Address { get; set; }
         public string? Country { get; set; }

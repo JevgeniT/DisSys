@@ -27,7 +27,7 @@ namespace DAL.App.DTO
         public Guid ReservationId { get; set; }
 
         public TKey AppUserId { get; set; }= default!;
-        public AppUser AppUser { get; set; }
+        public AppUser AppUser { get; set; } = default!;
         
         
      }

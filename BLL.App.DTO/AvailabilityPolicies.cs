@@ -11,7 +11,7 @@ namespace BLL.App.DTO
     public class AvailabilityPolicies<TKey> : DomainEntityBaseMetadata<TKey>
         where TKey: IEquatable<TKey>
     {
-        public TKey Id { get; set; }
+        public TKey Id { get; set; } = default!;
 
         public Guid AvailabilityId { get; set; }
         public Availability? Availability { get; set; }

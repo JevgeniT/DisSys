@@ -10,7 +10,7 @@ namespace DAL.App.DTO
     public class ReservationRooms<TKey> : IDomainBaseEntity<TKey>
         where TKey : IEquatable<TKey>
     {
-        public TKey Id { get; set; }
+        public TKey Id { get; set; } = default!;
 
         public Guid ReservationId { get; set; }
         public Reservation? Reservation { get; set; }

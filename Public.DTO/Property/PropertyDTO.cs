@@ -13,7 +13,7 @@ namespace Public.DTO
         public string? Country { get; set; }
         public string? Address { get; set; }
         public string? Description { get; set; }
-        public string Type { get; set; }
+        public string Type { get; set; } = default!;
         public double Score { get; set; }
         public int ReviewsCount { get; set; } 
         public PropertyRulesDTO? PropertyRules { get; set; }

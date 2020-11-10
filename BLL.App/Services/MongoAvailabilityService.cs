@@ -3,11 +3,9 @@ using System.Threading.Tasks;
 using BLL.Base.Services;
 using BLL.App.DTO;
 using BLL.Base.Mappers;
-using BLL.Base.Services;
 using Contracts.BLL.App.Services;
 using Contracts.DAL.App;
 using Contracts.DAL.App.Repositories;
-using Contracts.DAL.Base;
 
 
 namespace BLL.App.Services
@@ -31,8 +29,7 @@ namespace BLL.App.Services
         public override Availability Add(Availability entity)
         {
             var dal = Mapper.Map<Availability,DAL.App.DTO.Availability>(entity);
-            ServiceRepository.Add(dal);
-            Console.WriteLine("service");
+            ServiceRepository.Add(dal); 
             return  entity;
         }
     }

@@ -53,7 +53,6 @@ namespace WebApp
             services.AddSingleton<INoSqlConnectionSettings>(sp =>
                 sp.GetRequiredService<IOptions<MongoConnectionSettings>>().Value);
           
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddApiVersioning(options =>
             {
                 options.ReportApiVersions = true;

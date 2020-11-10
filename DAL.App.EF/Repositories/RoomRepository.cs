@@ -7,7 +7,6 @@ using Contracts.DAL.App.Repositories;
 using DAL.Base.EF.Repositories;
 using Domain;
 using Microsoft.EntityFrameworkCore;
-using Public.DTO;
 
 namespace DAL.App.EF.Repositories
 {
@@ -19,16 +18,12 @@ namespace DAL.App.EF.Repositories
         
         public async Task<IEnumerable<DAL.App.DTO.Room>> AllAsync(Guid propertyId)
         {
-            if (propertyId != null)
-            {
-                var query = RepoDbSet.Include(room => room.RoomFacilities).
-                    ThenInclude(rf => rf.Facility)
-                    .Where(room => room.PropertyId == propertyId);
+              var query = RepoDbSet.Include(room => room.RoomFacilities)
+                  .ThenInclude(rf => rf.Facility)
+                  .Where(room => room.PropertyId == propertyId);
                 
-                return (await  query.ToListAsync()).Select(r=>Mapper.Map(r));
-            }
-            return await base.AllAsync();
-         }
+              return (await  query.ToListAsync()).Select(r=>Mapper.Map(r));
+        }
         
     }
 }

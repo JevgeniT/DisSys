@@ -14,26 +14,26 @@ namespace DAL.App.EF
 {
     public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>, IBaseEntityTracker
     {
-        private IUserNameProvider _userNameProvider;
+        private readonly IUserNameProvider _userNameProvider;
 
         private readonly Dictionary<IDomainBaseEntity<Guid>, IDomainBaseEntity<Guid>> _entityTracker =
             new Dictionary<IDomainBaseEntity<Guid>, IDomainBaseEntity<Guid>>();
         
-        public DbSet<Extra> Extras { get; set; }
-        public DbSet<Facility> Facilities { get; set; }
-        public DbSet<Invoice> Invoices { get; set; }
-        public DbSet<Reservation> Reservations { get; set; }
-        public DbSet<ReservationRooms> ReservationRooms { get; set; }
-        public DbSet<Review> Reviews { get; set; }
-        public DbSet<Policy> Policies { get; set; }
-        public DbSet<RoomFacilities> RoomFacilities { get; set; }
-        public DbSet<PropertyRules> PropertyRules { get; set; }
-        public DbSet<Availability> Availabilities { get; set; }
-        public DbSet<Property> Properties { get; set; }
-        public DbSet<Room> Rooms { get; set; }
+        public DbSet<Extra> Extras { get; set; } = default!;
+        public DbSet<Facility> Facilities { get; set; } = default!;
+        public DbSet<Invoice> Invoices { get; set; } = default!;
+        public DbSet<Reservation> Reservations { get; set; } = default!;
+        public DbSet<ReservationRooms> ReservationRooms { get; set; } = default!;
+        public DbSet<Review> Reviews { get; set; } = default!;
+        public DbSet<Policy> Policies { get; set; } = default!;
+        public DbSet<RoomFacilities> RoomFacilities { get; set; } = default!;
+        public DbSet<PropertyRules> PropertyRules { get; set; } = default!;
+        public DbSet<Availability> Availabilities { get; set; } = default!;
+        public DbSet<Property> Properties { get; set; } = default!;
+        public DbSet<Room> Rooms { get; set; } = default!;
 
 
-        public AppDbContext(DbContextOptions<AppDbContext>? options, IUserNameProvider? userNameProvider)
+        public AppDbContext(DbContextOptions<AppDbContext>? options, IUserNameProvider userNameProvider)
            : base(options)
         {
            _userNameProvider = userNameProvider;
@@ -45,7 +45,7 @@ namespace DAL.App.EF
            
            builder.Entity<Property>()
                .HasOne(b => b.PropertyRules)
-               .WithOne(i => i.Property)
+               .WithOne(i => i!.Property!)
                .HasForeignKey<PropertyRules>(b => b.Id);
            
            builder.Entity<PropertyRules>().Property(r=> r.PaymentMethodsAccepted).HasConversion(

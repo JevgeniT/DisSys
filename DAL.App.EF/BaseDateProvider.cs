@@ -36,7 +36,7 @@ namespace DAL.App.EF
                 "Free Wi-Fi"
             };
             
-            builder.Entity<Facility>( b=> facilities.ForEach(f=> b.HasData(new {Id = Guid.NewGuid(),Name = f, ChangedAt =DateTime.Now, CreatedAt = DateTime.Now})));
+            builder.Entity<Facility>( b=> facilities.ForEach(f=> b.HasData(new {Id = Guid.NewGuid(),Name = f, ChangedAt =DateTime.Now, CreatedAt = DateTime.Now, CreatedBy = "migration", ChangedBy="migration"})));
         }
         public static void SeedIdentity(ModelBuilder builder)
         {
@@ -60,7 +60,8 @@ namespace DAL.App.EF
                 {
                     Name = "gust",
                     NormalizedName = "Guest",
-                    Id = guestRoleId
+                    Id = guestRoleId,
+                    
                 });
                    
             });
@@ -76,9 +77,11 @@ namespace DAL.App.EF
                     NormalizedUserName = "user@user.com".ToUpper(),
                     FirstName = "user",
                     LastName = "user",
-                    PasswordHash = hasher.HashPassword(null, "qweqwe"),
+                    PasswordHash = hasher.HashPassword(null!, "qweqwe"!),
                     SecurityStamp = String.Empty,
-                    EmailConfirmed = true
+                    EmailConfirmed = true,
+                    LockoutEnd = DateTimeOffset.MaxValue,
+                    PhoneNumber = ""
                 });
                 b.HasData(new AppUser()
                 {
@@ -90,8 +93,10 @@ namespace DAL.App.EF
                     NormalizedEmail = "host@host.com".ToUpper(),
                     NormalizedUserName = "host@host.com".ToUpper(),
                     SecurityStamp = String.Empty,
-                    PasswordHash = hasher.HashPassword(null, "qweqwe"),
-                    EmailConfirmed = true
+                    PasswordHash = hasher.HashPassword(null!, "qweqwe"!),
+                    EmailConfirmed = true,
+                    LockoutEnd = DateTimeOffset.MaxValue,
+                    PhoneNumber = ""
                 });
             });
             

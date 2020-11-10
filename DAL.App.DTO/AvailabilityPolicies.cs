@@ -10,7 +10,7 @@ namespace DAL.App.DTO
     public class AvailabilityPolicies<TKey> : IDomainBaseEntity<TKey>
         where TKey: IEquatable<TKey>
     {
-        public TKey Id { get; set; }
+        public TKey Id { get; set; } = default!;
 
         public Guid AvailabilityId { get; set; }
         public Availability? Availability { get; set; }

@@ -39,6 +39,6 @@ namespace DAL.App.DTO
 
         public TKey AppUserId { get; set; } = default!;
 
-        public AppUser AppUser { get; set; }
+        public AppUser AppUser { get; set; } = default!;
     }
 }

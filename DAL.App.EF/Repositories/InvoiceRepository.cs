@@ -17,13 +17,6 @@ namespace DAL.App.EF.Repositories
         {
         }
 
- 
-        public async Task<IEnumerable<Invoice>> AllAsync(Guid? userId = null)
-        {
-             
-            return await base.AllAsync();
-         }
-        
         public async Task<Invoice> FirstOrDefaultAsync(Guid id, Guid? userId = null)
         {
             var query = RepoDbSet.Where(a => a.Id == id).AsQueryable();
@@ -35,23 +28,6 @@ namespace DAL.App.EF.Repositories
             return Mapper.Map(await query.FirstOrDefaultAsync());
 
         }
-        
-        public async Task<bool> ExistsAsync(Guid id, Guid? userId = null)
-        {
-            if (userId == null)
-            {
-                return await RepoDbSet.AnyAsync(a => a.Id == id);
-            }
 
-            return await RepoDbSet.AnyAsync(a => a.Id == id && a.Id == userId);
-        }
-        
-        public async Task DeleteAsync(Guid id, Guid? userId = null)
-        {
-            var invoice = await FirstOrDefaultAsync(id, userId);
-            base.RemoveAsync(invoice);
-        }
-        
-         
     }
 }

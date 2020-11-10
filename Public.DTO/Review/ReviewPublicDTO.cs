@@ -6,10 +6,9 @@ namespace Public.DTO
     {
         public Guid Id { get; set; }
         public int Score { get; set; }
-        public string Comment { get; set; }
-        public string UserName { get; set; }
-        
-        public string CreatedAt { get; set; }
+        public string Comment { get; set; }= default!;
+        public string UserName { get; set; }= default!;
+         public string CreatedAt { get; set; }= default!;
 
     }
 }

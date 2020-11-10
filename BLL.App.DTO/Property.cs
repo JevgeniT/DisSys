@@ -13,7 +13,7 @@ namespace BLL.App.DTO
         where TKey: IEquatable<TKey>
     {
         public TKey Id { get; set; } = default!;
-        public string Type { get; set; }
+        public string Type { get; set; } = default!;
         public string? Name { get; set; }
         public string? Address { get; set; }
         public string? Description { get; set; }

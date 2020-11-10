@@ -28,12 +28,11 @@ namespace Domain
 
         public decimal TotalPrice { get; set; }
         
-        public TKey ReservationId { get; set; }
+        public TKey ReservationId { get; set; } = default!;
         
         public Reservation? Reservation { get; set; }
         
-        public DateTime CreatedAt { get; set; } 
-        
+         
         
     }
     

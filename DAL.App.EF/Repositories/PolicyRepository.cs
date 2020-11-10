@@ -19,7 +19,7 @@ namespace DAL.App.EF.Repositories
  
         public async Task<IEnumerable<DAL.App.DTO.Policy>> AllAsync(Guid? propertyId)
         {
-            return (RepoDbSet.Where(policy => policy.PropertyId == propertyId)).Select(policy => Mapper.Map(policy));
+            return (await RepoDbSet.Where(policy => policy.PropertyId == propertyId).ToListAsync()).Select(policy => Mapper.Map(policy));
          
         }
         
@@ -32,17 +32,7 @@ namespace DAL.App.EF.Repositories
             }
             return Mapper.Map(await query.FirstOrDefaultAsync());
         }
-        
-        public async Task<bool> ExistsAsync(Guid id)
-        {
-            return await RepoDbSet.AnyAsync(a => a.Id == id);
-        }
-        
-        public async Task DeleteAsync(Guid id, Guid? propertyId = null)
-        {
-            var policy = await FirstOrDefaultAsync(id, propertyId);
-            base.RemoveAsync(policy);
-        }
+ 
    
     }
 }

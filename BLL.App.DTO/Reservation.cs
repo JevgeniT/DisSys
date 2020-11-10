@@ -27,7 +27,7 @@ namespace BLL.App.DTO
         public bool Active { get; set; } = true;
         public decimal TotalPrice { get; set; }
         public TKey AppUserId { get; set; } = default!;
-        public AppUser AppUser { get; set; }
+        public AppUser? AppUser { get; set; }
       
     }
 }

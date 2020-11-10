@@ -5,7 +5,7 @@ namespace Public.DTO
 {
     public class PropertyViewDTO
     {
-        public Guid Id { get; set; } = default!;
+        public Guid Id { get; set; }
 
         public string? Name { get; set; }
   
@@ -17,7 +17,7 @@ namespace Public.DTO
 
         public int ReviewsCount { get; set; }
         
-        public RoomViewDTO Room { get; set; }
+        public RoomViewDTO? Room { get; set; }
         public double Score { get; set; } = 0;
         
         public string? Type { get; set; }

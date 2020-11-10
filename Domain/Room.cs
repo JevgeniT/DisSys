@@ -12,19 +12,15 @@ namespace Domain
     public class Room<TKey> : DomainEntityBaseMetadata<TKey>
         where TKey: IEquatable<TKey>
     {
-        public TKey Id { get; set; }
+        public TKey Id { get; set; } = default!;
+        public TKey PropertyId { get; set; } = default!;
         public string? Name { get; set; }
-        
         public int AdultsOccupancy { get; set; }
-        
         public int ChildOccupancy { get; set; }
-        
         public int Size { get; set; }  //m2
-        
-        public string Description { get; set; }
-
+        public string Description { get; set; } = default!;
         public bool AllowSmoking { get; set; }
-        public TKey PropertyId { get; set; }
+        public ICollection<Availability> RoomAvailabilities { get; set; } = default!;
         public BedType Bed { get; set; }
         
         public Property? Property { get; set; }

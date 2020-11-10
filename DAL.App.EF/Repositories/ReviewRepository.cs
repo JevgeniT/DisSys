@@ -30,7 +30,7 @@ namespace DAL.App.EF.Repositories
 
         public override async Task<bool> ExistsAsync(Guid id, object? userId = null)
         {
-            return await RepoDbSet.AnyAsync(review => review.ReservationId == id && review.AppUserId == (Guid) userId);
+            return await RepoDbSet.AnyAsync(review => review.ReservationId == id && review.AppUserId == (Guid) userId!);
         }
     }
 }

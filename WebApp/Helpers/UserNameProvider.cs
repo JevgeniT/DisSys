@@ -1,3 +1,5 @@
+#pragma warning disable 1591
+
 using Contracts.DAL.Base;
 using Microsoft.AspNetCore.Http;
 

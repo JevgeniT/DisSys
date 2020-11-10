@@ -1,13 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Contracts.DAL.App;
 using Contracts.DAL.App.Repositories;
-using DAL.App.DTO;
 using DAL.Base.EF.Repositories;
 using Microsoft.EntityFrameworkCore;
-using Public.DTO;
 using Property = Domain.Property;
 
 namespace DAL.App.EF.Repositories
@@ -31,30 +30,22 @@ namespace DAL.App.EF.Repositories
         }
 
 
-        public  async Task<IEnumerable<DAL.App.DTO.Property>> FindAsync(DateTime? from, DateTime? to, string input)
+        public async Task<IEnumerable<DAL.App.DTO.Property>> FindAsync(DateTime? from, DateTime? to, string input)
         {
-            // if (from == null && to == null )
-            // {
-                return (await RepoDbSet
-                    .Where(o => o.Country!.Contains(input) 
-                                || o.Name!.Contains(input)
-                                || o.Address.Contains(input))
-                    .Include(p=>p.Reviews)
-                    .ToListAsync()).Select(domainEntity => Mapper.Map(domainEntity));
-            // }
-            //
-            // return (await RepoDbSet
-            //         .Include(p=>p.Reviews)
-            //         // .Include(p=>p.PropertyRooms)
-            //         // .ThenInclude(r => r.RoomAvailabilities)
-            //         .Where(o => o.Country!.Contains(input) || o.Name!.Contains(input) 
-            //             && o.PropertyRooms.Any(room => room.RoomAvailabilities.Any(availability => 
-            //                             availability.From >= from 
-            //                             && availability.To >= to
-            //                             && availability.From.Month == from.Value.Month))) // todo fix upper bound
-            //         .ToListAsync())
-            //     .Select(domainEntity => Mapper.Map(domainEntity));
 
+            var query = RepoDbSet.Include(p => p.Reviews);
+
+            if (from == null && to == null )
+            {
+                return (await query.Where(HasMatchWithInput(input)).ToListAsync()).Select(domainEntity => Mapper.Map(domainEntity));
+            }
+            
+            return (await query.Include(p=>p.PropertyRooms)
+                .ThenInclude(r => r.RoomAvailabilities)
+                .Where(HasMatchWithInput(input))
+                .Where(p => p.PropertyRooms!.Any(room => room.RoomAvailabilities.Any(a => a.From >= @from && a.To >= to)))
+                .ToListAsync()).Select(domainEntity => Mapper.Map(domainEntity));
+         
         }
         
         public override async Task<DAL.App.DTO.Property> FirstOrDefaultAsync(Guid id, object? userId = null)
@@ -69,6 +60,10 @@ namespace DAL.App.EF.Repositories
                     .FirstOrDefaultAsync(a => a.Id == id));
              return Mapper.Map(query);
         }
+
+
+        private Expression<Func<Property, bool>> HasMatchWithInput(string input) 
+            => x => (x.Address!.Contains(input) || x.Name!.Contains(input) || x.Address!.Contains(input));
     }
        
 }

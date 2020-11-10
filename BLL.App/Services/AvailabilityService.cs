@@ -24,7 +24,7 @@ namespace BLL.App.Services
              return (await ServiceRepository.AllAsync( roomId)).Select( dalEntity => Mapper.Map(dalEntity) );
         }
         
-        public async Task<IEnumerable<Availability>> FindAvailableDates(DateTime @from, DateTime to, Guid propertyId)
+        public async Task<IEnumerable<Availability>> FindAvailableDates(DateTime from, DateTime to, Guid propertyId)
         {
             return (await ServiceRepository.FindAvailableDates(from, to, propertyId)).Select( dalEntity => Mapper.Map(dalEntity) );
         }
@@ -41,25 +41,25 @@ namespace BLL.App.Services
         }
         
         
-        public async Task SaveOnChangeAsync(DateTime @from, DateTime to, Guid propertyId, List<Guid>? roomIds) // TODO
+        public async Task SaveOnChangeAsync(DateTime from, DateTime to, Guid propertyId, List<Guid>? roomIds) // TODO
         {
             var list = ServiceRepository.FindAvailableDates(from, to, propertyId).Result.ToList();
             
-            foreach (var available in list.Where(available => roomIds.Contains(available.RoomId)))
+            foreach (var available in list.Where(available => roomIds!.Contains(available.RoomId)))
             {
-                available.Room = null;
+                available.Room = null; // Prevent automapper exception
                 if (available.RoomsAvailable>1)
                 {
                     available.RoomsAvailable -= 1;
                     await UpdateAsync(Mapper.Map(available));
                     continue;
                 }
-                if ((available.From == @from && available.To > to) || (available.To == to && available.From<@from))
+                if ((available.From == from && available.To > to) || (available.To == to && available.From<from))
                 {
-                    available.From = @from == available.From ? to : available.From;
-                    available.To = to == available.To ? @from : available.To;
+                    available.From = from == available.From ? to : available.From;
+                    available.To = to == available.To ? from : available.To;
                 }
-                else if (available.From< @from && available.To > to)  
+                else if (available.From< from && available.To > to)  
                 {
                     var first = available.DeepCopy();
                     first.Id = Guid.NewGuid();

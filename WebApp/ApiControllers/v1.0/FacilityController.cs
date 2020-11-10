@@ -33,6 +33,8 @@ namespace WebApp.ApiControllers.v1._0
         /// Constructor
         /// </summary>
         /// <param name="bll"></param>
+        /// <param name="cache"></param>
+
         public FacilityController(IAppBLL bll, IMemoryCache cache)
         {
             _bll = bll;

@@ -20,7 +20,7 @@ namespace Domain
         public bool DamageDepositRequired { get; set; }
         [Column(TypeName="decimal(5, 2)")]
         public decimal? DamageDeposit { get; set; }
-        public ICollection<string> PaymentMethodsAccepted { get; set; }
+        public ICollection<string>? PaymentMethodsAccepted { get; set; }
         public bool AllowPets { get; set; }
         public bool? AllowParties { get; set; }
         public int? CheckInAge { get; set; }

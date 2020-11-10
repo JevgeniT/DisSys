@@ -2,9 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BLL.App.DTO;
 using Contracts.BLL.App;
-using Domain;
 using Microsoft.AspNetCore.Mvc;
 using Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -65,6 +63,7 @@ namespace WebApp.ApiControllers._1._0
             [FromQuery] DateTime? to, [FromQuery] string input)
         {
              var properties = (await _bll.Properties.FindAsync(from, to, input)); // TODO 
+             
              if (!properties.Any())
              {
                  return NotFound(new MessageDTO("Nothing was found"));

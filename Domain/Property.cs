@@ -17,9 +17,9 @@ namespace Domain
     {
         public string? Name { get; set; }
         public string? Address { get; set; }
-        public string Description { get; set; }
-        public string Country { get; set; }
-        public string Type { get; set; }
+        public string Description { get; set; } = default!;
+        public string Country { get; set; } = default!;
+        public string Type { get; set; } = default!;
         public ICollection<Review>? Reviews { get; set; }
         public ICollection<Room>? PropertyRooms { get; set; }
         public ICollection<Extra>? Extras { get; set; }

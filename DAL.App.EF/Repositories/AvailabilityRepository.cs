@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Contracts.DAL.App;
 using Contracts.DAL.App.Repositories;
@@ -20,8 +21,7 @@ namespace DAL.App.EF.Repositories
         
         public async Task<IEnumerable< DAL.App.DTO.Availability>> AllAsync(Guid? roomId = null)
         {
-            return (await RepoDbContext.Availabilities.Include(availability => availability.Room)
-                .Where(availability => availability.Active && availability.RoomId  == roomId)
+            return (await RepoDbContext.Availabilities.Include(a => a.Room).Where(a => a.Active && a.RoomId  == roomId)
                 .ToListAsync()).Select(a => Mapper.Map(a));
         }
         
@@ -30,32 +30,32 @@ namespace DAL.App.EF.Repositories
         {
             var query = await RepoDbContext.Availabilities.AsNoTracking()
                 .Include(a => a.Room)
-                .Where(a => a.Active && a.Room.PropertyId == propertyId 
+                .Where(a => a.Active && a.Room!.PropertyId == propertyId 
                             && ((from >= a.From && to<=a.To) || (from>=a.From && to<= a.To)))
                 .ToListAsync();
             return query.Select(e => Mapper.Map(e));
  
         }
 
-        
-        public  async Task<bool> ExistsAsync(DAL.App.DTO.Availability availability)
+
+        public async Task<bool> ExistsAsync(DAL.App.DTO.Availability availability)
         {
-            return await RepoDbSet.AnyAsync(a => a.Active && a.RoomId==availability.RoomId &&
-                                                        (( availability.From >= a.From &&  availability.To <=a.To ) 
-                                                         || (availability.From>=a.From   &&  availability.To <= a.To)));
+            return await RepoDbSet.AnyAsync(HasMatchingActiveDates(availability.From, availability.To, availability.RoomId));
         }
 
-        public  async Task<bool> ExistsAsync(DateTime from, DateTime to, List< Guid> roomIds)
+        public async Task<bool> ExistsAsync(DateTime from, DateTime to, List< Guid> roomIds)
         {
             foreach (var id in roomIds)
             {
-                if (!await RepoDbSet.AnyAsync(a => a.Active && a.Room.Id  == id && (( from >= a.From &&  to<=a.To ) || (from>=a.From   &&  to<= a.To))))
+                if (!await RepoDbSet.AnyAsync(HasMatchingActiveDates(from, to, id)))
                 {
                     return false;
                 }
             }
-
             return true;
         }
+
+        private  Expression<Func<Availability, bool>> HasMatchingActiveDates(DateTime from, DateTime to, Guid roomId)
+            => a => a.Active && a.RoomId==roomId  && (a.From >= @from && a.From <= to) || (a.To >= @from && a.To <= to);
     }
 }

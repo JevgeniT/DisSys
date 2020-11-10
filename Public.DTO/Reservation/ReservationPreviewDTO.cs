@@ -10,7 +10,7 @@ namespace Public.DTO.Reservation
         public DateTime CheckOutDate { get; set; }
         public bool Active { get; set; }
         public decimal TotalPrice { get; set; }
-        public string PropertyName { get; set; }
+        public string PropertyName { get; set; } = default!;
         // public int Adults { get; set; }
         // public int Children { get; set; }
         public string? ReservedBy { get; set; }
