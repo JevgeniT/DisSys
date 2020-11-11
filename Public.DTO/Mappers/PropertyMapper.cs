@@ -7,11 +7,6 @@ namespace Public.DTO.Mappers
 {
     public class PropertyMapper: BaseMapper<Property, PropertyDTO>
     {
-        public PropertyViewDTO MapPropertyView(Property inObject)
-        {
-            return Mapper.Map<PropertyViewDTO>(inObject);
-        }
-
         public PropertyMapper()
         {
             MapperConfigurationExpression.CreateMap<Property, PropertyDTO>()
@@ -22,23 +17,32 @@ namespace Public.DTO.Mappers
                 .ForMember(r=> r.FacilityDtos, opt=> opt.Ignore());
             MapperConfigurationExpression.CreateMap<Facility, FacilityDTO>();
 
-            MapperConfigurationExpression.CreateMap<Room, RoomViewDTO>();
-            MapperConfigurationExpression.CreateMap<PropertyRules, PropertyRulesDTO>();
-
-
-            MapperConfigurationExpression.CreateMap<Property, PropertyViewDTO>()
-                .ForMember(dto => dto.Score, opt=> opt.MapFrom(property => property.Reviews!.Count==0? 0.0 :
-                    Math.Round(property.Reviews!.Average(review => review.Score), 1)))
-                .ForMember(dto => dto.Room, opt=> 
-                    opt.MapFrom(property => property.PropertyRooms!.OrderByDescending(room => 
-                        room.RoomAvailabilities!.Min(availability => availability.PricePerNightForAdult)).Reverse().FirstOrDefault()));
+            MapperConfigurationExpression.CreateMap<Room, RoomViewDTO>()
+                .ForMember(r=> r.Price, opt => opt.MapFrom(room => room.RoomAvailabilities!.Min(a=>a.PricePerNightForAdult)));
             
+            MapperConfigurationExpression.CreateMap<PropertyRules, PropertyRulesDTO>();
+            MapperConfigurationExpression.CreateMap<Property, PropertyViewDTO>()
+                .ForMember(dto => dto.Score,
+                    opt => opt.MapFrom(property =>
+                        property.Reviews!.Count == 0
+                            ? 0.0
+                            : Math.Round(property.Reviews!.Average(review => review.Score), 1)))
+                .ForMember(dto => dto.Room!, opt =>
+                    opt.MapFrom(p => p.PropertyRooms!.OrderByDescending(room =>
+                            room.RoomAvailabilities!.Min(a => a.PricePerNightForAdult)).Reverse()
+                        .FirstOrDefault()));
+
             MapperConfigurationExpression.CreateMap<Property, PropertyDTO>()
                 .ForMember(dto => dto.Score, opt=> 
                     opt.MapFrom(property => property.Reviews!.Count==0? 0.0 :
                         Math.Round(property.Reviews!.Average(review => review.Score),1)));
 
             Mapper = new Mapper(new MapperConfiguration(MapperConfigurationExpression));
+        }
+        
+        public PropertyViewDTO MapPropertyView(Property inObject)
+        {
+            return Mapper.Map<PropertyViewDTO>(inObject);
         }
     }
 }

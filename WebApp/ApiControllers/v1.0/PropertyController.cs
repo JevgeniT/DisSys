@@ -63,7 +63,7 @@ namespace WebApp.ApiControllers._1._0
             [FromQuery] DateTime? to, [FromQuery] string input)
         {
              var properties = (await _bll.Properties.FindAsync(from, to, input)); // TODO 
-             
+            
              if (!properties.Any())
              {
                  return NotFound(new MessageDTO("Nothing was found"));

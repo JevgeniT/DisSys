@@ -23,26 +23,9 @@ namespace DAL.App.NoSQL.Repositories
         }
         
 
-        public async Task CreateNew(Guid propertyId)
+        public Task CreateNew(Guid propertyId)
         {
-            
-            // Availability entity = new Availability(){Id = propertyId,Months = new List<Month>()};
-            //
-            // for (int i = DateTime.Now.Month; i <=12; i++)
-            // {
-            //     Month month = new Month()
-            //     {
-            //         Name = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i),
-            //         Days = new List<Day>()
-            //     };
-            //
-            //     for (int d = 1; d <= DateTime.DaysInMonth(DateTime.Now.Year,i); d++)
-            //     {
-            //         month.Days.Add(new Day{Name = $"{d}"});
-            //     }
-            //     entity.Months.Add(month);
-            // }
-            // await _context.MongoAvailabilities.InsertOneAsync(_mapper.Map(entity));
+           throw new NotImplementedException();
         }
 
         public Availability Add(Availability entity)

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Contracts.DAL.App;
 using Contracts.DAL.App.Repositories;
 using DAL.Base.EF.Repositories;
+using Domain;
 using Microsoft.EntityFrameworkCore;
 using Property = Domain.Property;
 
@@ -32,7 +33,6 @@ namespace DAL.App.EF.Repositories
 
         public async Task<IEnumerable<DAL.App.DTO.Property>> FindAsync(DateTime? from, DateTime? to, string input)
         {
-
             var query = RepoDbSet.Include(p => p.Reviews);
 
             if (from == null && to == null )
@@ -40,30 +40,26 @@ namespace DAL.App.EF.Repositories
                 return (await query.Where(HasMatchWithInput(input)).ToListAsync()).Select(domainEntity => Mapper.Map(domainEntity));
             }
             
-            return (await query.Include(p=>p.PropertyRooms)
-                .ThenInclude(r => r.RoomAvailabilities)
-                .Where(HasMatchWithInput(input))
-                .Where(p => p.PropertyRooms!.Any(room => room.RoomAvailabilities.Any(a => a.From >= @from && a.To >= to)))
+            return (await query.Include(p=>p.PropertyRooms).ThenInclude(r => r.RoomAvailabilities)
+                .Where(HasMatchWithInput(input)).Where(p => p.PropertyRooms!.Any(room => room.RoomAvailabilities
+                    .Any(a => ((from >= a.From && to<=a.To) || (from>=a.From && to<= a.To)))))
                 .ToListAsync()).Select(domainEntity => Mapper.Map(domainEntity));
-         
+           
         }
         
         public override async Task<DAL.App.DTO.Property> FirstOrDefaultAsync(Guid id, object? userId = null)
         {
-            var query = (await RepoDbSet
-                    .AsNoTracking()
-                    .Include(p => p.Reviews)
-                    .Include(p => p.PropertyRules)
-                    .Include(property => property.PropertyRooms)
-                    .ThenInclude(room => room.RoomFacilities)
-                    .ThenInclude(rf => rf.Facility)
-                    .FirstOrDefaultAsync(a => a.Id == id));
+            var query = (await RepoDbSet.AsNoTracking()
+                    .Include(p => p.Reviews).Include(p => p.PropertyRules)
+                    .Include(property => property.PropertyRooms).ThenInclude(room => room.RoomFacilities)
+                    .ThenInclude(rf => rf.Facility).FirstOrDefaultAsync(a => a.Id == id));
              return Mapper.Map(query);
         }
 
 
         private Expression<Func<Property, bool>> HasMatchWithInput(string input) 
             => x => (x.Address!.Contains(input) || x.Name!.Contains(input) || x.Address!.Contains(input));
+        
     }
        
 }
