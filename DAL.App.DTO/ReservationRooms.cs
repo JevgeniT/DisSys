@@ -11,12 +11,12 @@ namespace DAL.App.DTO
         where TKey : IEquatable<TKey>
     {
         public TKey Id { get; set; } = default!;
-
         public Guid ReservationId { get; set; }
         public Reservation? Reservation { get; set; }
-
         public Guid RoomId { get; set; }
         public Room? Room { get; set; }
         public Guid PolicyId { get; set; }
+        public string? GuestFirstLastName { get; set; }
+        public string? BedType { get; set; }
     }
 }

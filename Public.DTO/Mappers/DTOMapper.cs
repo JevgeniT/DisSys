@@ -19,10 +19,7 @@ namespace Public.DTO.Mappers
             MapperConfigurationExpression.CreateMap<Bll.Availability, AvailabilityDTO>()
                  .ForMember(dto => dto.RoomName, opt => opt.MapFrom(r  =>  r.Room!.Name));
             
-            MapperConfigurationExpression.CreateMap<Bll.AvailabilityPolicies, AvailabilityPoliciesDTO>();
             MapperConfigurationExpression.CreateMap<Bll.Policy, AvailabilityPoliciesDTO>();
-            MapperConfigurationExpression.CreateMap<Bll.AvailabilityPolicies, PolicyDTO>();
-            
             MapperConfigurationExpression.CreateMap<Bll.Policy, PolicyDTO>();
             MapperConfigurationExpression.CreateMap<Bll.PropertyRules, PropertyRulesDTO>()
                 .ForMember(d => d.CheckInFrom, opt => opt.MapFrom(d => TimeSpan.Parse(d.CheckInFrom.ToString())))
@@ -30,7 +27,6 @@ namespace Public.DTO.Mappers
                 .ForMember(d => d.CheckOutBefore, opt => opt.MapFrom(d => TimeSpan.Parse(d.CheckOutBefore.ToString())));
 
             MapperConfigurationExpression.CreateMap<Bll.Extra, ExtraDTO>();
-
             MapperConfigurationExpression.CreateMap<Bll.Reservation, ReservationDTO>()
                 .ForMember(dto => dto.ReservedBy,opt => opt.MapFrom(r  => $"{r.AppUser!.FirstName} {r.AppUser!.LastName}"))
                 .ForMember(dto => dto.RoomDtos, opt => opt.MapFrom(r  =>  r.ReservationRooms!.Select(rooms => rooms.Room)));

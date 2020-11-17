@@ -24,7 +24,6 @@ namespace WebApp.ApiControllers._1._0
     public class ReservationController : ControllerBase
     {
         private readonly IAppBLL _bll;
-        // private DTOMapper<Reservation, ReservationDTO> _mapper = new DTOMapper<Reservation,ReservationDTO>();
         private ReservationMapper _mapper = new   ReservationMapper();
         /// <summary>
         ///  Constructor
@@ -41,7 +40,6 @@ namespace WebApp.ApiControllers._1._0
         /// <param name="pId">Property Id if present</param>
         /// <returns>Arrays of reservations</returns>
         [HttpGet]
-        [AllowAnonymous]
         [Produces("application/json")]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ReservationDTO>))]

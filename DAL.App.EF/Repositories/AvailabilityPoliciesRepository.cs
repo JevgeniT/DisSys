@@ -8,11 +8,11 @@ using Domain;
 
 namespace DAL.App.EF.Repositories
 {
-    public class AvailabilityPoliciesRepository : 
-        EFBaseRepository<AppDbContext, Domain.Identity.AppUser,AvailabilityPolicies,  DAL.App.DTO.AvailabilityPolicies>,  IAvailabilityPoliciesRepository
+    public class ReservationExtrasRepository : 
+        EFBaseRepository<AppDbContext, Domain.Identity.AppUser,ReservationExtras,  DAL.App.DTO.ReservationExtras>,  IReservationExtrasRepository
     {
-        public AvailabilityPoliciesRepository(AppDbContext dbContext) 
-            :base(dbContext, new DALMapper<AvailabilityPolicies,  DAL.App.DTO.AvailabilityPolicies>())
+        public ReservationExtrasRepository(AppDbContext dbContext) 
+            :base(dbContext, new DALMapper<ReservationExtras,  DAL.App.DTO.ReservationExtras>())
         {
         }
 

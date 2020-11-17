@@ -23,8 +23,6 @@ namespace BLL.App.DTO
         
         public Guid RoomId { get; set; }
         public Room? Room { get; set; }
-        
-        public ICollection<AvailabilityPolicies>? AvailabilityPolicies { get; set; }
         public bool Active { get; set; }
         public decimal PricePerNightForAdult { get; set; }
          

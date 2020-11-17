@@ -18,10 +18,11 @@ namespace Contracts.DAL.App
             MapperConfigurationExpression.CreateMap<Domain.Availability, Availability>();
             MapperConfigurationExpression.CreateMap<Domain.RoomFacilities, RoomFacilities>();
             MapperConfigurationExpression.CreateMap<Domain.Facility,  Facility>();
+            MapperConfigurationExpression.CreateMap<Domain.Extra,  Extra>();
+
             MapperConfigurationExpression.CreateMap<Domain.Room ,  Room>()
                 .ForMember(room => room.RoomFacilities, opt => opt.MapFrom(rf=> rf.RoomFacilities.Select(f=> f.Facility)));
             MapperConfigurationExpression.CreateMap<Domain.Availability ,  Availability>();
-            MapperConfigurationExpression.CreateMap<Domain.AvailabilityPolicies ,  AvailabilityPolicies>();
             MapperConfigurationExpression.CreateMap<Domain.Policy,  Policy>();
             MapperConfigurationExpression.CreateMap<Domain.PropertyRules,  PropertyRules>();
             MapperConfigurationExpression.CreateMap<Domain.Review ,  Review>();

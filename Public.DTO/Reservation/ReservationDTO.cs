@@ -17,8 +17,10 @@ namespace Public.DTO.Reservation
         public decimal TotalPrice { get; set; }
         public int Adults { get; set; }
         public int Children { get; set; }
+        public string ArrivalTime { get; set; } = default!;
         public ReviewDTO? Review { get; set; }
         public ICollection<RoomDTO>? RoomDtos { get; set; }
+        public ICollection<ExtraDTO>? ExtraDtos { get; set; }
         public string? ReservedBy { get; set; }
     }
 }

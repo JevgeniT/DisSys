@@ -16,7 +16,6 @@ namespace Domain
      
         [Range(1,10)]
         public int Score { get; set; }
-
         public TKey ReservationId { get; set; } = default!;
         
         public Reservation? Reservation { get; set; }

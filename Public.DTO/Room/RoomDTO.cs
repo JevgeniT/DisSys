@@ -14,7 +14,7 @@ namespace Public.DTO
         public int ChildOccupancy{ get; set; }
         public string? Description { get; set; }
         public ICollection<FacilityDTO>? FacilityDtos { get; set; }
-
+        public ICollection<string>? BedTypes { get; set; }
         public ICollection<string>? Facilities { get; set; }
 
     }

@@ -16,6 +16,12 @@ namespace BLL.App.DTO
         public Guid PolicyId { get; set; }
         public TKey RoomId { get; set; } = default!;
         public Room? Room { get; set; }
+        
+        public string? GuestFirstLastName { get; set; }
+        
+        public string? BedType { get; set; }
+
+
     }
     
 }

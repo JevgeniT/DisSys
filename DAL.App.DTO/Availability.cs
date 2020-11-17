@@ -18,7 +18,6 @@ namespace DAL.App.DTO
         public TKey Id { get; set; } = default!;
         public DateTime From { get; set; }
         public DateTime To { get; set; }
-        public ICollection<AvailabilityPolicies>? AvailabilityPolicies { get; set; }
         public bool Active { get; set; }
         public Guid RoomId { get; set; }
         public Room? Room { get; set; }

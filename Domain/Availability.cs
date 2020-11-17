@@ -18,18 +18,14 @@ namespace Domain
     public class Availability<TKey> : DomainEntityBaseMetadata<TKey>
         where TKey : IEquatable<TKey>
     {
- 
-        public TKey Id { get; set; } = default!;
-    
+        
         [Column(TypeName="date")]
         public DateTime From { get; set; }
         
         [Column(TypeName="date")]
         public DateTime To { get; set; }
         public TKey RoomId { get; set; }= default!;
-        public Room? Room { get; set; } 
- 
-        public ICollection<AvailabilityPolicies>? AvailabilityPolicies { get; set; }
+        public Room? Room { get; set; }
         public bool Active { get; set; } = true;
  
         [Column(TypeName="decimal(5, 2)")]

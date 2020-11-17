@@ -9,7 +9,7 @@ namespace Contracts.DAL.App
         IRoomRepository Rooms { get; }
         IAvailabilityRepository Availabilities { get; }
         IMongoAvailabilityRepository MongoAvailabilities { get; }
-        IAvailabilityPoliciesRepository AvailabilityPolicies { get; }
+        IReservationExtrasRepository ReservationExtras { get; }
         IReservationRoomsRepository ReservationRooms { get; }
         IRoomFacilitiesRepository RoomFacilities { get; }
         IPropertyRulesRepository PropertyRules { get; }

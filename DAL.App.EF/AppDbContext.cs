@@ -24,6 +24,8 @@ namespace DAL.App.EF
         public DbSet<Invoice> Invoices { get; set; } = default!;
         public DbSet<Reservation> Reservations { get; set; } = default!;
         public DbSet<ReservationRooms> ReservationRooms { get; set; } = default!;
+        public DbSet<ReservationExtras> ReservationExtras { get; set; } = default!;
+
         public DbSet<Review> Reviews { get; set; } = default!;
         public DbSet<Policy> Policies { get; set; } = default!;
         public DbSet<RoomFacilities> RoomFacilities { get; set; } = default!;
@@ -51,13 +53,12 @@ namespace DAL.App.EF
            builder.Entity<PropertyRules>().Property(r=> r.PaymentMethodsAccepted).HasConversion(
                v => string.Join(',', v),
                v => v.Split(',', StringSplitOptions.RemoveEmptyEntries));
-           
-           builder.Entity<Room>().Property(room => room.Bed)
-               .HasConversion(type => type.ToString(),
-               type =>  (BedType)Enum.Parse(typeof(BedType),type));
+
+           builder.Entity<Room>().Property(r=> r.BedTypes).HasConversion(
+               v => string.Join(',', v),
+               v => v.Split(',', StringSplitOptions.RemoveEmptyEntries));           
            
            BaseDateProvider.SeedIdentity(builder);
-           
            BaseDateProvider.SeedFacilities(builder);
 
            foreach (var relationship in builder.Model

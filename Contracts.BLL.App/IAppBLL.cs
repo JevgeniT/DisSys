@@ -15,7 +15,7 @@ namespace Contracts.BLL.App
         public IReviewService  Reviews{ get; }
         public IAvailabilityService Availabilities { get; }
         public IMongoAvailabilityService MongoAvailabilities { get; }
-        public IAvailabilityPoliciesService AvailabilityPolicies { get; }
+        public IReservationExtrasService ReservationExtras { get; }
         public IRoomFacilitiesService RoomFacilities { get;  }
         public IReservationRoomsService ReservationRooms { get; }
 

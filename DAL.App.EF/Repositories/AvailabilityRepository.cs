@@ -56,6 +56,6 @@ namespace DAL.App.EF.Repositories
         }
 
         private  Expression<Func<Availability, bool>> HasMatchingActiveDates(DateTime from, DateTime to, Guid roomId)
-            => a => a.Active && a.RoomId==roomId  && (a.From >= @from && a.From <= to) || (a.To >= @from && a.To <= to);
+            => a => a.Active && a.RoomId==roomId  && (from >= a.From && to<=a.To) || (from>=a.From && to<= a.To);
     }
 }

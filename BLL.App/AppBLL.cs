@@ -29,7 +29,7 @@ namespace BLL.App
         public IPropertyRulesService PropertyRules => GetService<IPropertyRulesService>(() => new PropertyRulesService(UnitOfWork));
         public IMongoAvailabilityService MongoAvailabilities =>  GetService<IMongoAvailabilityService>(() => new MongoAvailabilityService(UnitOfWork));
 
-        public IAvailabilityPoliciesService AvailabilityPolicies => GetService<IAvailabilityPoliciesService>(() => new AvailabilityPoliciesService(UnitOfWork));
+        public IReservationExtrasService ReservationExtras => GetService<IReservationExtrasService>(() => new ReservationExtrasService(UnitOfWork));
         public IReservationRoomsService ReservationRooms => GetService<IReservationRoomsService>(() => new ReservationRoomsService(UnitOfWork));
     }
 } 

@@ -13,9 +13,10 @@ namespace Public.DTO.Mappers
                 ;
             MapperConfigurationExpression.CreateMap<Room, RoomDTO>()
                 .ForMember(r=>r.Facilities,
-                    opt => opt.MapFrom(f=> f.RoomFacilities.Select( f => f.Name)))
+                    opt => opt.MapFrom(f=> f.RoomFacilities!.Select( fc => fc.Name)))
                 .ForMember(r=> r.FacilityDtos, opt=> opt.Ignore());
             MapperConfigurationExpression.CreateMap<Facility, FacilityDTO>();
+            MapperConfigurationExpression.CreateMap<Extra, ExtraDTO>();
 
             MapperConfigurationExpression.CreateMap<Room, RoomViewDTO>()
                 .ForMember(r=> r.Price, opt => opt.MapFrom(room => room.RoomAvailabilities!.Min(a=>a.PricePerNightForAdult)));

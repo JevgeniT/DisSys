@@ -50,7 +50,7 @@ namespace DAL.App.EF.Repositories
         public override async Task<DAL.App.DTO.Property> FirstOrDefaultAsync(Guid id, object? userId = null)
         {
             var query = (await RepoDbSet.AsNoTracking()
-                    .Include(p => p.Reviews).Include(p => p.PropertyRules)
+                    .Include(p => p.Reviews).Include(p => p.PropertyRules).Include(p => p.Extras)
                     .Include(property => property.PropertyRooms).ThenInclude(room => room.RoomFacilities)
                     .ThenInclude(rf => rf.Facility).FirstOrDefaultAsync(a => a.Id == id));
              return Mapper.Map(query);

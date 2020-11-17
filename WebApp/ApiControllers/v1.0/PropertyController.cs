@@ -42,7 +42,7 @@ namespace WebApp.ApiControllers._1._0
         [HttpGet]
         public async Task<ActionResult<IAsyncEnumerable<PropertyDTO>>> GetProperties()
         {
-            var  properties = (await _bll.Properties.AllAsync(User.UserGuidId())).Select(bllEntity => _mapper.Map(bllEntity)) ;
+            var  properties = (await _bll.Properties.AllAsync(User.UserGuidId())).Select(bllEntity => _mapper.Map(bllEntity));
             return Ok(properties);
         }
 

@@ -16,20 +16,13 @@ namespace Domain
         where TKey : IEquatable<TKey>
         where TUser : AppUser<TKey>
     {
-
-
         public TKey AppUserId { get; set; } = default!;
-        
         public TUser? AppUser { get; set; }
-
         public bool IsPaid { get; set; }
         
         [Column(TypeName = "decimal(18,2)")]
-
         public decimal TotalPrice { get; set; }
-        
         public TKey ReservationId { get; set; } = default!;
-        
         public Reservation? Reservation { get; set; }
         
          

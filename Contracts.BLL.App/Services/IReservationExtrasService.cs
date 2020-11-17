@@ -4,7 +4,7 @@ using Contracts.DAL.App.Repositories;
 
 namespace Contracts.BLL.App.Services
 {
-    public interface IAvailabilityPoliciesService : IAvailabilityPoliciesRepository<Guid, AvailabilityPolicies>
+    public interface IReservationExtrasService : IReservationExtrasRepository<Guid, ReservationExtras>
     {
         
     }
