@@ -19,7 +19,7 @@ namespace DAL.App.DTO
         public DateTime From { get; set; }
         public DateTime To { get; set; }
         public bool Active { get; set; }
-        public Guid RoomId { get; set; }
+        public TKey RoomId { get; set; }= default!;
         public Room? Room { get; set; }
         public decimal PricePerNightForAdult { get; set; }
         

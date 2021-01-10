@@ -30,18 +30,25 @@ namespace Domain
         public TKey PropertyId { get; set; }  = default!;
         public Property? Property { get; set; }
         public Review? Review { get; set; }
-        public bool Active { get; set; } = true;
-
+        public Status Status { get; set; }
+        
         [Column(TypeName = "decimal(18,2)")]
         public decimal TotalPrice { get; set; }
         public int Adults { get; set; }
         public int Children { get; set; }
-        public virtual TKey AppUserId { get; set; }
+        public virtual TKey AppUserId { get; set; } = default!;
         public virtual TUser? AppUser { get; set; }
         [MaxLength(128)]
         public string? Message { get; set; }
         public string? ArrivalTime { get; set; }
         public ICollection<ReservationRooms>? ReservationRooms { get; set; }
-        public ICollection<Extra>? Extras { get; set; }
+        public ICollection<ReservationExtras>? ReservationExtras { get; set; }
+    }
+    public enum Status
+    { 
+        Active,
+        Cancelled,
+        [Display(Name = "In the past")] 
+        InThePast
     }
 }

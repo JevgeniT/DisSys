@@ -4,11 +4,24 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Contracts.DAL.Base;
+using DAL.App.DTO;
 using Domain;
 using Domain.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Availability = Domain.Availability;
+using Extra = Domain.Extra;
+using Facility = Domain.Facility;
+using Policy = Domain.Policy;
+using Property = Domain.Property;
+using PropertyRules = Domain.PropertyRules;
+using Reservation = Domain.Reservation;
+using ReservationExtras = Domain.ReservationExtras;
+using ReservationRooms = Domain.ReservationRooms;
+using Review = Domain.Review;
+using Room = Domain.Room;
+using RoomFacilities = Domain.RoomFacilities;
 
 namespace DAL.App.EF
 {
@@ -21,7 +34,7 @@ namespace DAL.App.EF
         
         public DbSet<Extra> Extras { get; set; } = default!;
         public DbSet<Facility> Facilities { get; set; } = default!;
-        public DbSet<Invoice> Invoices { get; set; } = default!;
+        // public DbSet<Invoice> Invoices { get; set; } = default!;
         public DbSet<Reservation> Reservations { get; set; } = default!;
         public DbSet<ReservationRooms> ReservationRooms { get; set; } = default!;
         public DbSet<ReservationExtras> ReservationExtras { get; set; } = default!;
@@ -56,10 +69,13 @@ namespace DAL.App.EF
 
            builder.Entity<Room>().Property(r=> r.BedTypes).HasConversion(
                v => string.Join(',', v),
-               v => v.Split(',', StringSplitOptions.RemoveEmptyEntries));           
+               v => v.Split(',', StringSplitOptions.RemoveEmptyEntries));
+
+           builder.Entity<Reservation>().Property(r => r.Status)
+               .HasConversion<string>();
            
-           BaseDateProvider.SeedIdentity(builder);
-           BaseDateProvider.SeedFacilities(builder);
+           BaseDataProvider.SeedIdentity(builder);
+           BaseDataProvider.SeedFacilities(builder);
 
            foreach (var relationship in builder.Model
                .GetEntityTypes().SelectMany(e => e.GetForeignKeys()))

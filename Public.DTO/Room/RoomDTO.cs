@@ -4,7 +4,7 @@ using Contracts.DAL.Base;
 
 namespace Public.DTO
 {
-    public class RoomDTO : IDomainBaseEntity
+    public class RoomDTO
     {
         public Guid Id { get; set; }
         public Guid PropertyId { get; set; }

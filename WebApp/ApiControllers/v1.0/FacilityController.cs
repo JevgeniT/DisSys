@@ -26,7 +26,7 @@ namespace WebApp.ApiControllers.v1._0
     public class FacilityController : ControllerBase
     {
         private readonly IAppBLL _bll;
-        private IMemoryCache _cache;
+        private readonly IMemoryCache _cache;
         private readonly DTOMapper<Facility, FacilityDTO> _mapper = new DTOMapper<Facility, FacilityDTO>();
 
         /// <summary>

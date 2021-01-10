@@ -51,7 +51,8 @@ namespace BLL.Base.Services
 
         public async Task<IEnumerable<TBLLEntity>> AddRangeAsync(IEnumerable<TBLLEntity> entities)
         {
-            return (await ServiceRepository.AddRangeAsync( entities.Select(b=>Mapper.Map<TBLLEntity, TDALEntity>(b)))).Select(e => Mapper.Map<TDALEntity, TBLLEntity>(e));
+            return (await ServiceRepository.AddRangeAsync(entities.Select(b=>Mapper.Map<TBLLEntity, TDALEntity>(b))))
+                .Select(e => Mapper.Map<TDALEntity, TBLLEntity>(e));
         }
 
         public virtual async Task<IEnumerable<TBLLEntity>> AllAsync(object? userId = null) =>
@@ -75,7 +76,7 @@ namespace BLL.Base.Services
         }
 
         public virtual async Task<TBLLEntity>UpdateAsync(TBLLEntity entity, object? userId = null) =>
-            Mapper.Map<TDALEntity, TBLLEntity>(await ServiceRepository.UpdateAsync(Mapper.Map<TBLLEntity, TDALEntity>(entity)));
+            Mapper.Map<TDALEntity, TBLLEntity>(await ServiceRepository.UpdateAsync(Mapper.Map<TBLLEntity, TDALEntity>(entity),userId));
         
 
         public virtual async Task<TBLLEntity> RemoveAsync(TBLLEntity entity, object? userId = null) =>

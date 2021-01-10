@@ -76,7 +76,7 @@ namespace WebApp.ApiControllers
             {
                 return NotFound(new MessageDTO("No availabilities were found"));
             }
-            var result = availability.GroupBy(availability => availability.RoomId).Select(e => e.First());
+            var result = availability.GroupBy(a => a.RoomId).Select(e => e.First());
             return Ok(result);
         }
        

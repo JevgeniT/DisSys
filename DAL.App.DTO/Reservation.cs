@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Contracts.DAL.Base;
 using DAL.App.DTO.Identity;
 
@@ -23,13 +24,22 @@ namespace DAL.App.DTO
         public int Adults { get; set; }
         public int Children { get; set; }
         public decimal TotalPrice { get; set; }
+        public string? Message { get; set; }
+        public string? ArrivalTime { get; set; }
         public TKey PropertyId { get; set; } = default!;
         public Property? Property { get; set; }
-        public bool Active { get; set; }
-        public string ArrivalTime { get; set; } = default!;
         public TKey AppUserId { get; set; } = default!;
         public AppUser AppUser { get; set; } = default!;
+        public Status Status { get; set; }
         public ICollection<ReservationRooms>? ReservationRooms { set; get; }
-        public ICollection<Extra>? Extras { get; set; }
+        public ICollection<ReservationExtras>? ReservationExtras { get; set; }
+    }
+    
+    public enum Status
+    { 
+        Active,
+        Cancelled,
+        [Display(Name = "In the past")] 
+        InThePast
     }
 }

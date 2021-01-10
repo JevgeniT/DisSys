@@ -93,14 +93,9 @@ namespace DAL.App.EF.Migrations
                     b.Property<Guid>("PropertyId")
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid?>("ReservationId")
-                        .HasColumnType("char(36)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("PropertyId");
-
-                    b.HasIndex("ReservationId");
 
                     b.ToTable("Extras");
                 });
@@ -133,172 +128,163 @@ namespace DAL.App.EF.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("25d3d13d-01c5-467f-922f-f9eb005fef8f"),
-                            ChangedAt = new DateTime(2020, 11, 17, 16, 14, 45, 389, DateTimeKind.Local).AddTicks(4706),
+                            Id = new Guid("dbc4b414-de72-4da6-9c21-123c7c0ba4aa"),
+                            ChangedAt = new DateTime(2020, 11, 26, 14, 36, 17, 232, DateTimeKind.Local).AddTicks(4186),
                             ChangedBy = "migration",
-                            CreatedAt = new DateTime(2020, 11, 17, 16, 14, 45, 394, DateTimeKind.Local).AddTicks(7928),
+                            CreatedAt = new DateTime(2020, 11, 26, 14, 36, 17, 237, DateTimeKind.Local).AddTicks(8601),
                             CreatedBy = "migration",
-                            Name = "Upper floors accessible by elevator"
+                            Name = "Elevator"
                         },
                         new
                         {
-                            Id = new Guid("24bea6a2-dd08-4146-87fe-2c54a4e60dec"),
-                            ChangedAt = new DateTime(2020, 11, 17, 16, 14, 45, 395, DateTimeKind.Local).AddTicks(936),
+                            Id = new Guid("9d6f88c1-adb3-423a-94fe-e63178dee603"),
+                            ChangedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(1909),
                             ChangedBy = "migration",
-                            CreatedAt = new DateTime(2020, 11, 17, 16, 14, 45, 395, DateTimeKind.Local).AddTicks(953),
+                            CreatedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(1922),
                             CreatedBy = "migration",
                             Name = "Linens"
                         },
                         new
                         {
-                            Id = new Guid("7d240db5-6b3f-48e8-ba4c-f3a253d1eac2"),
-                            ChangedAt = new DateTime(2020, 11, 17, 16, 14, 45, 395, DateTimeKind.Local).AddTicks(1008),
+                            Id = new Guid("3c0d53a6-075d-4bc7-8719-4a25ae688948"),
+                            ChangedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(1977),
                             ChangedBy = "migration",
-                            CreatedAt = new DateTime(2020, 11, 17, 16, 14, 45, 395, DateTimeKind.Local).AddTicks(1010),
+                            CreatedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(1980),
                             CreatedBy = "migration",
-                            Name = "Wardrobe or closet"
+                            Name = "Wardrobe"
                         },
                         new
                         {
-                            Id = new Guid("f143dc83-ceb0-4bd8-81cb-ff1f451fb35f"),
-                            ChangedAt = new DateTime(2020, 11, 17, 16, 14, 45, 395, DateTimeKind.Local).AddTicks(1037),
+                            Id = new Guid("5c6b9b68-cf13-4b3c-8879-98183c0e5181"),
+                            ChangedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2006),
                             ChangedBy = "migration",
-                            CreatedAt = new DateTime(2020, 11, 17, 16, 14, 45, 395, DateTimeKind.Local).AddTicks(1039),
+                            CreatedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2008),
                             CreatedBy = "migration",
                             Name = "Minibar"
                         },
                         new
                         {
-                            Id = new Guid("2944a569-258f-4800-8a6d-69128adbe73f"),
-                            ChangedAt = new DateTime(2020, 11, 17, 16, 14, 45, 395, DateTimeKind.Local).AddTicks(1063),
+                            Id = new Guid("aa13165d-ecb3-48ab-a1ec-3dd66ebcd241"),
+                            ChangedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2034),
                             ChangedBy = "migration",
-                            CreatedAt = new DateTime(2020, 11, 17, 16, 14, 45, 395, DateTimeKind.Local).AddTicks(1065),
+                            CreatedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2036),
                             CreatedBy = "migration",
                             Name = "Air conditioning"
                         },
                         new
                         {
-                            Id = new Guid("bdc8f99e-00bb-49f6-bd8d-b9816f1939e8"),
-                            ChangedAt = new DateTime(2020, 11, 17, 16, 14, 45, 395, DateTimeKind.Local).AddTicks(1094),
+                            Id = new Guid("a39c7ee8-02e4-4045-9357-8713c00f8cbb"),
+                            ChangedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2068),
                             ChangedBy = "migration",
-                            CreatedAt = new DateTime(2020, 11, 17, 16, 14, 45, 395, DateTimeKind.Local).AddTicks(1097),
+                            CreatedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2071),
                             CreatedBy = "migration",
                             Name = "Safe"
                         },
                         new
                         {
-                            Id = new Guid("5c329ea1-d397-46d4-8ea5-e1981f77de0c"),
-                            ChangedAt = new DateTime(2020, 11, 17, 16, 14, 45, 395, DateTimeKind.Local).AddTicks(1121),
+                            Id = new Guid("f3b69b73-cbaf-41de-bcaf-3034bc37d6c9"),
+                            ChangedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2099),
                             ChangedBy = "migration",
-                            CreatedAt = new DateTime(2020, 11, 17, 16, 14, 45, 395, DateTimeKind.Local).AddTicks(1123),
-                            CreatedBy = "migration",
-                            Name = "Ironing facilities"
-                        },
-                        new
-                        {
-                            Id = new Guid("b20eab81-6d69-4c2d-8ce4-d8c46999cfbe"),
-                            ChangedAt = new DateTime(2020, 11, 17, 16, 14, 45, 395, DateTimeKind.Local).AddTicks(1146),
-                            ChangedBy = "migration",
-                            CreatedAt = new DateTime(2020, 11, 17, 16, 14, 45, 395, DateTimeKind.Local).AddTicks(1148),
+                            CreatedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2101),
                             CreatedBy = "migration",
                             Name = "Iron"
                         },
                         new
                         {
-                            Id = new Guid("b77aefb0-2f61-4af4-8fb3-2612f8268e37"),
-                            ChangedAt = new DateTime(2020, 11, 17, 16, 14, 45, 395, DateTimeKind.Local).AddTicks(1193),
+                            Id = new Guid("193de572-b33e-41fc-bddf-5c62cf860572"),
+                            ChangedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2127),
                             ChangedBy = "migration",
-                            CreatedAt = new DateTime(2020, 11, 17, 16, 14, 45, 395, DateTimeKind.Local).AddTicks(1196),
+                            CreatedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2130),
                             CreatedBy = "migration",
                             Name = "Heating"
                         },
                         new
                         {
-                            Id = new Guid("7d521c86-2059-4bee-bfd5-da03f85628c5"),
-                            ChangedAt = new DateTime(2020, 11, 17, 16, 14, 45, 395, DateTimeKind.Local).AddTicks(1221),
+                            Id = new Guid("60e90c90-f8a9-455f-b723-664c61817d5a"),
+                            ChangedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2155),
                             ChangedBy = "migration",
-                            CreatedAt = new DateTime(2020, 11, 17, 16, 14, 45, 395, DateTimeKind.Local).AddTicks(1223),
+                            CreatedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2157),
                             CreatedBy = "migration",
                             Name = "Coffee machine"
                         },
                         new
                         {
-                            Id = new Guid("a6a77b5c-d9e7-4e1d-91d9-d9cfe6023e3b"),
-                            ChangedAt = new DateTime(2020, 11, 17, 16, 14, 45, 395, DateTimeKind.Local).AddTicks(1246),
+                            Id = new Guid("71468a74-1fe5-4e57-a5c1-51cda47d349d"),
+                            ChangedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2184),
                             ChangedBy = "migration",
-                            CreatedAt = new DateTime(2020, 11, 17, 16, 14, 45, 395, DateTimeKind.Local).AddTicks(1248),
+                            CreatedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2186),
                             CreatedBy = "migration",
-                            Name = "Electric kettle"
+                            Name = "Kettle"
                         },
                         new
                         {
-                            Id = new Guid("c2e2bb65-cbcb-4da7-a3d7-d3b1488b678c"),
-                            ChangedAt = new DateTime(2020, 11, 17, 16, 14, 45, 395, DateTimeKind.Local).AddTicks(1272),
+                            Id = new Guid("4d2a6f10-269f-4b4b-b303-bb169f373f00"),
+                            ChangedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2211),
                             ChangedBy = "migration",
-                            CreatedAt = new DateTime(2020, 11, 17, 16, 14, 45, 395, DateTimeKind.Local).AddTicks(1274),
+                            CreatedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2214),
                             CreatedBy = "migration",
                             Name = "Sofa"
                         },
                         new
                         {
-                            Id = new Guid("c74d127d-1c28-4dca-9dd6-3fb18c33544c"),
-                            ChangedAt = new DateTime(2020, 11, 17, 16, 14, 45, 395, DateTimeKind.Local).AddTicks(1297),
+                            Id = new Guid("3a585312-0989-4b16-b64b-d8514297b894"),
+                            ChangedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2239),
                             ChangedBy = "migration",
-                            CreatedAt = new DateTime(2020, 11, 17, 16, 14, 45, 395, DateTimeKind.Local).AddTicks(1299),
+                            CreatedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2241),
                             CreatedBy = "migration",
                             Name = "Desk"
                         },
                         new
                         {
-                            Id = new Guid("b229d581-77ac-494d-9cf3-3da4d66c5aea"),
-                            ChangedAt = new DateTime(2020, 11, 17, 16, 14, 45, 395, DateTimeKind.Local).AddTicks(1322),
+                            Id = new Guid("cc51d276-d719-4ab4-a620-381f18c52dc0"),
+                            ChangedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2267),
                             ChangedBy = "migration",
-                            CreatedAt = new DateTime(2020, 11, 17, 16, 14, 45, 395, DateTimeKind.Local).AddTicks(1325),
+                            CreatedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2269),
                             CreatedBy = "migration",
                             Name = "Satellite channels"
                         },
                         new
                         {
-                            Id = new Guid("44befb59-568f-4d0a-8933-a3f30c3feeab"),
-                            ChangedAt = new DateTime(2020, 11, 17, 16, 14, 45, 395, DateTimeKind.Local).AddTicks(1348),
+                            Id = new Guid("566cfeff-fbec-46d3-8554-e4a869e5ce08"),
+                            ChangedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2294),
                             ChangedBy = "migration",
-                            CreatedAt = new DateTime(2020, 11, 17, 16, 14, 45, 395, DateTimeKind.Local).AddTicks(1350),
+                            CreatedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2297),
                             CreatedBy = "migration",
                             Name = "Flat-screen TV"
                         },
                         new
                         {
-                            Id = new Guid("da510e10-3842-431a-9ec4-b64c8513aa15"),
-                            ChangedAt = new DateTime(2020, 11, 17, 16, 14, 45, 395, DateTimeKind.Local).AddTicks(1373),
+                            Id = new Guid("2cb8d405-44ba-4d75-ac80-d915aa691d11"),
+                            ChangedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2322),
                             ChangedBy = "migration",
-                            CreatedAt = new DateTime(2020, 11, 17, 16, 14, 45, 395, DateTimeKind.Local).AddTicks(1375),
+                            CreatedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2324),
                             CreatedBy = "migration",
                             Name = "Balcony"
                         },
                         new
                         {
-                            Id = new Guid("c3634061-fd8a-4f70-a476-7c6838eaa1aa"),
-                            ChangedAt = new DateTime(2020, 11, 17, 16, 14, 45, 395, DateTimeKind.Local).AddTicks(1399),
+                            Id = new Guid("54f63558-72c3-4828-b2cf-5fdcc8c392dc"),
+                            ChangedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2349),
                             ChangedBy = "migration",
-                            CreatedAt = new DateTime(2020, 11, 17, 16, 14, 45, 395, DateTimeKind.Local).AddTicks(1401),
+                            CreatedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2352),
                             CreatedBy = "migration",
                             Name = "Outdoor furniture"
                         },
                         new
                         {
-                            Id = new Guid("e31a6df9-ee3c-481f-b516-01e7174ae847"),
-                            ChangedAt = new DateTime(2020, 11, 17, 16, 14, 45, 395, DateTimeKind.Local).AddTicks(1426),
+                            Id = new Guid("1c62654d-e9b8-4571-abbb-1d1161d8de66"),
+                            ChangedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2377),
                             ChangedBy = "migration",
-                            CreatedAt = new DateTime(2020, 11, 17, 16, 14, 45, 395, DateTimeKind.Local).AddTicks(1428),
+                            CreatedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2379),
                             CreatedBy = "migration",
                             Name = "Wake-up service"
                         },
                         new
                         {
-                            Id = new Guid("2423e8af-f301-4fec-aa4b-729c0cceffa2"),
-                            ChangedAt = new DateTime(2020, 11, 17, 16, 14, 45, 395, DateTimeKind.Local).AddTicks(1452),
+                            Id = new Guid("d7596e30-b83f-4329-86e6-52aae7583c61"),
+                            ChangedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2407),
                             ChangedBy = "migration",
-                            CreatedAt = new DateTime(2020, 11, 17, 16, 14, 45, 395, DateTimeKind.Local).AddTicks(1454),
+                            CreatedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2410),
                             CreatedBy = "migration",
                             Name = "Free Wi-Fi"
                         });
@@ -333,15 +319,15 @@ namespace DAL.App.EF.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("0e93e56a-9907-48da-8b0b-33536b9e60a0"),
-                            ConcurrencyStamp = "2566cf23-f574-4f68-b528-51112f1ff34a",
+                            Id = new Guid("f739fa1d-6bf4-4799-ad6c-b28d65774553"),
+                            ConcurrencyStamp = "77aa6c23-30c9-4ada-9002-594b70e2fd1e",
                             Name = "host",
                             NormalizedName = "Host"
                         },
                         new
                         {
-                            Id = new Guid("878d34ac-4fe7-4f57-86a3-196eb31c5804"),
-                            ConcurrencyStamp = "de5ca697-caf3-4a1d-9432-9f09ccfb93c5",
+                            Id = new Guid("d50c848a-221d-4f91-97f5-9ffa1c5c1f5c"),
+                            ConcurrencyStamp = "fee1d22c-64c8-4580-aa73-1e46ff76bb75",
                             Name = "gust",
                             NormalizedName = "Guest"
                         });
@@ -424,9 +410,9 @@ namespace DAL.App.EF.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("4d0fe7b4-999c-45b9-bc0a-ed71c4c47d66"),
+                            Id = new Guid("e9158f9b-79d1-466e-a60d-d1c9e4f09f45"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "5a81be59-a57c-437a-a34a-3164a2ac1228",
+                            ConcurrencyStamp = "bf5d3557-9f67-4895-8685-bac98ad2df3b",
                             Email = "user@user.com",
                             EmailConfirmed = true,
                             FirstName = "user",
@@ -435,7 +421,7 @@ namespace DAL.App.EF.Migrations
                             LockoutEnd = new DateTimeOffset(new DateTime(9999, 12, 31, 23, 59, 59, 999, DateTimeKind.Unspecified).AddTicks(9999), new TimeSpan(0, 0, 0, 0, 0)),
                             NormalizedEmail = "USER@USER.COM",
                             NormalizedUserName = "USER@USER.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEL+PkZzhbRBn04X7u9hI9egVJ3hMgCZ6Fnj2HTjEMzJ945xwTxP803qDQxgYaCCWjg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEHOSeR0svTluhuf4PoBbfdWy4cf1B+ss8EwIZ8ZY/XrIVDTlRFN2pIEQmzeB8ndlxg==",
                             PhoneNumber = "",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
@@ -444,9 +430,9 @@ namespace DAL.App.EF.Migrations
                         },
                         new
                         {
-                            Id = new Guid("3ec1288a-c4d6-411a-91da-a60716fd327c"),
+                            Id = new Guid("9242384f-8c2f-4fd4-8714-c4d1f3951ecf"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "98d87b77-6a1c-446c-a6dd-093cb204c1c3",
+                            ConcurrencyStamp = "809c175a-1f3f-4540-8196-22163f100928",
                             Email = "host@host.com",
                             EmailConfirmed = true,
                             FirstName = "host",
@@ -455,52 +441,13 @@ namespace DAL.App.EF.Migrations
                             LockoutEnd = new DateTimeOffset(new DateTime(9999, 12, 31, 23, 59, 59, 999, DateTimeKind.Unspecified).AddTicks(9999), new TimeSpan(0, 0, 0, 0, 0)),
                             NormalizedEmail = "HOST@HOST.COM",
                             NormalizedUserName = "HOST@HOST.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEFCEYWptJFOgIsSiAchTvzX/ewRiDcrloXprM3z0K7LCoG1rpBj6+Tb8pWrUnOgcKw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEE4j6dzZlf+jWgIISBazY42qn2ExO4ywKDZDKvNCG2wyCPEc6gogrr9r0mlwe/ucRA==",
                             PhoneNumber = "",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
                             UserName = "host@host.com"
                         });
-                });
-
-            modelBuilder.Entity("Domain.Invoice", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid>("AppUserId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<DateTime>("ChangedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("ChangedBy")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<bool>("IsPaid")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<Guid>("ReservationId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<decimal>("TotalPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AppUserId");
-
-                    b.HasIndex("ReservationId");
-
-                    b.ToTable("Invoices");
                 });
 
             modelBuilder.Entity("Domain.Policy", b =>
@@ -646,9 +593,6 @@ namespace DAL.App.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<bool>("Active")
-                        .HasColumnType("tinyint(1)");
-
                     b.Property<int>("Adults")
                         .HasColumnType("int");
 
@@ -688,6 +632,10 @@ namespace DAL.App.EF.Migrations
 
                     b.Property<int>("ReservationNumber")
                         .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("decimal(18,2)");
@@ -766,6 +714,9 @@ namespace DAL.App.EF.Migrations
 
                     b.Property<Guid>("RoomId")
                         .HasColumnType("char(36)");
+
+                    b.Property<decimal>("RoomTotalPrice")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
@@ -986,8 +937,8 @@ namespace DAL.App.EF.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = new Guid("3ec1288a-c4d6-411a-91da-a60716fd327c"),
-                            RoleId = new Guid("0e93e56a-9907-48da-8b0b-33536b9e60a0")
+                            UserId = new Guid("9242384f-8c2f-4fd4-8714-c4d1f3951ecf"),
+                            RoleId = new Guid("f739fa1d-6bf4-4799-ad6c-b28d65774553")
                         });
                 });
 
@@ -1024,26 +975,6 @@ namespace DAL.App.EF.Migrations
                     b.HasOne("Domain.Property", null)
                         .WithMany("Extras")
                         .HasForeignKey("PropertyId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Reservation", null)
-                        .WithMany("Extras")
-                        .HasForeignKey("ReservationId")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
-            modelBuilder.Entity("Domain.Invoice", b =>
-                {
-                    b.HasOne("Domain.Identity.AppUser", "AppUser")
-                        .WithMany()
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Reservation", "Reservation")
-                        .WithMany()
-                        .HasForeignKey("ReservationId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
@@ -1090,7 +1021,7 @@ namespace DAL.App.EF.Migrations
                         .IsRequired();
 
                     b.HasOne("Domain.Reservation", "Reservation")
-                        .WithMany()
+                        .WithMany("ReservationExtras")
                         .HasForeignKey("ReservationId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();

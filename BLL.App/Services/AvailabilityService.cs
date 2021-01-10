@@ -19,7 +19,7 @@ namespace BLL.App.Services
         {
         }
 
-        public async  Task<IEnumerable<Availability>> AllAsync(Guid? roomId = null)
+        public async  Task<IEnumerable<Availability>> AllAsync(Guid? roomId)
         {
              return (await ServiceRepository.AllAsync( roomId)).Select( dalEntity => Mapper.Map(dalEntity) );
         }
@@ -41,10 +41,12 @@ namespace BLL.App.Services
         }
         
         
-        public async Task SaveOnChangeAsync(DateTime from, DateTime to, Guid propertyId, List<Guid>? roomIds) // TODO
+        public async Task UpdateReservationDatesAsync(Reservation reservation) // TODO
         {
-            var list = ServiceRepository.FindAvailableDates(from, to, propertyId).Result.ToList();
-            
+            var roomIds = reservation.ReservationRooms!.Select(r => r.RoomId).ToList();
+            var from = reservation.CheckInDate;
+            var to = reservation.CheckOutDate;
+            var list = ServiceRepository.FindAvailableDates(from, to, reservation.PropertyId).Result.ToList();
             foreach (var available in list.Where(available => roomIds!.Contains(available.RoomId)))
             {
                 available.Room = null; // Prevent automapper exception
@@ -59,7 +61,7 @@ namespace BLL.App.Services
                     available.From = from == available.From ? to : available.From;
                     available.To = to == available.To ? from : available.To;
                 }
-                else if (available.From< from && available.To > to)  
+                else if (available.From< from && available.To > to)
                 {
                     var first = available.DeepCopy();
                     first.Id = Guid.NewGuid();

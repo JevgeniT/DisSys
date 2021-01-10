@@ -13,7 +13,7 @@ namespace DAL.App.DTO
     {
         public TKey Id { get; set; } = default!;
 
-        public Guid PropertyId { get; set; }
+        public TKey PropertyId { get; set; } = default!;
         
         public string? Name { get; set; }
 

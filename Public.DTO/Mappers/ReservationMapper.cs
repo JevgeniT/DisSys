@@ -21,10 +21,16 @@ namespace Public.DTO.Mappers
                 .ForMember(dto => dto.PropertyName, opt
                     => opt.MapFrom(reservation => reservation.Property!.Name))
                 .ForMember(dto => dto.PropertyLocation,opt
-                    => opt.MapFrom(r => $"{r.Property!.Address}, {r.Property!.Country}"));
+                    => opt.MapFrom(r => $"{r.Property!.Address}, {r.Property!.Country}"))
+                .ForMember(res => res.ExtraDtos, opt=> opt.MapFrom(e => e.ReservationExtras!.Select(ex=>ex)));
+            
+            MapperConfigurationExpression.CreateMap<ReservationExtras, ExtraDTO>();
+
             
             MapperConfigurationExpression.CreateMap<ReservationCreateDTO,BLL.App.DTO.Reservation >()
-                .ForMember(res=> res.TotalPrice, opt=> opt.MapFrom(r=>r.RoomDtos!.Sum(p=>p.RoomTotalPrice)));
+                // .ForMember(res=> res.TotalPrice, opt=> opt.MapFrom(r=>r.RoomDtos!.Sum(p=>p.RoomTotalPrice)))
+                .ForMember(res=> res.ReservationRooms, opt=> opt.MapFrom(r=> r.RoomDtos!.Select(d=>d)))
+                .ForMember(res => res.ReservationExtras, opt=> opt.MapFrom(e => e.ReservationExtras!.Select(ex=>ex)));
 
             MapperConfigurationExpression.CreateMap<BLL.App.DTO.Reservation, ReservationPreviewDTO>()
                 .ForMember(res => res.PropertyName, opt
@@ -35,9 +41,11 @@ namespace Public.DTO.Mappers
             MapperConfigurationExpression.CreateMap<Property, PropertyDTO>();
             MapperConfigurationExpression.CreateMap<Room, RoomDTO>();
             MapperConfigurationExpression.CreateMap<Review, ReviewDTO>();
+            MapperConfigurationExpression.CreateMap<ReservationRooms, ReservationRoomDTO>();
+            MapperConfigurationExpression.CreateMap<ReservationRoomDTO, ReservationRooms>();
+            MapperConfigurationExpression.CreateMap<ReservationExtrasDTO, ReservationExtras>();
+            MapperConfigurationExpression.CreateMap<ReservationExtras, ReservationExtrasDTO>();
 
-            MapperConfigurationExpression.CreateMap<BLL.App.DTO.Reservation, ReservationCreateDTO>();
-            
             Mapper = new Mapper(new MapperConfiguration(MapperConfigurationExpression));
         }
 

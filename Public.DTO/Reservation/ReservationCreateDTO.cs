@@ -12,7 +12,9 @@ namespace Public.DTO.Reservation
         public int Adults { get; set; }
         public int Children { get; set; }
         public decimal TotalPrice { get; set; }
-        public ICollection<ExtraDTO>? ExtraDtos { get; set; }
+        public string? ArrivalTime { get; set; }
+        public string? Message { get; set; }
+        public ICollection<ReservationExtrasDTO>? ReservationExtras { get; set; }
         public ICollection<ReservationRoomDTO>? RoomDtos { get; set; }
      }
 }

@@ -24,6 +24,9 @@ namespace BLL.Base.Mappers
                 config.CreateMap<DAL.App.DTO.Facility, BLL.App.DTO.Facility>();
                 config.CreateMap<DAL.App.DTO.Availability, BLL.App.DTO.Availability>();
                 config.CreateMap<DAL.App.DTO.ReservationRooms, BLL.App.DTO.ReservationRooms>();
+                config.CreateMap<BLL.App.DTO.ReservationRooms, DAL.App.DTO.ReservationRooms>();
+                config.CreateMap<DAL.App.DTO.ReservationExtras, BLL.App.DTO.ReservationExtras>();
+                config.CreateMap<BLL.App.DTO.ReservationExtras, DAL.App.DTO.ReservationExtras>();
                 config.CreateMap<DAL.App.DTO.Availability, BLL.App.DTO.Availability>();
                 config.CreateMap<DAL.App.DTO.Policy, BLL.App.DTO.Policy>();
                 config.CreateMap<DAL.App.DTO.Reservation, BLL.App.DTO.Reservation>();

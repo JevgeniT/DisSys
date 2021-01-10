@@ -19,7 +19,7 @@ namespace DAL.App.EF.Repositories
         {
         }
         
-        public async Task<IEnumerable< DAL.App.DTO.Availability>> AllAsync(Guid? roomId = null)
+        public async Task<IEnumerable< DAL.App.DTO.Availability>> AllAsync(Guid? roomId)
         {
             return (await RepoDbContext.Availabilities.Include(a => a.Room).Where(a => a.Active && a.RoomId  == roomId)
                 .ToListAsync()).Select(a => Mapper.Map(a));

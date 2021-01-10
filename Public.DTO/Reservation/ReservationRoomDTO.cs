@@ -6,7 +6,6 @@ namespace Public.DTO.Reservation
     public class ReservationRoomDTO
     {
         public Guid RoomId { get; set; }
-        [Ignore]
         public Guid? ReservationId { get; set; }
         public Guid PolicyId { get; set; }
         public string? GuestFirstLastName { get; set; }

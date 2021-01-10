@@ -24,7 +24,7 @@ namespace WebApp.ApiControllers._1._0
     public class ReservationController : ControllerBase
     {
         private readonly IAppBLL _bll;
-        private ReservationMapper _mapper = new   ReservationMapper();
+        private readonly ReservationMapper _mapper = new   ReservationMapper();
         /// <summary>
         ///  Constructor
         /// </summary>
@@ -53,6 +53,7 @@ namespace WebApp.ApiControllers._1._0
             {
                 return NotFound(new MessageDTO("Nothing was found"));
             }
+ 
             return Ok(reservations);
         }
         
@@ -68,7 +69,8 @@ namespace WebApp.ApiControllers._1._0
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(MessageDTO))] 
         public async Task<ActionResult<ReservationDTO>> GetReservation(Guid id)
         {
-            var reservation = await _bll.Reservations.FirstOrDefaultAsync(id, User.UserGuidId()); 
+            var reservation = await _bll.Reservations.FirstOrDefaultAsync(id, User.UserGuidId());
+ 
             if (reservation == null)
             {
                 return NotFound(new MessageDTO($"Reservation with id {id} was not found"));
@@ -91,9 +93,11 @@ namespace WebApp.ApiControllers._1._0
             { 
                 return BadRequest(new MessageDTO("Ids does not match!"));
             }
-            await _bll.Reservations.UpdateAsync(_mapper.Map(reservation));
-            await _bll.SaveChangesAsync();
 
+            var bll = _mapper.Map(reservation);
+            bll.AppUserId = User.UserGuidId();
+            await _bll.Reservations.UpdateAsync(bll, User.UserGuidId());
+            await _bll.SaveChangesAsync();
             return NoContent();
         }
 
@@ -107,24 +111,19 @@ namespace WebApp.ApiControllers._1._0
         [Produces("application/json")]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ReservationDTO))]
-        public async Task<ActionResult<ReservationDTO>> PostReservation(ReservationCreateDTO reservation) // todo more refactor, update dates on save
+        public async Task<ActionResult<ReservationDTO>> PostReservation(ReservationCreateDTO reservation)
         {
-            if (!await _bll.Availabilities.ExistsAsync(reservation.CheckInDate, reservation.CheckOutDate, reservation.RoomDtos.Select(r=>r.RoomId).ToList()))
+            if (!await _bll.Availabilities.ExistsAsync(reservation.CheckInDate, reservation.CheckOutDate,
+                reservation.RoomDtos!.Select(r=>r.RoomId).ToList()))
             {
                 return BadRequest(new MessageDTO("No dates available"));
             }
-            Reservation bllReservation = _mapper.MapCreateDto(reservation);
-            bllReservation.AppUserId = User.UserGuidId(); 
-            _bll.Reservations.Add(bllReservation);
-            
-            await  _bll.Availabilities.SaveOnChangeAsync(reservation.CheckInDate, reservation.CheckOutDate, reservation.PropertyId, reservation.RoomDtos.Select(r=>r.RoomId).ToList());
-            
-            await _bll.SaveChangesAsync();
-            
-            await _bll.ReservationRooms.AddRangeAsync(reservation.RoomDtos.Select(e => new ReservationRooms {RoomId = e.RoomId, ReservationId = bllReservation.Id, PolicyId = e.PolicyId}));
-            
-            await _bll.SaveChangesAsync();
 
+            Reservation bllReservation = _mapper.MapCreateDto(reservation);
+            bllReservation.AppUserId = User.UserGuidId();
+            _bll.Reservations.Add(bllReservation);
+            await _bll.Availabilities.UpdateReservationDatesAsync(bllReservation);
+            await _bll.SaveChangesAsync();
             return CreatedAtAction("GetReservation", new { id = bllReservation.Id }, bllReservation);
         }
         

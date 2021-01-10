@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.App.EF
 {
-    public class BaseDateProvider
+    public class BaseDataProvider
     {
 
 
@@ -15,17 +15,16 @@ namespace DAL.App.EF
         {
             List<string> facilities = new List<string>()
             {
-                "Upper floors accessible by elevator",
+                "Elevator",
                 "Linens",
-                "Wardrobe or closet",
+                "Wardrobe",
                 "Minibar",
                 "Air conditioning",
                 "Safe",
-                "Ironing facilities",
                 "Iron",
                 "Heating",
                 "Coffee machine",
-                "Electric kettle",
+                "Kettle",
                 "Sofa",
                 "Desk",
                 "Satellite channels",

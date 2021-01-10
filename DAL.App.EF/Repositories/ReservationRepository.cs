@@ -31,12 +31,17 @@ namespace DAL.App.EF.Repositories
 
         public override async Task<DTO.Reservation> FirstOrDefaultAsync(Guid id, object? userId = null)
         {
-            var reservation = (await RepoDbContext.Reservations
+             var reservation = (await PrepareQuery(userId)
                 .Include(r=> r.Review)
+                .Include(r=>r.ReservationExtras)
+                .ThenInclude(re=>re.Extra)
                 .Include(r=> r.Property)
                 .Include(r => r.AppUser)
                 .Include(r => r.ReservationRooms)
-                .ThenInclude(rooms => rooms.Room).FirstOrDefaultAsync(r=> r.Id.Equals(id)));
+                .ThenInclude(rooms => rooms.Room)
+                .ThenInclude(r=> r!.RoomFacilities)
+                .ThenInclude(r=>r.Facility)
+                .FirstOrDefaultAsync(r=> r.Id.Equals(id)));
              return Mapper.Map(reservation);
         }
     }

@@ -8,7 +8,6 @@ namespace Contracts.BLL.App.Services
 {
     public interface IAvailabilityService : IAvailabilityRepository<Guid,Availability>
     {
-        Task SaveOnChangeAsync(DateTime @from, DateTime to, Guid propertyId, List<Guid>? roomIds = null);
-
+        Task UpdateReservationDatesAsync(Reservation reservation);
     }
 }

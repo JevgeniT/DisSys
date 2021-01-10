@@ -19,12 +19,12 @@ namespace DAL.App.DTO
         public string? Comment { get; set; }
 
         public DateTime CreatedAt { get; set; }
-        
-        public Guid PropertyId { get; set; }
+
+        public TKey PropertyId { get; set; } = default!;
         
         public Property? Property { get; set; }
 
-        public Guid ReservationId { get; set; }
+        public TKey ReservationId { get; set; }= default!;
 
         public TKey AppUserId { get; set; }= default!;
         public AppUser AppUser { get; set; } = default!;

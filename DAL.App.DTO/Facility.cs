@@ -10,7 +10,7 @@ namespace DAL.App.DTO
         where TKey: IEquatable<TKey>
     {
         public string? Name { get; set; }
-        public Guid RoomId { get; set; }
+        public TKey RoomId { get; set; }= default!;
         public TKey Id { get; set; } = default!;
     }
 }

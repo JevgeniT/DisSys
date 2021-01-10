@@ -22,7 +22,7 @@ namespace WebApp.ApiControllers
     public class RoomController : ControllerBase
     {
         private readonly IAppBLL _bll;
-        private readonly DTOMapper<BLL.App.DTO.Room, RoomDTO> _mapper = new DTOMapper<Room, RoomDTO>();
+        private readonly DTOMapper<Room, RoomDTO> _mapper = new DTOMapper<Room, RoomDTO>();
 
         /// <summary>
         /// Constructor
@@ -106,7 +106,7 @@ namespace WebApp.ApiControllers
         }
 
         
-        /// <summary>3
+        /// <summary>
         /// Post the new Room
         /// </summary>
         /// <param name="room"></param>
@@ -117,11 +117,11 @@ namespace WebApp.ApiControllers
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(RoomDTO))]
         public async Task<ActionResult<RoomDTO>> PostRoom(RoomDTO room)
         {
-            var entity = _mapper.Map(room);
+            var entity = _mapper.Map(room); 
             _bll.Rooms.Add(entity);
             await  _bll.SaveChangesAsync();
  
-            await _bll.RoomFacilities.AddRangeAsync(room.FacilityDtos.Select(f => new RoomFacilities{FacilityId = f.Id,RoomId = entity.Id}).ToList());
+            await _bll.RoomFacilities.AddRangeAsync(room.FacilityDtos!.Select(f => new RoomFacilities{FacilityId = f.Id,RoomId = entity.Id}).ToList());
             room.Id = entity.Id;
             await  _bll.SaveChangesAsync();
 

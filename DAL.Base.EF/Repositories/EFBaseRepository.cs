@@ -17,11 +17,13 @@ namespace DAL.Base.EF.Repositories
         where TDbContext : DbContext,  IBaseEntityTracker
         where TUser : IdentityUser<Guid>
     {
-        public EFBaseRepository(TDbContext dbContext,  IBaseDALMapper<TDomainEntity, TDALEntity> mapper) : base(dbContext, mapper)
+        public EFBaseRepository(TDbContext dbContext,  IBaseDALMapper<TDomainEntity, TDALEntity> mapper) 
+            : base(dbContext, mapper)
         { }
     }
 
-    public class EFBaseRepository<TKey, TDbContext,TUser, TDomainEntity, TDALEntity> : IBaseRepository<TKey, TDALEntity>
+    public class EFBaseRepository<TKey, TDbContext,TUser, TDomainEntity, TDALEntity> 
+        : IBaseRepository<TKey, TDALEntity>
         where TDALEntity : class, IDomainBaseEntity<TKey>, new()
         where TDomainEntity : class, IDomainEntityBaseMetadata<TKey>, new()
         where TDbContext : DbContext, IBaseEntityTracker<TKey>
@@ -72,14 +74,16 @@ namespace DAL.Base.EF.Repositories
         
         public virtual async Task<TDALEntity> FirstOrDefaultAsync(TKey id, object? userId = null)
         {
-            return Mapper.Map(await RepoDbSet.FirstOrDefaultAsync(e => e.Id.Equals(id)));
+            var query = PrepareQuery(userId);
+            var domain = await query.FirstOrDefaultAsync(e => e.Id.Equals(id));
+            return Mapper.Map(domain);
         }
 
 
         public virtual async Task<TDALEntity> UpdateAsync(TDALEntity entity, object? userId = null)
         {
             var domainEntity = Mapper.Map<TDALEntity, TDomainEntity>(entity);
-            await CheckDomainEntityOwnership(domainEntity);
+            await CheckDomainEntityOwnership(domainEntity, userId);
             var trackedDomainEntity = RepoDbSet.Update(domainEntity).Entity;
             var result = Mapper.Map(trackedDomainEntity);
             return result;
@@ -129,7 +133,7 @@ namespace DAL.Base.EF.Repositories
             var recordExists = await ExistsAsync(entity.Id, userId);
             if (!recordExists)
             {
-                throw new ArgumentException("Entity to be updated was not found in data source!");
+                 throw new ArgumentException("Entity to be updated was not found in data source!");
             }
         }
 
