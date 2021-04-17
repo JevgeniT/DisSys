@@ -41,12 +41,12 @@ namespace WebApp
         public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
-        {
-            
-            services.AddDbContext<AppDbContext>(options =>
-                options.UseMySql(
-                    Configuration.GetConnectionString("MySqlConnection")));
-            
+        {     
+            services.AddDbContext<AppDbContext>(opt =>
+                opt.UseMySql(Configuration.GetConnectionString("MySqlConnection"), 
+                    ServerVersion.AutoDetect(Configuration.GetConnectionString("MySqlConnection")))
+                );
+
             services.Configure<MongoConnectionSettings>(
                 Configuration.GetSection(nameof(MongoConnectionSettings)));
 

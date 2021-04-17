@@ -99,7 +99,7 @@ namespace WebApp.ApiControllers._1._0
         /// <param name="id">Property Id</param>
         /// <param name="property"></param>
         /// <returns></returns>
-        [HttpPut("{id}")]
+        [HttpPut("{id:guid}")]
         [Produces("application/json")]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]

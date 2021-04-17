@@ -19,6 +19,5 @@ namespace Public.DTO
         public PropertyRulesDTO? PropertyRules { get; set; }
         public ICollection<ExtraDTO>? Extras { get; set; }
         public ICollection<RoomDTO>? PropertyRooms { get; set; }
-         
     }
 }

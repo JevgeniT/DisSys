@@ -14,6 +14,6 @@ namespace WebApp.Helpers
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public string CurrentUserName  => _httpContextAccessor.HttpContext.User.Identity.Name ?? "-";
+        public string CurrentUserName  => _httpContextAccessor.HttpContext?.User?.Identity?.Name ?? "-";
     }
 }
