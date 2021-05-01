@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Contracts.BLL.App;
 using Microsoft.AspNetCore.Mvc;
@@ -26,14 +28,12 @@ namespace WebApp.ApiControllers._1._0
     public class PropertyController : ControllerBase
     {
         private readonly IAppBLL _bll;
-        private readonly PropertyMapper _mapper = new PropertyMapper();
+        private readonly PropertyMapper _mapper = new();
+        
         /// <summary>
         ///  Constructor
         /// </summary>
-        public PropertyController(IAppBLL bll)
-        {
-             _bll = bll;
-        }
+        public PropertyController(IAppBLL bll) { _bll = bll; }
 
         /// <summary>
         /// Get all Properties
@@ -41,11 +41,8 @@ namespace WebApp.ApiControllers._1._0
         /// <returns>Array of properties</returns>
         [HttpGet]
         public async Task<ActionResult<IAsyncEnumerable<PropertyDTO>>> GetProperties()
-        {
-            var  properties = (await _bll.Properties.AllAsync(User.UserGuidId())).Select(bllEntity => _mapper.Map(bllEntity));
-            return Ok(properties);
-        }
-
+            => Ok((await _bll.Properties.AllAsync(User.UserGuidId())).Select(bllEntity => _mapper.Map(bllEntity)));
+        
         /// <summary>
         /// Find Properties
         /// </summary>
@@ -63,7 +60,7 @@ namespace WebApp.ApiControllers._1._0
             [FromQuery] DateTime? to, [FromQuery] string input)
         {
              var properties = (await _bll.Properties.FindAsync(from, to, input)); // TODO 
-            
+             Console.WriteLine(Thread.CurrentThread.CurrentCulture.Name, CultureInfo.CurrentCulture.Name);
              if (!properties.Any())
              {
                  return NotFound(new MessageDTO("Nothing was found"));
@@ -86,7 +83,7 @@ namespace WebApp.ApiControllers._1._0
         { 
             var property =  _mapper.Map(await _bll.Properties.FirstOrDefaultAsync(id));
   
-            if (property == null)
+            if (property is null)
             {
                  return NotFound(new MessageDTO($"Property with id {id} not found"));
             }
@@ -102,10 +99,10 @@ namespace WebApp.ApiControllers._1._0
         [HttpPut("{id:guid}")]
         [Produces("application/json")]
         [Consumes("application/json")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(MessageDTO))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(MessageDTO))]
-        public async Task<IActionResult> PutProperty(Guid id, PropertyDTO property)
+        public async Task<ActionResult<PropertyCreateDTO>> PutProperty(Guid id, PropertyCreateDTO property)
         {
             if (id != property.Id)
             {
@@ -115,11 +112,14 @@ namespace WebApp.ApiControllers._1._0
             if (!await _bll.Properties.ExistsAsync(id))
             {
                 return BadRequest(new MessageDTO($"Property was not found"));
-            } 
-            
-            await _bll.Properties.UpdateAsync(_mapper.Map(property));
+            }
+
+            var updated = _mapper.MapPropertyCreateView(property);
+            updated.AppUserId = User.UserGuidId();
+            await _bll.Properties.UpdateAsync(updated);
             await _bll.SaveChangesAsync();
-            return NoContent();
+            
+            return Ok(property);
         }
 
       
@@ -137,7 +137,7 @@ namespace WebApp.ApiControllers._1._0
             property.AppUserId = User.UserGuidId();
             var entity = _mapper.Map(property);
             _bll.Properties.Add(entity);
-              await _bll.SaveChangesAsync(); 
+            await _bll.SaveChangesAsync(); 
             property.Id = entity.Id; 
             return CreatedAtAction("GetProperty", new { id = property.Id }, property);
         }
@@ -155,7 +155,7 @@ namespace WebApp.ApiControllers._1._0
         {
             var property = await _bll.Properties.FirstOrDefaultAsync(id);
             
-            if (property == null)
+            if (property is null)
             {
                 return NotFound(new MessageDTO($"Property with id {id} was not found"));
             }
@@ -164,8 +164,6 @@ namespace WebApp.ApiControllers._1._0
             await _bll.SaveChangesAsync();
 
             return Ok(property);
-        }
-
-       
+        }   
     }
 }

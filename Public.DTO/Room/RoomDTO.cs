@@ -6,7 +6,7 @@ namespace Public.DTO
 {
     public class RoomDTO
     {
-        public Guid Id { get; set; }
+        public Guid? Id { get; set; }
         public Guid PropertyId { get; set; }
         public string? Name { get; set; }
         public int Size { get; set; }

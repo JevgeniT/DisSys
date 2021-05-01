@@ -7,7 +7,6 @@ namespace DAL.Base
     public abstract class DomainEntityBaseMetadata :  DomainEntityBaseMetadata<Guid>
     {
     }
-
     
     public abstract class DomainEntityBaseMetadata<TKey> :  IDomainEntityBaseMetadata<TKey> 
         where TKey : IEquatable<TKey>
@@ -18,5 +17,4 @@ namespace DAL.Base
         public virtual string? ChangedBy { get; set; }
         public virtual DateTime ChangedAt { get; set; } = DateTime.Now;
     }
-
 }

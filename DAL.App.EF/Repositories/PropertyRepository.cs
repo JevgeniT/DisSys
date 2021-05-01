@@ -35,7 +35,7 @@ namespace DAL.App.EF.Repositories
         {
             var query = RepoDbSet.Include(p => p.Reviews);
 
-            if (from == null && to == null )
+            if (from is null && to is null )
             {
                 return (await query.Where(HasMatchWithInput(input)).ToListAsync()).Select(domainEntity => Mapper.Map(domainEntity));
             }

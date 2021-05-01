@@ -57,7 +57,7 @@ namespace WebApp.ApiControllers._1._0.Identity
 
             var appUser = await _userManager.FindByEmailAsync(model.Email);
             
-            if (appUser == null)
+            if (appUser is null)
             {
                 _logger.LogInformation($"Web-Api login. User {model.Email} not found!");
                 return StatusCode(403);
@@ -68,7 +68,9 @@ namespace WebApp.ApiControllers._1._0.Identity
             {
                 
                 var claimsPrincipal = await _signInManager.CreateUserPrincipalAsync(appUser); //get the User analog
-                var jwt = IdentityExtensions.GenerateJWT(claimsPrincipal.Claims,
+                var jwt = IdentityExtensions.GenerateJWT(claimsPrincipal.Claims
+                        .Append(new Claim(ClaimTypes.GivenName, appUser.FirstName))
+                        .Append(new Claim(ClaimTypes.Surname, appUser.LastName)),
                     _configuration["JWT:SigningKey"],
                     _configuration["JWT:Issuer"],
                     _configuration.GetValue<int>("JWT:ExpirationInDays")

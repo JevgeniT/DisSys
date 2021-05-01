@@ -1,15 +1,12 @@
 ﻿using System;
- using System.Collections.Generic;
- using System.Linq;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Contracts.DAL.Base;
-using DAL.App.DTO;
-using Domain;
 using Domain.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Availability = Domain.Availability;
 using Extra = Domain.Extra;
 using Facility = Domain.Facility;
@@ -34,7 +31,7 @@ namespace DAL.App.EF
         
         public DbSet<Extra> Extras { get; set; } = default!;
         public DbSet<Facility> Facilities { get; set; } = default!;
-        // public DbSet<Invoice> Invoices { get; set; } = default!;
+
         public DbSet<Reservation> Reservations { get; set; } = default!;
         public DbSet<ReservationRooms> ReservationRooms { get; set; } = default!;
         public DbSet<ReservationExtras> ReservationExtras { get; set; } = default!;
@@ -122,7 +119,7 @@ namespace DAL.App.EF
             var markedAsAdded = ChangeTracker.Entries().Where(x => x.State == EntityState.Added);
             foreach (var entityEntry in markedAsAdded)
             {
-                if (!(entityEntry.Entity is IDomainEntityMetadata entityWithMetaData)) continue;
+                if (entityEntry.Entity is not IDomainEntityMetadata entityWithMetaData) continue;
 
                 entityWithMetaData.CreatedAt = DateTime.Now;
                 entityWithMetaData.CreatedBy = _userNameProvider.CurrentUserName;
@@ -134,7 +131,7 @@ namespace DAL.App.EF
             foreach (var entityEntry in markedAsModified)
             {
                 // check for IDomainEntityMetadata
-                if (!(entityEntry.Entity is IDomainEntityMetadata entityWithMetaData)) continue;
+                if (entityEntry.Entity is not IDomainEntityMetadata entityWithMetaData) continue;
 
                 entityWithMetaData.ChangedAt = DateTime.Now;
                 entityWithMetaData.ChangedBy = _userNameProvider.CurrentUserName;

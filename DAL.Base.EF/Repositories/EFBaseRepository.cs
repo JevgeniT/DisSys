@@ -40,7 +40,7 @@ namespace DAL.Base.EF.Repositories
             RepoDbContext = dbContext;
             RepoDbSet = RepoDbContext.Set<TDomainEntity>();
             Mapper = mapper;
-            if (RepoDbSet == null)
+            if (RepoDbSet is null)
             {
                 throw new ArgumentNullException(typeof(TDALEntity).Name + " was not found as DBSet!");
             }
@@ -100,7 +100,7 @@ namespace DAL.Base.EF.Repositories
         {
             var query = PrepareQuery(userId);
             var domainEntity = await query.FirstOrDefaultAsync(e => e.Id.Equals(id));
-            if (domainEntity == null)
+            if (domainEntity is null)
             {
                 throw new ArgumentException("Entity to be updated was not found in data source!");
             }

@@ -26,7 +26,7 @@ namespace WebApp.ApiControllers
     public class AvailabilityController : ControllerBase
     {
         private readonly IAppBLL _bll;
-        private readonly DTOMapper<Availability, AvailabilityDTO> _mapper = new DTOMapper<Availability, AvailabilityDTO>();
+        private readonly DTOMapper<Availability, AvailabilityDTO> _mapper = new ();
         
         /// <summary>
         /// Constructor
@@ -72,7 +72,7 @@ namespace WebApp.ApiControllers
         public async Task<ActionResult<IEnumerable<AvailabilityDTO>>> CheckDates([FromQuery]DateTime from, [FromQuery]DateTime to, [FromQuery]Guid pId)
         {
             var availability = (await _bll.Availabilities.FindAvailableDates(from, to, pId)).Select(bllEntity => _mapper.Map(bllEntity));
-            if (availability == null)
+            if (availability is null)
             {
                 return NotFound(new MessageDTO("No availabilities were found"));
             }

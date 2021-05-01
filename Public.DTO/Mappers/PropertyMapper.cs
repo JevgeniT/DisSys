@@ -9,8 +9,9 @@ namespace Public.DTO.Mappers
     {
         public PropertyMapper()
         {
-            MapperConfigurationExpression.CreateMap<Property, PropertyDTO>()
-                ;
+            MapperConfigurationExpression.CreateMap<Property, PropertyDTO>();
+            MapperConfigurationExpression.CreateMap<PropertyCreateDTO, Property>();
+
             MapperConfigurationExpression.CreateMap<Room, RoomDTO>()
                 .ForMember(r=>r.Facilities,
                     opt => opt.MapFrom(f=> f.RoomFacilities!.Select( fc => fc.Name)))
@@ -19,7 +20,8 @@ namespace Public.DTO.Mappers
             MapperConfigurationExpression.CreateMap<Extra, ExtraDTO>();
 
             MapperConfigurationExpression.CreateMap<Room, RoomViewDTO>()
-                .ForMember(r=> r.Price, opt => opt.MapFrom(room => room.RoomAvailabilities!.Min(a=>a.PricePerNightForAdult)));
+                .ForMember(r=> r.Price, opt 
+                    => opt.MapFrom(room => room.RoomAvailabilities!.Min(a=>a.PricePerNightForAdult)));
             
             MapperConfigurationExpression.CreateMap<PropertyRules, PropertyRulesDTO>();
             MapperConfigurationExpression.CreateMap<Property, PropertyViewDTO>()
@@ -40,10 +42,10 @@ namespace Public.DTO.Mappers
 
             Mapper = new Mapper(new MapperConfiguration(MapperConfigurationExpression));
         }
-        
         public PropertyViewDTO MapPropertyView(Property inObject)
-        {
-            return Mapper.Map<PropertyViewDTO>(inObject);
-        }
+            => Mapper.Map<PropertyViewDTO>(inObject);
+        
+        public Property MapPropertyCreateView(PropertyCreateDTO inObject)
+            => Mapper.Map<Property>(inObject);
     }
 }

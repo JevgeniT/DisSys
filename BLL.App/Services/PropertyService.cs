@@ -24,7 +24,5 @@ namespace BLL.App.Services
             return (await ServiceRepository.FindAsync(from, to, input)).Select(dalEntity => Mapper.Map(dalEntity));
         }
         
-        
-        
     }
 }

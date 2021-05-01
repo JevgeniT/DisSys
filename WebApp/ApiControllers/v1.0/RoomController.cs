@@ -22,7 +22,7 @@ namespace WebApp.ApiControllers
     public class RoomController : ControllerBase
     {
         private readonly IAppBLL _bll;
-        private readonly DTOMapper<Room, RoomDTO> _mapper = new DTOMapper<Room, RoomDTO>();
+        private readonly DTOMapper<Room, RoomDTO> _mapper = new();
 
         /// <summary>
         /// Constructor
@@ -45,7 +45,7 @@ namespace WebApp.ApiControllers
         public async Task<ActionResult<IEnumerable<RoomDTO>>> GetRooms([FromQuery] Guid pId)
         {
             var result = await _bll.Rooms.AllAsync(pId);
-            if (result == null)
+            if (result is null)
             {
                 return NotFound(new MessageDTO($"Property with id {pId} does not have any rooms yet"));
             }
@@ -65,7 +65,7 @@ namespace WebApp.ApiControllers
         public async Task<ActionResult<RoomDTO>> GetRoom(Guid id)
         {
             var room = await _bll.Rooms.FirstOrDefaultAsync(id);
-            if (room == null)
+            if (room is null)
             {
                 return NotFound(new MessageDTO($"Room with the id {id} was not found"));
             }
@@ -120,8 +120,12 @@ namespace WebApp.ApiControllers
             var entity = _mapper.Map(room); 
             _bll.Rooms.Add(entity);
             await  _bll.SaveChangesAsync();
- 
-            await _bll.RoomFacilities.AddRangeAsync(room.FacilityDtos!.Select(f => new RoomFacilities{FacilityId = f.Id,RoomId = entity.Id}).ToList());
+
+            if (room.FacilityDtos is not null)
+            {
+                await _bll.RoomFacilities.AddRangeAsync(room.FacilityDtos?.Select(f => new RoomFacilities{FacilityId = f.Id,RoomId = entity.Id}).ToList()!);
+                //todo
+            }
             room.Id = entity.Id;
             await  _bll.SaveChangesAsync();
 
@@ -141,7 +145,7 @@ namespace WebApp.ApiControllers
         public async Task<ActionResult<RoomDTO>> DeleteRoom(Guid id)
         {
             var room = await _bll.Rooms.FirstOrDefaultAsync(id);
-            if (room == null)
+            if (room is null)
             {
                 return NotFound(new MessageDTO($"Room with id {id} was not found"));
             }

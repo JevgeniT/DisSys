@@ -82,7 +82,7 @@ namespace WebApp.ApiControllers.v1._0
         {
             var extra = await _bll.Extras.FirstOrDefaultAsync(id);
 
-            if (extra == null)
+            if (extra is null)
             {
                 return NotFound(new MessageDTO($"Extra with id {id} not found"));
             }

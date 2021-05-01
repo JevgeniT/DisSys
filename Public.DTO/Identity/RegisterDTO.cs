@@ -6,9 +6,6 @@ namespace Public.DTO.Identity
         public string Password { get; set; } = default!;
         public string FirstName { get; set; } = default!;
         public string LastName { get; set; } = default!;
-
         public bool IsHost { get; set; }  = default!;
-        
-        
     }
 }

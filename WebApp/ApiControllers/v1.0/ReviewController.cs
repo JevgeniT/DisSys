@@ -63,7 +63,7 @@ namespace WebApp.ApiControllers
         {
             var review = await _bll.Reviews.FirstOrDefaultAsync(id);
 
-            if (review == null)
+            if (review is null)
             {
                 return NotFound(new MessageDTO($"Review with id {id} not found"));
             }
@@ -141,7 +141,7 @@ namespace WebApp.ApiControllers
         {
             var review = await _bll.Reviews.FirstOrDefaultAsync(id);
             
-            if (review == null)
+            if (review is null)
             {
                 return NotFound(new MessageDTO($"Review with id {id} was not found"));
             }

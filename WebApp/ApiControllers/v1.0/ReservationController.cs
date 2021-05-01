@@ -49,7 +49,7 @@ namespace WebApp.ApiControllers._1._0
             var reservations = (await _bll.Reservations.AllAsync(User.UserGuidId(), pId))
                 .Select(res => _mapper.MapPreviewDto(res));
             
-            if (reservations == null)
+            if (reservations is null)
             {
                 return NotFound(new MessageDTO("Nothing was found"));
             }
@@ -71,7 +71,7 @@ namespace WebApp.ApiControllers._1._0
         {
             var reservation = await _bll.Reservations.FirstOrDefaultAsync(id, User.UserGuidId());
  
-            if (reservation == null)
+            if (reservation is null)
             {
                 return NotFound(new MessageDTO($"Reservation with id {id} was not found"));
             }

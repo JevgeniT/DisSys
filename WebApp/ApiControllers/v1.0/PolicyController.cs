@@ -65,7 +65,7 @@ namespace WebApp.ApiControllers
         {
             var policy = await _bll.Policies.FirstOrDefaultAsync(id);
 
-            if (policy == null)
+            if (policy is null)
             {
                 return NotFound(new MessageDTO($"Policy with id {id} not found"));
             }
@@ -138,7 +138,7 @@ namespace WebApp.ApiControllers
         {
             var policy = await _bll.Policies.FirstOrDefaultAsync(id);
             
-            if (policy == null)
+            if (policy is null)
             {
                 return NotFound(new MessageDTO($"Policy with id {id} was not found"));
             }

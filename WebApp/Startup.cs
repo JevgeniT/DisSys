@@ -1,5 +1,7 @@
 #pragma warning disable 1591
 using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using BLL.App;
@@ -16,6 +18,7 @@ using EasyCaching.Core.Configurations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
@@ -61,6 +64,26 @@ namespace WebApp
             services.AddVersionedApiExplorer( options => options.GroupNameFormat = "'v'VVV" );
             services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
             services.AddSwaggerGen();
+ 
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                // TODO: should be in appsettings.json
+                var appSupportedCultures = new[]
+                {
+                    new CultureInfo("et"),
+                    new CultureInfo("en-GB"),
+                };
+
+                options.SupportedCultures = appSupportedCultures;
+                options.SupportedUICultures = appSupportedCultures;
+                options.DefaultRequestCulture = new RequestCulture("en-GB", "en-GB");
+                options.SetDefaultCulture("en-et");
+                options.RequestCultureProviders = new List<IRequestCultureProvider>()
+                {
+                    new QueryStringRequestCultureProvider(),
+                    new CookieRequestCultureProvider()
+                };
+            });
  
             services.AddScoped<IAppUnitOfWork, AppUnitOfWork>();
             services.AddScoped<IUserNameProvider, UserNameProvider>();
@@ -151,6 +174,10 @@ namespace WebApp
                 }
             });
 
+            app.UseRequestLocalization(
+                app.ApplicationServices
+                    .GetService<IOptions<RequestLocalizationOptions>>()?.Value
+            );
 
             app.UseEndpoints(endpoints =>
             {

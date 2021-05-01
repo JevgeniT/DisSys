@@ -47,7 +47,7 @@ namespace WebApp.ApiControllers
         {
             var rule = await _bll.PropertyRules.FirstOrDefaultAsync(id);
             
-            if (rule == null)
+            if (rule is null)
             {
                 return NotFound(new MessageDTO("No rules found"));
             }
