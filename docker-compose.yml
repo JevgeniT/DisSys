@@ -1,15 +1,34 @@
 version: "3.8"
 services:
-  web:
-    build: 
-      context: .
-      dockerfile: Dockerfile
+  distributed.api:
+    image: jevgeni88/distributed.api
+    environment:
+      - "Server=0.0.0.0; port=3306; database=distributed; user=root; password=myPass123; Persist Security Info=false; Connect Timeout=300"
     ports:
       - "8000:80"
     depends_on:
-      - db
-  db:
-    image: "mcr.microsoft.com/mssql/server"
+      - distributed
+
+
+  distributed:
+    image: jevgeni88/distributed_mysql:latest
+    restart: always
     environment:
-        SA_PASSWORD: "Your_password123"
-        ACCEPT_EULA: "Y"
+      MYSQL_DATABASE: 'distributed'
+      # So you don't have to use root, but you can if you like
+      # You can use whatever password you like
+      MYSQL_PASSWORD: 'myPass123'
+      # Password for root access
+      MYSQL_ROOT_PASSWORD: 'myPass123'
+    ports:
+      # <Port exposed> : < MySQL Port running inside container>
+      - '3306:3306'
+    expose:
+      # Opens port 3306 on the container
+      - '3306'
+      # Where our data will be persisted
+    volumes:
+      - my-db:/var/lib/mysql
+# Names our volume
+volumes:
+  my-db:

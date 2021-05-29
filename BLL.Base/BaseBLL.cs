@@ -17,17 +17,10 @@ namespace BLL.Base
             UnitOfWork = unitOfWork;
         }
         
-        public Task<int> SaveChangesAsync()
-        {
-            return  UnitOfWork.SaveChangesAsync();
-        }
-
-        public int SaveChanges()
-        {
-            return UnitOfWork.SaveChanges();
-        }
+        public async Task<int> SaveChangesAsync() => await UnitOfWork.SaveChangesAsync();
+        public int SaveChanges() => UnitOfWork.SaveChanges();
         
-        private readonly Dictionary<Type, object> _repoCache = new Dictionary<Type, object>();
+        private readonly Dictionary<Type, object> _repoCache = new ();
 
         // Factory method
         public TService GetService<TService>(Func<TService> serviceCreationMethod) 

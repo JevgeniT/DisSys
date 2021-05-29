@@ -24,7 +24,7 @@ namespace WebApp.ApiControllers
     public class PolicyController : ControllerBase
     {
         private readonly IAppBLL _bll;
-        private readonly DTOMapper<Policy, PolicyDTO> _mapper = new DTOMapper<Policy, PolicyDTO>();
+        private readonly DTOMapper<Policy, PolicyDTO> _mapper = new();
         
         
         /// <summary>
@@ -64,12 +64,7 @@ namespace WebApp.ApiControllers
         public async Task<ActionResult<PolicyDTO>> GetPolicy(Guid id)
         {
             var policy = await _bll.Policies.FirstOrDefaultAsync(id);
-
-            if (policy is null)
-            {
-                return NotFound(new MessageDTO($"Policy with id {id} not found"));
-            }
-
+ 
             return Ok(_mapper.Map(policy));
         }
  
@@ -87,20 +82,11 @@ namespace WebApp.ApiControllers
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(MessageDTO))]
         public async Task<IActionResult> PutPolicy(Guid id, PolicyDTO policy)
         {
-            if (id != policy.Id)
-            {
-                return BadRequest(new MessageDTO("Ids does not match!"));
-            }
-
-            if (! await _bll.Policies.ExistsAsync(id))
-            {
-                return NotFound(new MessageDTO($"Review does not exist"));
-            }
+            if (id != policy.Id) return BadRequest(new MessageDTO("Ids does not match!"));
             
             await _bll.Policies.UpdateAsync(_mapper.Map(policy));
             await _bll.SaveChangesAsync();
-           
-
+            
             return NoContent();
         }
 
@@ -136,14 +122,8 @@ namespace WebApp.ApiControllers
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(MessageDTO))]
         public async Task<ActionResult<PolicyDTO>> DeletePolicy(Guid id)
         {
-            var policy = await _bll.Policies.FirstOrDefaultAsync(id);
+            var policy =  await _bll.Policies.RemoveAsync(id);
             
-            if (policy is null)
-            {
-                return NotFound(new MessageDTO($"Policy with id {id} was not found"));
-            }
-
-            await _bll.Policies.RemoveAsync(policy);
             await _bll.SaveChangesAsync();
 
             return Ok(policy);

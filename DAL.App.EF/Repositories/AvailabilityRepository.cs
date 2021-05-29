@@ -7,6 +7,7 @@ using Contracts.DAL.App;
 using Contracts.DAL.App.Repositories;
 using DAL.Base.EF.Repositories;
 using Domain;
+using Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL.App.EF.Repositories
@@ -20,10 +21,11 @@ namespace DAL.App.EF.Repositories
         }
         
         public async Task<IEnumerable< DAL.App.DTO.Availability>> AllAsync(Guid? roomId)
-        {
-            return (await RepoDbContext.Availabilities.Include(a => a.Room).Where(a => a.Active && a.RoomId  == roomId)
-                .ToListAsync()).Select(a => Mapper.Map(a));
-        }
+            => (await RepoDbContext.Availabilities.Include(a => a.Room)
+                    .Where(a => a.Active && a.RoomId  == roomId)
+                .ToListAsync())
+                .Select(a => Mapper.Map(a));
+        
         
 
         public async Task<IEnumerable< DAL.App.DTO.Availability>> FindAvailableDates(DateTime from, DateTime to, Guid propertyId)
@@ -33,15 +35,17 @@ namespace DAL.App.EF.Repositories
                 .Where(a => a.Active && a.Room!.PropertyId == propertyId 
                             && ((from >= a.From && to<=a.To) || (from>=a.From && to<= a.To)))
                 .ToListAsync();
+            
+            if (query is null || query.Count == 0) throw new NotFoundException();
+          
             return query.Select(e => Mapper.Map(e));
  
         }
 
 
         public async Task<bool> ExistsAsync(DAL.App.DTO.Availability availability)
-        {
-            return await RepoDbSet.AnyAsync(HasMatchingActiveDates(availability.From, availability.To, availability.RoomId));
-        }
+            => await RepoDbSet.AnyAsync(HasMatchingActiveDates(availability.From, availability.To, availability.RoomId));
+       
 
         public async Task<bool> ExistsAsync(DateTime from, DateTime to, List< Guid> roomIds)
         {

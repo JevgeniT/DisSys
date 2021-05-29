@@ -30,6 +30,7 @@ using Microsoft.IdentityModel.Tokens;
 using StackExchange.Redis;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using WebApp.Helpers;
+using WebApp.Middleware;
 
 namespace WebApp
 {
@@ -45,11 +46,15 @@ namespace WebApp
 
         public void ConfigureServices(IServiceCollection services)
         {     
+            // services.AddDbContext<AppDbContext>(opt =>
+            //     opt.UseMySql(Configuration.GetConnectionString("MySqlConnection"), 
+            //         ServerVersion.AutoDetect(Configuration.GetConnectionString("MySqlConnection")))
+            //     );
             services.AddDbContext<AppDbContext>(opt =>
-                opt.UseMySql(Configuration.GetConnectionString("MySqlConnection"), 
-                    ServerVersion.AutoDetect(Configuration.GetConnectionString("MySqlConnection")))
-                );
-
+                opt.UseSqlServer(
+                    Configuration.GetConnectionString("RemoteConnection"))
+            );
+            
             services.Configure<MongoConnectionSettings>(
                 Configuration.GetSection(nameof(MongoConnectionSettings)));
 
@@ -146,6 +151,8 @@ namespace WebApp
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider provider)
         {
             // UpdateDatabase(app, env, Configuration);
+            SetupAppData(app, Configuration);
+
 
             if (env.IsDevelopment())
             {
@@ -157,6 +164,7 @@ namespace WebApp
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            app.UseMiddleware<ErrorMiddleware>();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
@@ -190,7 +198,20 @@ namespace WebApp
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
-
+            
         }
+            private static void SetupAppData(IApplicationBuilder app, IConfiguration configuration)
+            {
+
+                using var serviceScope =
+                    app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
+                using var ctx = serviceScope.ServiceProvider.GetService<AppDbContext>();
+
+                // in case of testing - dont do setup
+                if (ctx!.Database.ProviderName == "Microsoft.EntityFrameworkCore.InMemory")
+                    return;
+
+            }
+       
     }
 }

@@ -2,7 +2,7 @@ using System.Linq;
 using Public.DTO.Reservation;
 using BLL.App.DTO;
 using AutoMapper;
-using Public.DTO;
+using Public.DTO.Room;
 
 namespace Public.DTO.Mappers
 {
@@ -39,7 +39,7 @@ namespace Public.DTO.Mappers
                     => opt.MapFrom(r => $"{r.AppUser!.FirstName} {r.AppUser!.LastName}"));
             
             MapperConfigurationExpression.CreateMap<Property, PropertyDTO>();
-            MapperConfigurationExpression.CreateMap<Room, RoomDTO>();
+            MapperConfigurationExpression.CreateMap<BLL.App.DTO.Room, RoomDTO>();
             MapperConfigurationExpression.CreateMap<Review, ReviewDTO>();
             MapperConfigurationExpression.CreateMap<ReservationRooms, ReservationRoomDTO>();
             MapperConfigurationExpression.CreateMap<ReservationRoomDTO, ReservationRooms>();

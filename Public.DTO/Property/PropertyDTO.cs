@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using Public.DTO.Room;
 
 namespace Public.DTO
 {

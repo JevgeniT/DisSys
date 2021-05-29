@@ -35,31 +35,38 @@ namespace DAL.App.EF.Repositories
         {
             var query = RepoDbSet.Include(p => p.Reviews);
 
-            if (from is null && to is null )
+            if (from is null && to is null)
             {
                 return (await query.Where(HasMatchWithInput(input)).ToListAsync()).Select(domainEntity => Mapper.Map(domainEntity));
             }
             
-            return (await query.Include(p=>p.PropertyRooms).ThenInclude(r => r.RoomAvailabilities)
-                .Where(HasMatchWithInput(input)).Where(p => p.PropertyRooms!.Any(room => room.RoomAvailabilities
-                    .Any(a => ((from >= a.From && to<=a.To) || (from>=a.From && to<= a.To)))))
-                .ToListAsync()).Select(domainEntity => Mapper.Map(domainEntity));
-           
+            return (await query.Include(p=>p.PropertyRooms)
+                .ThenInclude(r => r.RoomAvailabilities)
+                .Where(HasMatchWithInput(input))
+                .Where(p => p.PropertyRooms!.Any(room => room.RoomAvailabilities!
+                    .Any(a => (from >= a.From && to<=a.To)
+                              || 
+                              (from>=a.From && to<= a.To))))
+                .ToListAsync())
+                .Select(domainEntity => Mapper.Map(domainEntity));
         }
         
         public override async Task<DAL.App.DTO.Property> FirstOrDefaultAsync(Guid id, object? userId = null)
         {
             var query = (await RepoDbSet.AsNoTracking()
-                    .Include(p => p.Reviews).Include(p => p.PropertyRules).Include(p => p.Extras)
-                    .Include(property => property.PropertyRooms).ThenInclude(room => room.RoomFacilities)
-                    .ThenInclude(rf => rf.Facility).FirstOrDefaultAsync(a => a.Id == id));
+                    .Include(p => p.Reviews)
+                    .Include(p => p.PropertyRules)
+                    .Include(p => p.Extras)
+                    .Include(property => property.PropertyRooms)
+                    .ThenInclude(room => room.RoomFacilities)
+                    .ThenInclude(rf => rf.Facility)
+                    .FirstOrDefaultAsync(a => a.Id == id));
+            
              return Mapper.Map(query);
         }
 
 
-        private Expression<Func<Property, bool>> HasMatchWithInput(string input) 
-            => x => (x.Address!.Contains(input) || x.Name!.Contains(input) || x.Address!.Contains(input));
-        
+        private static Expression<Func<Property, bool>> HasMatchWithInput(string input)
+            => x => x.Address!.Contains(input) || x.Name!.Contains(input) || x.Address!.Contains(input);
     }
-       
 }

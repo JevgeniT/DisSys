@@ -62,12 +62,7 @@ namespace WebApp.ApiControllers
         public async Task<ActionResult<ReviewDTO>> GetReview(Guid id)
         {
             var review = await _bll.Reviews.FirstOrDefaultAsync(id);
-
-            if (review is null)
-            {
-                return NotFound(new MessageDTO($"Review with id {id} not found"));
-            }
-
+ 
             return Ok(_mapper.Map(review));
         }
 
@@ -86,17 +81,8 @@ namespace WebApp.ApiControllers
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(MessageDTO))]
         public async Task<IActionResult> PutReview(Guid id, ReviewDTO review)
         {
-            if (id != review.Id)
-            {
-                return BadRequest(new MessageDTO("Ids does not match!"));
-            }
-
-            if (!await _bll.Reviews.ExistsAsync(id))
-            {
-                return BadRequest(new MessageDTO("Review does not exists"));
-
-            }
-
+            if (id != review.Id) return BadRequest(new MessageDTO("Ids does not match!"));
+ 
             await _bll.Reviews.UpdateAsync(_mapper.Map(review));
             await _bll.SaveChangesAsync();
             return NoContent();
@@ -139,19 +125,11 @@ namespace WebApp.ApiControllers
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(MessageDTO))]
         public async Task<ActionResult<ReviewDTO>> DeleteReview(Guid id)
         {
-            var review = await _bll.Reviews.FirstOrDefaultAsync(id);
-            
-            if (review is null)
-            {
-                return NotFound(new MessageDTO($"Review with id {id} was not found"));
-            }
-            await _bll.Reviews.RemoveAsync(review);
+            var review = await _bll.Reviews.RemoveAsync(id);
             
             await _bll.SaveChangesAsync();
 
             return Ok(review);
         }
-
-       
     }
 }

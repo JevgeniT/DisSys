@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Contracts.BLL.App;
 using Microsoft.AspNetCore.Mvc;
@@ -56,15 +54,13 @@ namespace WebApp.ApiControllers._1._0
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<PropertyViewDTO>))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(MessageDTO))]
-        public async Task<ActionResult<IEnumerable<PropertyViewDTO>>> FindProperties([FromQuery] DateTime? from,
-            [FromQuery] DateTime? to, [FromQuery] string input)
+        public async Task<ActionResult<IEnumerable<PropertyViewDTO>>> FindProperties(
+            [FromQuery] DateTime? from,
+            [FromQuery] DateTime? to,
+            [FromQuery] string input)
         {
-             var properties = (await _bll.Properties.FindAsync(from, to, input)); // TODO 
-             Console.WriteLine(Thread.CurrentThread.CurrentCulture.Name, CultureInfo.CurrentCulture.Name);
-             if (!properties.Any())
-             {
-                 return NotFound(new MessageDTO("Nothing was found"));
-             }
+             var properties = await _bll.Properties.FindAsync(from, to, input); // TODO 
+
              return Ok(properties.Select(p=> _mapper.MapPropertyView(p)));
         }
         
@@ -83,10 +79,6 @@ namespace WebApp.ApiControllers._1._0
         { 
             var property =  _mapper.Map(await _bll.Properties.FirstOrDefaultAsync(id));
   
-            if (property is null)
-            {
-                 return NotFound(new MessageDTO($"Property with id {id} not found"));
-            }
             return Ok(property);
         }
 
@@ -104,16 +96,8 @@ namespace WebApp.ApiControllers._1._0
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(MessageDTO))]
         public async Task<ActionResult<PropertyCreateDTO>> PutProperty(Guid id, PropertyCreateDTO property)
         {
-            if (id != property.Id)
-            {
-                return BadRequest(new MessageDTO("Ids does not match!"));
-            }
-
-            if (!await _bll.Properties.ExistsAsync(id))
-            {
-                return BadRequest(new MessageDTO($"Property was not found"));
-            }
-
+            if (id != property.Id) return BadRequest(new MessageDTO("Ids does not match!"));
+            
             var updated = _mapper.MapPropertyCreateView(property);
             updated.AppUserId = User.UserGuidId();
             await _bll.Properties.UpdateAsync(updated);
@@ -132,14 +116,13 @@ namespace WebApp.ApiControllers._1._0
         [Produces("application/json")]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(PropertyDTO))]
-        public async Task<ActionResult<PropertyDTO>> PostProperty(PropertyDTO property)
+        public ActionResult<PropertyDTO> PostProperty(PropertyDTO property)
         {
             property.AppUserId = User.UserGuidId();
             var entity = _mapper.Map(property);
             _bll.Properties.Add(entity);
-            await _bll.SaveChangesAsync(); 
             property.Id = entity.Id; 
-            return CreatedAtAction("GetProperty", new { id = property.Id }, property);
+            return CreatedAtAction("GetProperty", new { id = entity.Id }, entity);
         }
 
         /// <summary>
@@ -153,16 +136,8 @@ namespace WebApp.ApiControllers._1._0
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(MessageDTO))]
         public async Task<ActionResult<PropertyDTO>> DeleteProperty(Guid id)
         {
-            var property = await _bll.Properties.FirstOrDefaultAsync(id);
-            
-            if (property is null)
-            {
-                return NotFound(new MessageDTO($"Property with id {id} was not found"));
-            }
-
-            await _bll.Properties.RemoveAsync(id);
+            var property = await _bll.Properties.RemoveAsync(id);
             await _bll.SaveChangesAsync();
-
             return Ok(property);
         }   
     }

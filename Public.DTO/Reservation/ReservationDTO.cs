@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Public.DTO.Room;
 
 namespace Public.DTO.Reservation
 {

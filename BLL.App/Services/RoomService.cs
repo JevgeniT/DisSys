@@ -20,9 +20,7 @@ namespace BLL.App.Services
         {
         }
 
-        public async  Task<IEnumerable<Room>> AllAsync(Guid propertyId)
-        {    
-            return (await ServiceRepository.AllAsync(propertyId)).Select( dalEntity => Mapper.Map(dalEntity) );
-        }
+        public async Task<IEnumerable<Room>> AllAsync(Guid propertyId)
+            => (await ServiceRepository.AllAsync(propertyId)).Select( dalEntity => Mapper.Map(dalEntity));
     }
 }

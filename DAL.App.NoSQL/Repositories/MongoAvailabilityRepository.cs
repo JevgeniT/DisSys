@@ -28,7 +28,7 @@ namespace DAL.App.NoSQL.Repositories
            throw new NotImplementedException();
         }
 
-        public Availability Add(Availability entity)
+        public Availability Add(Availability entity, object? userId = null)
         {
             throw new NotImplementedException();
 

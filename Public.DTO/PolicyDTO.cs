@@ -15,6 +15,5 @@ namespace Public.DTO
         public int CancellationBefore { get; set; }
         
         public double PriceCoefficient { get; set; }
-
     }
 }

@@ -13,7 +13,7 @@ using Public.DTO;
 using Public.DTO.Mappers;
 using Public.DTO.Reservation;
 
-namespace WebApp.ApiControllers._1._0
+namespace WebApp.ApiControllers
 {
     /// <summary>
     ///  Reservations
@@ -24,7 +24,7 @@ namespace WebApp.ApiControllers._1._0
     public class ReservationController : ControllerBase
     {
         private readonly IAppBLL _bll;
-        private readonly ReservationMapper _mapper = new   ReservationMapper();
+        private readonly ReservationMapper _mapper = new();
         /// <summary>
         ///  Constructor
         /// </summary>
@@ -71,10 +71,6 @@ namespace WebApp.ApiControllers._1._0
         {
             var reservation = await _bll.Reservations.FirstOrDefaultAsync(id, User.UserGuidId());
  
-            if (reservation is null)
-            {
-                return NotFound(new MessageDTO($"Reservation with id {id} was not found"));
-            }
             return Ok(_mapper.Map(reservation));
         }
 
@@ -89,11 +85,8 @@ namespace WebApp.ApiControllers._1._0
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> PutReservation(Guid id, ReservationDTO reservation)
         {
-            if (id != reservation.Id)
-            { 
-                return BadRequest(new MessageDTO("Ids does not match!"));
-            }
-
+            if (id != reservation.Id) return BadRequest(new MessageDTO("Ids does not match!"));
+            
             var bll = _mapper.Map(reservation);
             bll.AppUserId = User.UserGuidId();
             await _bll.Reservations.UpdateAsync(bll, User.UserGuidId());

@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
-using Contracts.DAL.Base;
 
-namespace Public.DTO
+namespace Public.DTO.Room
 {
     public class RoomDTO
     {
@@ -16,6 +15,5 @@ namespace Public.DTO
         public ICollection<FacilityDTO>? FacilityDtos { get; set; }
         public ICollection<string>? BedTypes { get; set; }
         public ICollection<string>? Facilities { get; set; }
-
     }
 }

@@ -9,28 +9,21 @@ namespace DAL.Base.EF
         where TKey : IEquatable<TKey>
 
     {
-        protected TDbContext UOWDbContext;
+        protected readonly TDbContext UOWDbContext;
 
         public EFBaseUnitOfWork(TDbContext uowDbContext)
         {
             UOWDbContext = uowDbContext;
         }
 
-        public override int SaveChanges()
-        {
-            return UOWDbContext.SaveChanges();
-        }
+        public override int SaveChanges() => UOWDbContext.SaveChanges();
 
         public override async Task<int> SaveChangesAsync()
         {
-            
             var result =  await UOWDbContext.SaveChangesAsync();
             UpdateTrackedEntities();
 
             return result;
         }
-        
-
     }
-
 }

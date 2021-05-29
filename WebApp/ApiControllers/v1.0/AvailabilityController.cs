@@ -32,10 +32,7 @@ namespace WebApp.ApiControllers
         /// Constructor
         /// </summary>
         /// <param name="bll"></param>
-        public AvailabilityController(IAppBLL bll )
-        {
-            _bll = bll;
-         }
+        public AvailabilityController(IAppBLL bll) { _bll = bll; }
 
         /// <summary>
         /// Get all room availabilities
@@ -49,10 +46,7 @@ namespace WebApp.ApiControllers
         public async Task<ActionResult<IEnumerable<AvailabilityDTO>>> GetDates([FromQuery] Guid rId)
         {
             var availability = (await _bll.Availabilities.AllAsync(rId)).Select(a=> _mapper.Map(a));
-             if (!availability.Any())
-            {
-                return NotFound(new MessageDTO("No availabilities were found"));
-            }
+             
             return Ok(availability);
         }
 
@@ -72,10 +66,7 @@ namespace WebApp.ApiControllers
         public async Task<ActionResult<IEnumerable<AvailabilityDTO>>> CheckDates([FromQuery]DateTime from, [FromQuery]DateTime to, [FromQuery]Guid pId)
         {
             var availability = (await _bll.Availabilities.FindAvailableDates(from, to, pId)).Select(bllEntity => _mapper.Map(bllEntity));
-            if (availability is null)
-            {
-                return NotFound(new MessageDTO("No availabilities were found"));
-            }
+          
             var result = availability.GroupBy(a => a.RoomId).Select(e => e.First());
             return Ok(result);
         }
@@ -93,13 +84,9 @@ namespace WebApp.ApiControllers
         public async Task<ActionResult<AvailabilityDTO>> PostAvailability(AvailabilityDTO availability)
         {
             var entity = _mapper.Map(availability);
-            if (await _bll.Availabilities.ExistsAsync(entity))
-            {
-                return BadRequest(new MessageDTO("Dates already exist"));
-            }
-
+            if (await _bll.Availabilities.ExistsAsync(entity)) return BadRequest(new MessageDTO("Dates already exist"));
+         
             _bll.Availabilities.Add(entity);
-             await _bll.SaveChangesAsync();
             availability.Id = entity.Id;
             
             return CreatedAtAction("GetDates", new { id = availability.Id }, availability);
@@ -119,20 +106,11 @@ namespace WebApp.ApiControllers
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(MessageDTO))]
         public async Task<IActionResult> PutAvailability(Guid id, AvailabilityDTO availability)
         {
-            if (id != availability.Id)
-            {
-                return BadRequest(new MessageDTO("Ids does not match!"));
-            }
-
-            if (!await _bll.Availabilities.ExistsAsync(id))
-            {
-                return NotFound(new MessageDTO($"Availability with id {id} was not found"));
-            } 
-            
+            if (id != availability.Id) return BadRequest(new MessageDTO("Ids does not match!"));
+           
             await _bll.Availabilities.UpdateAsync(_mapper.Map(availability));
             await _bll.SaveChangesAsync();
             return NoContent();
         }
- 
     }
 }

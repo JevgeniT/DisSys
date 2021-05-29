@@ -26,11 +26,11 @@ namespace BLL.App.Services
 
         }
 
-        public override Availability Add(Availability entity)
+        public  Availability Add(Availability entity)
         {
             var dal = Mapper.Map<Availability,DAL.App.DTO.Availability>(entity);
             ServiceRepository.Add(dal); 
-            return  entity;
+            return entity;
         }
     }
 

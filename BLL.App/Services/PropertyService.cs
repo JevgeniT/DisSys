@@ -7,6 +7,7 @@ using BLL.Base.Services;
 using Contracts.BLL.App.Services;
 using Contracts.DAL.App;
 using Contracts.DAL.App.Repositories;
+using Exceptions;
 using Property = BLL.App.DTO.Property;
 
 namespace BLL.App.Services
@@ -21,8 +22,11 @@ namespace BLL.App.Services
 
         public async Task<IEnumerable<Property>> FindAsync(DateTime? from, DateTime? to, string input)
         {
-            return (await ServiceRepository.FindAsync(from, to, input)).Select(dalEntity => Mapper.Map(dalEntity));
+            var properties = await ServiceRepository.FindAsync(from, to, input);
+            
+            if (properties is null || properties.Count() is 0) throw new NotFoundException();
+            
+            return properties.Select(dalEntity => Mapper.Map(dalEntity));
         }
-        
     }
 }

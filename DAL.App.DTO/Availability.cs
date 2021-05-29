@@ -21,12 +21,12 @@ namespace DAL.App.DTO
         public bool Active { get; set; }
         public TKey RoomId { get; set; }= default!;
         public Room? Room { get; set; }
+        
         public decimal PricePerNightForAdult { get; set; }
         
         public decimal PricePerNightForChild { get; set; }
         
         public bool PricePerPerson { get; set; }
-        
         public int RoomsAvailable { get; set; }
         public Availability ShallowCopy()
         {

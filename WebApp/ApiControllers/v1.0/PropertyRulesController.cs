@@ -23,7 +23,7 @@ namespace WebApp.ApiControllers
     public class PropertyRulesController : ControllerBase
     {
         private readonly IAppBLL _bll;
-        private readonly DTOMapper<PropertyRules, PropertyRulesDTO> _mapper = new DTOMapper<PropertyRules, PropertyRulesDTO>();
+        private readonly DTOMapper<PropertyRules, PropertyRulesDTO> _mapper = new();
         
         /// <summary>
         /// Constructor
@@ -47,11 +47,6 @@ namespace WebApp.ApiControllers
         {
             var rule = await _bll.PropertyRules.FirstOrDefaultAsync(id);
             
-            if (rule is null)
-            {
-                return NotFound(new MessageDTO("No rules found"));
-            }
-
             return Ok(_mapper.Map(rule));
         }
         
@@ -95,15 +90,7 @@ namespace WebApp.ApiControllers
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(MessageDTO))]
         public async Task<IActionResult> PutPropertyRules(Guid id, PropertyRulesDTO rules)
         {
-            if (id != rules.Id)
-            {
-                return BadRequest(new MessageDTO("Ids does not match!"));
-            }
-        
-            if (!await _bll.PropertyRules.ExistsAsync(id))
-            {
-                return NotFound(new MessageDTO($"Rules with id {id} was not found"));
-            } 
+            if (id != rules.Id) return BadRequest(new MessageDTO("Ids does not match!"));
             
             await _bll.PropertyRules.UpdateAsync(_mapper.Map(rules));
             await _bll.SaveChangesAsync();

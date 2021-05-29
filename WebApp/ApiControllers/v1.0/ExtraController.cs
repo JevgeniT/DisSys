@@ -81,12 +81,7 @@ namespace WebApp.ApiControllers.v1._0
         public async Task<ActionResult<ExtraDTO>> GetExtra(Guid id)
         {
             var extra = await _bll.Extras.FirstOrDefaultAsync(id);
-
-            if (extra is null)
-            {
-                return NotFound(new MessageDTO($"Extra with id {id} not found"));
-            }
-
+ 
             return Ok(_mapper.Map(extra));
         }
         
@@ -104,16 +99,8 @@ namespace WebApp.ApiControllers.v1._0
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(MessageDTO))]
         public async Task<IActionResult> PutExtra(Guid id, ExtraDTO extra)
         {
-            if (id != extra.Id)
-            {
-                return BadRequest(new MessageDTO("Ids does not match!"));
-            }
-
-            if (!await _bll.Reviews.ExistsAsync(id))
-            {
-                return BadRequest(new MessageDTO("Extra does not exists"));
-            }
-
+            if (id != extra.Id) return BadRequest(new MessageDTO("Ids does not match!"));
+             
             await _bll.Extras.UpdateAsync(_mapper.Map(extra));
             await _bll.SaveChangesAsync();
             return NoContent();

@@ -26,8 +26,7 @@ namespace DAL.App.EF
     {
         private readonly IUserNameProvider _userNameProvider;
 
-        private readonly Dictionary<IDomainBaseEntity<Guid>, IDomainBaseEntity<Guid>> _entityTracker =
-            new Dictionary<IDomainBaseEntity<Guid>, IDomainBaseEntity<Guid>>();
+        private readonly Dictionary<IDomainBaseEntity<Guid>, IDomainBaseEntity<Guid>> _entityTracker = new ();
         
         public DbSet<Extra> Extras { get; set; } = default!;
         public DbSet<Facility> Facilities { get; set; } = default!;
@@ -45,8 +44,7 @@ namespace DAL.App.EF
         public DbSet<Room> Rooms { get; set; } = default!;
 
 
-        public AppDbContext(DbContextOptions<AppDbContext>? options, IUserNameProvider userNameProvider)
-           : base(options)
+        public AppDbContext(DbContextOptions<AppDbContext>? options, IUserNameProvider userNameProvider) : base(options)
         {
            _userNameProvider = userNameProvider;
         }
@@ -61,11 +59,11 @@ namespace DAL.App.EF
                .HasForeignKey<PropertyRules>(b => b.Id);
            
            builder.Entity<PropertyRules>().Property(r=> r.PaymentMethodsAccepted).HasConversion(
-               v => string.Join(',', v),
+               v => string.Join(',', v!),
                v => v.Split(',', StringSplitOptions.RemoveEmptyEntries));
 
            builder.Entity<Room>().Property(r=> r.BedTypes).HasConversion(
-               v => string.Join(',', v),
+               v => string.Join(',', v!),
                v => v.Split(',', StringSplitOptions.RemoveEmptyEntries));
 
            builder.Entity<Reservation>().Property(r => r.Status)
@@ -80,18 +78,14 @@ namespace DAL.App.EF
                relationship.DeleteBehavior = DeleteBehavior.Restrict;
            }
         }
-         public void AddToEntityTracker(IDomainBaseEntity<Guid> internalEntity,
-                    IDomainBaseEntity<Guid> externalEntity)
+         public void AddToEntityTracker(IDomainBaseEntity<Guid> internalEntity, IDomainBaseEntity<Guid> externalEntity)
          {
              _entityTracker.Add(internalEntity, externalEntity);
          }
 
         private void UpdateTrackedEntities()
         {
-            foreach (var (key, value) in _entityTracker)
-            {
-                value.Id = key.Id;
-            }
+            foreach (var (key, value) in _entityTracker) value.Id = key.Id;
         }
 
         public override int SaveChanges()
@@ -102,11 +96,10 @@ namespace DAL.App.EF
             return result;
         }
         
-
-        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new ())
         {
             SaveChangesMetadataUpdate();
-            var result = base.SaveChangesAsync(cancellationToken);
+            var result = await base.SaveChangesAsync(cancellationToken);
             UpdateTrackedEntities();
             return result;
         }
@@ -141,8 +134,5 @@ namespace DAL.App.EF
                 entityEntry.Property(nameof(entityWithMetaData.CreatedBy)).IsModified = false;
             }
         }
-
-
-       
     }
 }

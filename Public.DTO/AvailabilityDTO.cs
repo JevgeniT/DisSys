@@ -1,20 +1,18 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
- using BLL.App.DTO;
 
 namespace Public.DTO
 {
     public class AvailabilityDTO
     {
         public Guid Id { get; set; }
+        
         public DateTime From { get; set; }
+        
         public DateTime To { get; set; }
-        
         public Guid RoomId { get; set; }
-        public string? RoomName  { get; set; }
         
-        public  ICollection<PolicyDTO>? PolicyDtos { get; set; }
+        public ICollection<PolicyDTO>? PolicyDtos { get; set; }
 
         public bool Active { get; set; }
         

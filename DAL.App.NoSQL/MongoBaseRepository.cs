@@ -21,7 +21,7 @@ namespace DAL.App.NoSQL
         where TDALEntity : class, IDomainBaseEntity<TKey>, new()
         where TKey : IEquatable<TKey>
     {
-        public TDALEntity Add(TDALEntity entity)
+        public TDALEntity Add(TDALEntity entity, object? userId = null)
         {
             throw new NotImplementedException();
         }

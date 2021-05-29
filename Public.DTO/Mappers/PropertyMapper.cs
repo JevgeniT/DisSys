@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using AutoMapper;
 using BLL.App.DTO;
+using Public.DTO.Room;
 
 namespace Public.DTO.Mappers
 {
@@ -12,14 +13,14 @@ namespace Public.DTO.Mappers
             MapperConfigurationExpression.CreateMap<Property, PropertyDTO>();
             MapperConfigurationExpression.CreateMap<PropertyCreateDTO, Property>();
 
-            MapperConfigurationExpression.CreateMap<Room, RoomDTO>()
+            MapperConfigurationExpression.CreateMap<BLL.App.DTO.Room, RoomDTO>()
                 .ForMember(r=>r.Facilities,
                     opt => opt.MapFrom(f=> f.RoomFacilities!.Select( fc => fc.Name)))
                 .ForMember(r=> r.FacilityDtos, opt=> opt.Ignore());
             MapperConfigurationExpression.CreateMap<Facility, FacilityDTO>();
             MapperConfigurationExpression.CreateMap<Extra, ExtraDTO>();
 
-            MapperConfigurationExpression.CreateMap<Room, RoomViewDTO>()
+            MapperConfigurationExpression.CreateMap<BLL.App.DTO.Room, RoomViewDTO>()
                 .ForMember(r=> r.Price, opt 
                     => opt.MapFrom(room => room.RoomAvailabilities!.Min(a=>a.PricePerNightForAdult)));
             

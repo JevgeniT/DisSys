@@ -8,6 +8,7 @@ using Contracts.BLL.App;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Public.DTO;
+using Public.DTO.Room;
 using Public.DTO.Mappers;
 
 namespace WebApp.ApiControllers
@@ -15,7 +16,6 @@ namespace WebApp.ApiControllers
     /// <summary>
     /// Rooms
     /// </summary>
-
     [Produces("application/json")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
@@ -45,10 +45,7 @@ namespace WebApp.ApiControllers
         public async Task<ActionResult<IEnumerable<RoomDTO>>> GetRooms([FromQuery] Guid pId)
         {
             var result = await _bll.Rooms.AllAsync(pId);
-            if (result is null)
-            {
-                return NotFound(new MessageDTO($"Property with id {pId} does not have any rooms yet"));
-            }
+            
             return Ok(result);
         }
 
@@ -65,11 +62,7 @@ namespace WebApp.ApiControllers
         public async Task<ActionResult<RoomDTO>> GetRoom(Guid id)
         {
             var room = await _bll.Rooms.FirstOrDefaultAsync(id);
-            if (room is null)
-            {
-                return NotFound(new MessageDTO($"Room with the id {id} was not found"));
-            }
-
+            
             return Ok(room);
         }
  
@@ -89,16 +82,8 @@ namespace WebApp.ApiControllers
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(MessageDTO))]
         public async Task<IActionResult> PutRoom(Guid id, RoomDTO room)
         {
-            if (id != room.Id)
-            {
-                return BadRequest(new MessageDTO("Ids does not match"));
-            }
-
-            if (!await _bll.Rooms.ExistsAsync(id))
-            {
-                return NotFound(new MessageDTO($"Room with the id {id} was not found"));
-            }
-
+            if (id != room.Id)return BadRequest(new MessageDTO("Ids does not match"));
+           
             await _bll.Rooms.UpdateAsync(_mapper.Map(room));
             await _bll.SaveChangesAsync();
 
@@ -144,17 +129,11 @@ namespace WebApp.ApiControllers
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(MessageDTO))]
         public async Task<ActionResult<RoomDTO>> DeleteRoom(Guid id)
         {
-            var room = await _bll.Rooms.FirstOrDefaultAsync(id);
-            if (room is null)
-            {
-                return NotFound(new MessageDTO($"Room with id {id} was not found"));
-            }
-        
-            await _bll.Rooms.RemoveAsync(id);
+            var room = await _bll.Rooms.RemoveAsync(id);
+            
             await _bll.SaveChangesAsync();
-        
+            
             return Ok(room);
         }
-        
     }
 }

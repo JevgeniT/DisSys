@@ -8,10 +8,9 @@ namespace DAL.Base
     public abstract class BaseUnitOfWork<TKey> : IBaseUnitOfWork, IBaseEntityTracker<TKey> 
         where TKey : IEquatable<TKey>
     {
-        private readonly Dictionary<Type, object> _repoCache = new Dictionary<Type, object>();
+        private readonly Dictionary<Type, object> _repoCache = new();
 
-        private readonly Dictionary<IDomainBaseEntity<TKey>, IDomainBaseEntity<TKey>> _entityTracker =
-            new Dictionary<IDomainBaseEntity<TKey>, IDomainBaseEntity<TKey>>();
+        private readonly Dictionary<IDomainBaseEntity<TKey>, IDomainBaseEntity<TKey>> _entityTracker = new();
         
         public TRepository GetRepository<TRepository>(Func<TRepository> repoCreationMethod)
         {

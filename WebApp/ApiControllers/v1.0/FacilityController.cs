@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -27,7 +26,7 @@ namespace WebApp.ApiControllers.v1._0
     {
         private readonly IAppBLL _bll;
         private readonly IMemoryCache _cache;
-        private readonly DTOMapper<Facility, FacilityDTO> _mapper = new DTOMapper<Facility, FacilityDTO>();
+        private readonly DTOMapper<Facility, FacilityDTO> _mapper = new ();
 
         /// <summary>
         /// Constructor
@@ -52,7 +51,6 @@ namespace WebApp.ApiControllers.v1._0
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<FacilityDTO>))]
         public async Task<ActionResult<IEnumerable<FacilityDTO>>> GetFacilities()
         {
-            
             if (!_cache.TryGetValue(User.UserGuidId(),out var facilities))
             {
                 facilities = (await _bll.Facilities.AllAsync()).Select(a => _mapper.Map(a));

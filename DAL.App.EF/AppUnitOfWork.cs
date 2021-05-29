@@ -27,6 +27,5 @@ namespace DAL.App.EF
         public IInvoiceRepository Invoices => GetRepository<IInvoiceRepository>(() => new InvoiceRepository(UOWDbContext));
         public IReservationRepository Reservations => GetRepository<IReservationRepository>(() => new ReservationRepository(UOWDbContext));
         public IPolicyRepository Policies => GetRepository<IPolicyRepository>(() => new PolicyRepository(UOWDbContext));
-
     } 
 }

@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:latest AS build
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /app
 EXPOSE 80
                                                                                                                            
@@ -51,11 +51,9 @@ WORKDIR /app/WebApp
 RUN dotnet publish -c Release -o out
  
 
-FROM mcr.microsoft.com/dotnet/core/aspnet:latest AS runtime
+FROM mcr.microsoft.com/dotnet/aspnet:5.0 as runtime
 WORKDIR /app
 EXPOSE 80
-ENV ConnectionStrings:MySqlServerConnection="Server=db;Database=master;User=sa;Password=Your_password123;"
+ENV ConnectionStrings:MySqlServerConnection="Server=172.17.0.2; port=3306; database=distributed; user=root; password=myPass123; Persist Security Info=false; Connect Timeout=300"
 COPY --from=build /app/WebApp/out ./
 ENTRYPOINT ["dotnet", "WebApp.dll"]
-
-

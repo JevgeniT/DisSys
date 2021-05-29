@@ -3,57 +3,59 @@ using System;
 using DAL.App.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DAL.App.EF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20201126123617_Init")]
+    [Migration("20210516102525_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.8")
-                .HasAnnotation("Relational:MaxIdentifierLength", 64);
+                .HasAnnotation("Relational:MaxIdentifierLength", 128)
+                .HasAnnotation("ProductVersion", "5.0.5")
+                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Domain.Availability", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Active")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("bit");
 
                     b.Property<DateTime>("ChangedAt")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("ChangedBy")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("From")
                         .HasColumnType("date");
 
                     b.Property<decimal>("PricePerNightForAdult")
-                        .HasColumnType("decimal(5, 2)");
+                        .HasColumnType("decimal(5,2)");
 
                     b.Property<decimal>("PricePerNightForChild")
-                        .HasColumnType("decimal(5, 2)");
+                        .HasColumnType("decimal(5,2)");
 
                     b.Property<bool>("PricePerPerson")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("bit");
 
                     b.Property<Guid>("RoomId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("RoomsAvailable")
                         .HasColumnType("int");
@@ -72,28 +74,28 @@ namespace DAL.App.EF.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("ChangedAt")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("ChangedBy")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<Guid>("PropertyId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -106,22 +108,22 @@ namespace DAL.App.EF.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("ChangedAt")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("ChangedBy")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -130,163 +132,163 @@ namespace DAL.App.EF.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("dbc4b414-de72-4da6-9c21-123c7c0ba4aa"),
-                            ChangedAt = new DateTime(2020, 11, 26, 14, 36, 17, 232, DateTimeKind.Local).AddTicks(4186),
+                            Id = new Guid("16ea6d15-6169-46c2-8ccf-1b4700c3dce0"),
+                            ChangedAt = new DateTime(2021, 5, 16, 13, 25, 25, 276, DateTimeKind.Local).AddTicks(6409),
                             ChangedBy = "migration",
-                            CreatedAt = new DateTime(2020, 11, 26, 14, 36, 17, 237, DateTimeKind.Local).AddTicks(8601),
+                            CreatedAt = new DateTime(2021, 5, 16, 13, 25, 25, 280, DateTimeKind.Local).AddTicks(2229),
                             CreatedBy = "migration",
                             Name = "Elevator"
                         },
                         new
                         {
-                            Id = new Guid("9d6f88c1-adb3-423a-94fe-e63178dee603"),
-                            ChangedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(1909),
+                            Id = new Guid("b9fdc553-5492-48d2-a3d4-7fb71c3dfcb6"),
+                            ChangedAt = new DateTime(2021, 5, 16, 13, 25, 25, 280, DateTimeKind.Local).AddTicks(4498),
                             ChangedBy = "migration",
-                            CreatedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(1922),
+                            CreatedAt = new DateTime(2021, 5, 16, 13, 25, 25, 280, DateTimeKind.Local).AddTicks(4511),
                             CreatedBy = "migration",
                             Name = "Linens"
                         },
                         new
                         {
-                            Id = new Guid("3c0d53a6-075d-4bc7-8719-4a25ae688948"),
-                            ChangedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(1977),
+                            Id = new Guid("322ef2ef-6c4e-47d8-b220-c163f55a55a7"),
+                            ChangedAt = new DateTime(2021, 5, 16, 13, 25, 25, 280, DateTimeKind.Local).AddTicks(4549),
                             ChangedBy = "migration",
-                            CreatedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(1980),
+                            CreatedAt = new DateTime(2021, 5, 16, 13, 25, 25, 280, DateTimeKind.Local).AddTicks(4551),
                             CreatedBy = "migration",
                             Name = "Wardrobe"
                         },
                         new
                         {
-                            Id = new Guid("5c6b9b68-cf13-4b3c-8879-98183c0e5181"),
-                            ChangedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2006),
+                            Id = new Guid("a12e77c8-6963-4aa5-81a3-1a2f2ca2e105"),
+                            ChangedAt = new DateTime(2021, 5, 16, 13, 25, 25, 280, DateTimeKind.Local).AddTicks(4581),
                             ChangedBy = "migration",
-                            CreatedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2008),
+                            CreatedAt = new DateTime(2021, 5, 16, 13, 25, 25, 280, DateTimeKind.Local).AddTicks(4583),
                             CreatedBy = "migration",
                             Name = "Minibar"
                         },
                         new
                         {
-                            Id = new Guid("aa13165d-ecb3-48ab-a1ec-3dd66ebcd241"),
-                            ChangedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2034),
+                            Id = new Guid("0f5fdadb-1986-4bb0-98b8-56190dfab910"),
+                            ChangedAt = new DateTime(2021, 5, 16, 13, 25, 25, 280, DateTimeKind.Local).AddTicks(4614),
                             ChangedBy = "migration",
-                            CreatedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2036),
+                            CreatedAt = new DateTime(2021, 5, 16, 13, 25, 25, 280, DateTimeKind.Local).AddTicks(4615),
                             CreatedBy = "migration",
                             Name = "Air conditioning"
                         },
                         new
                         {
-                            Id = new Guid("a39c7ee8-02e4-4045-9357-8713c00f8cbb"),
-                            ChangedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2068),
+                            Id = new Guid("ccbecba8-97f0-4236-b064-20e6c4964dd3"),
+                            ChangedAt = new DateTime(2021, 5, 16, 13, 25, 25, 280, DateTimeKind.Local).AddTicks(4649),
                             ChangedBy = "migration",
-                            CreatedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2071),
+                            CreatedAt = new DateTime(2021, 5, 16, 13, 25, 25, 280, DateTimeKind.Local).AddTicks(4651),
                             CreatedBy = "migration",
                             Name = "Safe"
                         },
                         new
                         {
-                            Id = new Guid("f3b69b73-cbaf-41de-bcaf-3034bc37d6c9"),
-                            ChangedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2099),
+                            Id = new Guid("27ad930e-2ada-4ba5-812a-f21d869f4e2a"),
+                            ChangedAt = new DateTime(2021, 5, 16, 13, 25, 25, 280, DateTimeKind.Local).AddTicks(4680),
                             ChangedBy = "migration",
-                            CreatedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2101),
+                            CreatedAt = new DateTime(2021, 5, 16, 13, 25, 25, 280, DateTimeKind.Local).AddTicks(4682),
                             CreatedBy = "migration",
                             Name = "Iron"
                         },
                         new
                         {
-                            Id = new Guid("193de572-b33e-41fc-bddf-5c62cf860572"),
-                            ChangedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2127),
+                            Id = new Guid("c68c0206-cc76-4aa1-8316-a7a02e7bd643"),
+                            ChangedAt = new DateTime(2021, 5, 16, 13, 25, 25, 280, DateTimeKind.Local).AddTicks(4711),
                             ChangedBy = "migration",
-                            CreatedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2130),
+                            CreatedAt = new DateTime(2021, 5, 16, 13, 25, 25, 280, DateTimeKind.Local).AddTicks(4713),
                             CreatedBy = "migration",
                             Name = "Heating"
                         },
                         new
                         {
-                            Id = new Guid("60e90c90-f8a9-455f-b723-664c61817d5a"),
-                            ChangedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2155),
+                            Id = new Guid("f1f1e170-ff0e-4fd3-9032-678430391996"),
+                            ChangedAt = new DateTime(2021, 5, 16, 13, 25, 25, 280, DateTimeKind.Local).AddTicks(4785),
                             ChangedBy = "migration",
-                            CreatedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2157),
+                            CreatedAt = new DateTime(2021, 5, 16, 13, 25, 25, 280, DateTimeKind.Local).AddTicks(4787),
                             CreatedBy = "migration",
                             Name = "Coffee machine"
                         },
                         new
                         {
-                            Id = new Guid("71468a74-1fe5-4e57-a5c1-51cda47d349d"),
-                            ChangedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2184),
+                            Id = new Guid("14582f92-1861-4250-a9ec-c970513c4c05"),
+                            ChangedAt = new DateTime(2021, 5, 16, 13, 25, 25, 280, DateTimeKind.Local).AddTicks(4818),
                             ChangedBy = "migration",
-                            CreatedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2186),
+                            CreatedAt = new DateTime(2021, 5, 16, 13, 25, 25, 280, DateTimeKind.Local).AddTicks(4820),
                             CreatedBy = "migration",
                             Name = "Kettle"
                         },
                         new
                         {
-                            Id = new Guid("4d2a6f10-269f-4b4b-b303-bb169f373f00"),
-                            ChangedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2211),
+                            Id = new Guid("ac1d8dd3-49fa-4194-8390-dbd64de7b8be"),
+                            ChangedAt = new DateTime(2021, 5, 16, 13, 25, 25, 280, DateTimeKind.Local).AddTicks(4850),
                             ChangedBy = "migration",
-                            CreatedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2214),
+                            CreatedAt = new DateTime(2021, 5, 16, 13, 25, 25, 280, DateTimeKind.Local).AddTicks(4852),
                             CreatedBy = "migration",
                             Name = "Sofa"
                         },
                         new
                         {
-                            Id = new Guid("3a585312-0989-4b16-b64b-d8514297b894"),
-                            ChangedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2239),
+                            Id = new Guid("b9c1c84f-92df-4cbd-9d77-8991a9211e4a"),
+                            ChangedAt = new DateTime(2021, 5, 16, 13, 25, 25, 280, DateTimeKind.Local).AddTicks(4881),
                             ChangedBy = "migration",
-                            CreatedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2241),
+                            CreatedAt = new DateTime(2021, 5, 16, 13, 25, 25, 280, DateTimeKind.Local).AddTicks(4883),
                             CreatedBy = "migration",
                             Name = "Desk"
                         },
                         new
                         {
-                            Id = new Guid("cc51d276-d719-4ab4-a620-381f18c52dc0"),
-                            ChangedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2267),
+                            Id = new Guid("57adc1d2-ada2-41c9-bf4e-fd2b54c70cd0"),
+                            ChangedAt = new DateTime(2021, 5, 16, 13, 25, 25, 280, DateTimeKind.Local).AddTicks(4912),
                             ChangedBy = "migration",
-                            CreatedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2269),
+                            CreatedAt = new DateTime(2021, 5, 16, 13, 25, 25, 280, DateTimeKind.Local).AddTicks(4914),
                             CreatedBy = "migration",
                             Name = "Satellite channels"
                         },
                         new
                         {
-                            Id = new Guid("566cfeff-fbec-46d3-8554-e4a869e5ce08"),
-                            ChangedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2294),
+                            Id = new Guid("df0abf51-f48c-4abf-b85c-102bc2d09fbe"),
+                            ChangedAt = new DateTime(2021, 5, 16, 13, 25, 25, 280, DateTimeKind.Local).AddTicks(5065),
                             ChangedBy = "migration",
-                            CreatedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2297),
+                            CreatedAt = new DateTime(2021, 5, 16, 13, 25, 25, 280, DateTimeKind.Local).AddTicks(5069),
                             CreatedBy = "migration",
                             Name = "Flat-screen TV"
                         },
                         new
                         {
-                            Id = new Guid("2cb8d405-44ba-4d75-ac80-d915aa691d11"),
-                            ChangedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2322),
+                            Id = new Guid("388a0059-6fdc-47cd-b374-d5e1bd7fe5c2"),
+                            ChangedAt = new DateTime(2021, 5, 16, 13, 25, 25, 280, DateTimeKind.Local).AddTicks(5102),
                             ChangedBy = "migration",
-                            CreatedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2324),
+                            CreatedAt = new DateTime(2021, 5, 16, 13, 25, 25, 280, DateTimeKind.Local).AddTicks(5104),
                             CreatedBy = "migration",
                             Name = "Balcony"
                         },
                         new
                         {
-                            Id = new Guid("54f63558-72c3-4828-b2cf-5fdcc8c392dc"),
-                            ChangedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2349),
+                            Id = new Guid("7fa3b04d-892c-48c5-ad61-a9ab7581ca39"),
+                            ChangedAt = new DateTime(2021, 5, 16, 13, 25, 25, 280, DateTimeKind.Local).AddTicks(5133),
                             ChangedBy = "migration",
-                            CreatedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2352),
+                            CreatedAt = new DateTime(2021, 5, 16, 13, 25, 25, 280, DateTimeKind.Local).AddTicks(5135),
                             CreatedBy = "migration",
                             Name = "Outdoor furniture"
                         },
                         new
                         {
-                            Id = new Guid("1c62654d-e9b8-4571-abbb-1d1161d8de66"),
-                            ChangedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2377),
+                            Id = new Guid("9d91b039-fcd9-4872-96b5-1659f9e95798"),
+                            ChangedAt = new DateTime(2021, 5, 16, 13, 25, 25, 280, DateTimeKind.Local).AddTicks(5165),
                             ChangedBy = "migration",
-                            CreatedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2379),
+                            CreatedAt = new DateTime(2021, 5, 16, 13, 25, 25, 280, DateTimeKind.Local).AddTicks(5167),
                             CreatedBy = "migration",
                             Name = "Wake-up service"
                         },
                         new
                         {
-                            Id = new Guid("d7596e30-b83f-4329-86e6-52aae7583c61"),
-                            ChangedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2407),
+                            Id = new Guid("a3855030-dfd7-47b5-9c72-bfd402e55339"),
+                            ChangedAt = new DateTime(2021, 5, 16, 13, 25, 25, 280, DateTimeKind.Local).AddTicks(5198),
                             ChangedBy = "migration",
-                            CreatedAt = new DateTime(2020, 11, 26, 14, 36, 17, 238, DateTimeKind.Local).AddTicks(2410),
+                            CreatedAt = new DateTime(2021, 5, 16, 13, 25, 25, 280, DateTimeKind.Local).AddTicks(5200),
                             CreatedBy = "migration",
                             Name = "Free Wi-Fi"
                         });
@@ -296,40 +298,41 @@ namespace DAL.App.EF.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("varchar(256) CHARACTER SET utf8mb4")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("NormalizedName")
-                        .HasColumnType("varchar(256) CHARACTER SET utf8mb4")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
-                        .HasName("RoleNameIndex");
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
 
                     b.HasData(
                         new
                         {
-                            Id = new Guid("f739fa1d-6bf4-4799-ad6c-b28d65774553"),
-                            ConcurrencyStamp = "77aa6c23-30c9-4ada-9002-594b70e2fd1e",
+                            Id = new Guid("8a039270-ea64-4c79-a5a3-600512125f84"),
+                            ConcurrencyStamp = "2c03523f-3df2-4d48-aede-a952827d2891",
                             Name = "host",
                             NormalizedName = "Host"
                         },
                         new
                         {
-                            Id = new Guid("d50c848a-221d-4f91-97f5-9ffa1c5c1f5c"),
-                            ConcurrencyStamp = "fee1d22c-64c8-4580-aa73-1e46ff76bb75",
+                            Id = new Guid("3f4da5b7-c4bc-4ceb-86b0-df5552a2f348"),
+                            ConcurrencyStamp = "ed686ca1-5ff9-4228-8079-5b446fc87a3d",
                             Name = "gust",
                             NormalizedName = "Guest"
                         });
@@ -339,82 +342,83 @@ namespace DAL.App.EF.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
-                        .HasColumnType("varchar(256) CHARACTER SET utf8mb4")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("bit");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("varchar(128) CHARACTER SET utf8mb4")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("varchar(128) CHARACTER SET utf8mb4")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("bit");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("NormalizedEmail")
-                        .HasColumnType("varchar(256) CHARACTER SET utf8mb4")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("NormalizedUserName")
-                        .HasColumnType("varchar(256) CHARACTER SET utf8mb4")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("PasswordHash")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("bit");
 
                     b.Property<string>("SecurityStamp")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("bit");
 
                     b.Property<string>("UserName")
-                        .HasColumnType("varchar(256) CHARACTER SET utf8mb4")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
-                        .HasName("EmailIndex");
+                        .HasDatabaseName("EmailIndex");
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
-                        .HasName("UserNameIndex");
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
 
                     b.HasData(
                         new
                         {
-                            Id = new Guid("e9158f9b-79d1-466e-a60d-d1c9e4f09f45"),
+                            Id = new Guid("46296117-c5dd-4ff2-9c1e-b37f21409dba"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "bf5d3557-9f67-4895-8685-bac98ad2df3b",
+                            ConcurrencyStamp = "05946e42-9153-4f1c-9662-2eec26ee89c2",
                             Email = "user@user.com",
                             EmailConfirmed = true,
                             FirstName = "user",
@@ -423,7 +427,7 @@ namespace DAL.App.EF.Migrations
                             LockoutEnd = new DateTimeOffset(new DateTime(9999, 12, 31, 23, 59, 59, 999, DateTimeKind.Unspecified).AddTicks(9999), new TimeSpan(0, 0, 0, 0, 0)),
                             NormalizedEmail = "USER@USER.COM",
                             NormalizedUserName = "USER@USER.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEHOSeR0svTluhuf4PoBbfdWy4cf1B+ss8EwIZ8ZY/XrIVDTlRFN2pIEQmzeB8ndlxg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAELJH4SxTmADSNMq1T/wnrPAFrhqFY9HgXXWbXkVroLI2gHXuQBVHHAB/KKu74Dj3Iw==",
                             PhoneNumber = "",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
@@ -432,9 +436,9 @@ namespace DAL.App.EF.Migrations
                         },
                         new
                         {
-                            Id = new Guid("9242384f-8c2f-4fd4-8714-c4d1f3951ecf"),
+                            Id = new Guid("7a3694c4-5cdc-4ac8-899a-ce35edb3a75a"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "809c175a-1f3f-4540-8196-22163f100928",
+                            ConcurrencyStamp = "54809940-fc23-44b9-93d9-c1fc8cbc1d13",
                             Email = "host@host.com",
                             EmailConfirmed = true,
                             FirstName = "host",
@@ -443,7 +447,7 @@ namespace DAL.App.EF.Migrations
                             LockoutEnd = new DateTimeOffset(new DateTime(9999, 12, 31, 23, 59, 59, 999, DateTimeKind.Unspecified).AddTicks(9999), new TimeSpan(0, 0, 0, 0, 0)),
                             NormalizedEmail = "HOST@HOST.COM",
                             NormalizedUserName = "HOST@HOST.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEE4j6dzZlf+jWgIISBazY42qn2ExO4ywKDZDKvNCG2wyCPEc6gogrr9r0mlwe/ucRA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEHketBIzGh1h//l57oHPfRQs6RLK1GsMP4tpsQskIYA+A/A6PkZSy8PVtrqSy9Pong==",
                             PhoneNumber = "",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
@@ -456,7 +460,7 @@ namespace DAL.App.EF.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int?>("CancellationBefore")
                         .HasColumnType("int");
@@ -465,29 +469,29 @@ namespace DAL.App.EF.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("ChangedAt")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("ChangedBy")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("PrepaymentBefore")
                         .HasColumnType("int");
 
                     b.Property<double>("PriceCoefficient")
-                        .HasColumnType("double");
+                        .HasColumnType("float");
 
                     b.Property<Guid>("PropertyId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -498,40 +502,40 @@ namespace DAL.App.EF.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Address")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("AppUserId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("ChangedAt")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("ChangedBy")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Country")
                         .IsRequired()
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Type")
                         .IsRequired()
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -543,46 +547,46 @@ namespace DAL.App.EF.Migrations
             modelBuilder.Entity("Domain.PropertyRules", b =>
                 {
                     b.Property<Guid>("Id")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool?>("AllowParties")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("bit");
 
                     b.Property<bool>("AllowPets")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("bit");
 
                     b.Property<DateTime>("ChangedAt")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("ChangedBy")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("CheckInAge")
                         .HasColumnType("int");
 
                     b.Property<TimeSpan>("CheckInFrom")
-                        .HasColumnType("time(6)");
+                        .HasColumnType("time");
 
                     b.Property<TimeSpan>("CheckInTo")
-                        .HasColumnType("time(6)");
+                        .HasColumnType("time");
 
                     b.Property<TimeSpan>("CheckOutBefore")
-                        .HasColumnType("time(6)");
+                        .HasColumnType("time");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal?>("DamageDeposit")
-                        .HasColumnType("decimal(5, 2)");
+                        .HasColumnType("decimal(5,2)");
 
                     b.Property<bool>("DamageDepositRequired")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("bit");
 
                     b.Property<string>("PaymentMethodsAccepted")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -593,22 +597,22 @@ namespace DAL.App.EF.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Adults")
                         .HasColumnType("int");
 
                     b.Property<Guid>("AppUserId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ArrivalTime")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("ChangedAt")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("ChangedBy")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CheckInDate")
                         .HasColumnType("date");
@@ -620,24 +624,24 @@ namespace DAL.App.EF.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Message")
-                        .HasColumnType("varchar(128) CHARACTER SET utf8mb4")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<Guid>("PropertyId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("ReservationNumber")
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("decimal(18,2)");
@@ -655,25 +659,25 @@ namespace DAL.App.EF.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("ChangedAt")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("ChangedBy")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("ExtraId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("ReservationId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -688,34 +692,34 @@ namespace DAL.App.EF.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("BedType")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("ChangedAt")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("ChangedBy")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("GuestFirstLastName")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("PolicyId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("ReservationId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("RoomId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("RoomTotalPrice")
                         .HasColumnType("decimal(18,2)");
@@ -733,31 +737,31 @@ namespace DAL.App.EF.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("AppUserId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("ChangedAt")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("ChangedBy")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Comment")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("PropertyId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("ReservationId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Score")
                         .HasColumnType("int");
@@ -778,41 +782,41 @@ namespace DAL.App.EF.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("AdultsOccupancy")
                         .HasColumnType("int");
 
                     b.Property<bool>("AllowSmoking")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("bit");
 
                     b.Property<string>("BedTypes")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("ChangedAt")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("ChangedBy")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ChildOccupancy")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("PropertyId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Size")
                         .HasColumnType("int");
@@ -828,25 +832,25 @@ namespace DAL.App.EF.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("ChangedAt")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("ChangedBy")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedBy")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("FacilityId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("RoomId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -861,16 +865,17 @@ namespace DAL.App.EF.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("ClaimType")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("RoleId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -883,16 +888,17 @@ namespace DAL.App.EF.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("ClaimType")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -904,16 +910,16 @@ namespace DAL.App.EF.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -925,10 +931,10 @@ namespace DAL.App.EF.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
                     b.Property<Guid>("UserId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("RoleId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -939,24 +945,24 @@ namespace DAL.App.EF.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = new Guid("9242384f-8c2f-4fd4-8714-c4d1f3951ecf"),
-                            RoleId = new Guid("f739fa1d-6bf4-4799-ad6c-b28d65774553")
+                            UserId = new Guid("7a3694c4-5cdc-4ac8-899a-ce35edb3a75a"),
+                            RoleId = new Guid("8a039270-ea64-4c79-a5a3-600512125f84")
                         });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
                     b.Property<Guid>("UserId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Value")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
@@ -970,6 +976,8 @@ namespace DAL.App.EF.Migrations
                         .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Room");
                 });
 
             modelBuilder.Entity("Domain.Extra", b =>
@@ -988,6 +996,8 @@ namespace DAL.App.EF.Migrations
                         .HasForeignKey("AppUserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("AppUser");
                 });
 
             modelBuilder.Entity("Domain.PropertyRules", b =>
@@ -997,6 +1007,8 @@ namespace DAL.App.EF.Migrations
                         .HasForeignKey("Domain.PropertyRules", "Id")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Property");
                 });
 
             modelBuilder.Entity("Domain.Reservation", b =>
@@ -1012,6 +1024,10 @@ namespace DAL.App.EF.Migrations
                         .HasForeignKey("PropertyId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Property");
                 });
 
             modelBuilder.Entity("Domain.ReservationExtras", b =>
@@ -1027,6 +1043,10 @@ namespace DAL.App.EF.Migrations
                         .HasForeignKey("ReservationId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Extra");
+
+                    b.Navigation("Reservation");
                 });
 
             modelBuilder.Entity("Domain.ReservationRooms", b =>
@@ -1042,6 +1062,10 @@ namespace DAL.App.EF.Migrations
                         .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Reservation");
+
+                    b.Navigation("Room");
                 });
 
             modelBuilder.Entity("Domain.Review", b =>
@@ -1063,6 +1087,12 @@ namespace DAL.App.EF.Migrations
                         .HasForeignKey("Domain.Review", "ReservationId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Property");
+
+                    b.Navigation("Reservation");
                 });
 
             modelBuilder.Entity("Domain.Room", b =>
@@ -1072,6 +1102,8 @@ namespace DAL.App.EF.Migrations
                         .HasForeignKey("PropertyId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Property");
                 });
 
             modelBuilder.Entity("Domain.RoomFacilities", b =>
@@ -1087,6 +1119,10 @@ namespace DAL.App.EF.Migrations
                         .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Facility");
+
+                    b.Navigation("Room");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -1138,6 +1174,33 @@ namespace DAL.App.EF.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Property", b =>
+                {
+                    b.Navigation("Extras");
+
+                    b.Navigation("PropertyRooms");
+
+                    b.Navigation("PropertyRules");
+
+                    b.Navigation("Reviews");
+                });
+
+            modelBuilder.Entity("Domain.Reservation", b =>
+                {
+                    b.Navigation("ReservationExtras");
+
+                    b.Navigation("ReservationRooms");
+
+                    b.Navigation("Review");
+                });
+
+            modelBuilder.Entity("Domain.Room", b =>
+                {
+                    b.Navigation("RoomAvailabilities");
+
+                    b.Navigation("RoomFacilities");
                 });
 #pragma warning restore 612, 618
         }
