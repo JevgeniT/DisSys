@@ -13,7 +13,7 @@ namespace DAL.App.EF
 
         public static void SeedFacilities(ModelBuilder builder)
         {
-            List<string> facilities = new List<string>()
+            List<string> facilities = new ()
             {
                 "Elevator",
                 "Linens",
@@ -105,16 +105,13 @@ namespace DAL.App.EF
                 RoleId = hostRoleId,
                 UserId = hostId
             });
-            new IdentityUserRole<Guid>
-            {
-                RoleId = guestRoleId,
-                UserId = guestId
-            };
+            
+            builder.Entity<IdentityUserRole<Guid>>().HasData(
+                new IdentityUserRole<Guid>
+                {
+                    RoleId = guestRoleId,
+                    UserId = guestId
+                });
         }
-
-     
-
-        
-        
     }
 }

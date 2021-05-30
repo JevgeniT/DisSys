@@ -16,6 +16,8 @@ using Microsoft.EntityFrameworkCore;
 using NSubstitute;
 using NUnit.Framework;
 using Availability = Domain.Availability;
+using ReservationRooms = BLL.App.DTO.ReservationRooms;
+using Status = BLL.App.DTO.Status;
 
 namespace Tests
 {
@@ -42,7 +44,7 @@ namespace Tests
                
             using (var context = new AppDbContext(optionBuilder.Options, provider))
             {
-                var date1 = new Domain.Availability
+                var date1 = new Availability
                 {
                     Id = Id,
                     Active = true,
@@ -54,7 +56,7 @@ namespace Tests
                     From = DateTime.Now,
                     To = DateTime.Now.AddDays(5)
                 };
-                var date2 = new Domain.Availability
+                var date2 = new Availability
                 {
                     Active = true,
                     PricePerNightForAdult = 0,
@@ -164,6 +166,51 @@ namespace Tests
         {
             var dates = await _service!.ExistsAsync(default, default, new List<Guid>() {roomId});
             Assert.IsFalse(dates);
+        }
+        
+        [Test]
+        public async Task CanUpdateDatesAfterReservation()
+        {
+            await _service!.UpdateReservationDatesAsync(new BLL.App.DTO.Reservation
+            {
+               PropertyId = propertyId,
+                CheckInDate = DateTime.Now,
+                CheckOutDate = DateTime.Now.AddDays(5),
+                ReservationRooms = new List<ReservationRooms>() {new ReservationRooms(){RoomId = roomId}},
+                Adults = 0,
+                Children = 0,
+                Status = Status.Active,
+            });
+
+            var newDates = (await _service.AllAsync()).Any(availability => availability.From == DateTime.Now &&
+                                                                           availability.To == DateTime.Now.AddDays(5)
+                                                                           && availability.Active);
+            
+            Assert.False(newDates);
+        }
+
+        [Test]
+        public async Task CanGetAllDates()
+        {
+            var dates = await _service!.AllAsync();
+
+            Assert.NotNull(dates);
+        }
+        
+        [Test]
+        public async Task CanFindExisting()
+        {
+            var dates = await _service!.ExistsAsync(DateTime.Now, DateTime.Now.AddDays(2), new List<Guid>(){roomId});
+
+            Assert.True(dates);
+        }
+        
+        [Test]
+        public async Task CannotFindExisting()
+        {
+            var dates = await _service!.ExistsAsync(DateTime.Now, DateTime.Now.AddDays(2), new List<Guid>(){Guid.Empty});
+
+            Assert.False(dates);
         }
     }
 }

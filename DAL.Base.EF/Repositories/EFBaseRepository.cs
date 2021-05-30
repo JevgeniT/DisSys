@@ -54,7 +54,6 @@ namespace DAL.Base.EF.Repositories
             var trackedEntity = RepoDbSet.Add(dalEntity).Entity;
             
             RepoDbContext.AddToEntityTracker(trackedEntity,dalEntity);
-            
             return Mapper.Map(trackedEntity);
         }
 

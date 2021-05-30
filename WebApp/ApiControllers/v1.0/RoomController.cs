@@ -104,7 +104,7 @@ namespace WebApp.ApiControllers
         {
             var entity = _mapper.Map(room); 
             _bll.Rooms.Add(entity);
-            await  _bll.SaveChangesAsync();
+            await _bll.SaveChangesAsync();
 
             if (room.FacilityDtos is not null)
             {

@@ -8,7 +8,9 @@ using Contracts.DAL.App.Repositories;
 using DAL.Base.EF.Repositories;
 using Domain;
 using Exceptions;
+using Itenso.TimePeriod;
 using Microsoft.EntityFrameworkCore;
+using Public.DTO;
 
 namespace DAL.App.EF.Repositories
 {
@@ -33,10 +35,10 @@ namespace DAL.App.EF.Repositories
             var query = await RepoDbContext.Availabilities.AsNoTracking()
                 .Include(a => a.Room)
                 .Where(a => a.Active && a.Room!.PropertyId == propertyId 
-                            && ((from >= a.From && to<=a.To) || (from>=a.From && to<= a.To)))
+                            && new CalendarTimeRange(a.From, a.To).OverlapsWith(new CalendarTimeRange(from, to)))
                 .ToListAsync();
             
-            if (query is null || query.Count == 0) throw new NotFoundException();
+            if (query is null || query.Count == 0) throw new NotFoundException("No dates available");
           
             return query.Select(e => Mapper.Map(e));
  

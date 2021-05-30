@@ -76,7 +76,7 @@ namespace WebApp.ApiControllers._1._0.Identity
                     _configuration.GetValue<int>("JWT:ExpirationInDays")
                 );
                 _logger.LogInformation($"Token generated for user {model.Email} ");
-                return Ok(new {token = jwt, status = "Logged in"});
+                return Ok(new {token = jwt});
             }
 
             _logger.LogInformation($"Web-Api login. User {model.Email} attempted to log-in with bad password!");
@@ -148,10 +148,6 @@ namespace WebApp.ApiControllers._1._0.Identity
 
             var errors = result.Errors.Select(error => error.Description).ToList();
             return BadRequest(new MessageDTO() {Messages = errors});
-
         }
-
-        
- 
     }
 }

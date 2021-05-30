@@ -21,7 +21,7 @@ namespace BLL.App.Services
 
         public async  Task<IEnumerable<Availability>> AllAsync(Guid? roomId)
         {
-             return (await ServiceRepository.AllAsync( roomId)).Select( dalEntity => Mapper.Map(dalEntity) );
+             return (await ServiceRepository.AllAsync(roomId)).Select( dalEntity => Mapper.Map(dalEntity) );
         }
         
         public async Task<IEnumerable<Availability>> FindAvailableDates(DateTime from, DateTime to, Guid propertyId)
@@ -46,7 +46,8 @@ namespace BLL.App.Services
             var roomIds = reservation.ReservationRooms!.Select(r => r.RoomId).ToList();
             var from = reservation.CheckInDate;
             var to = reservation.CheckOutDate;
-            var list = ServiceRepository.FindAvailableDates(from, to, reservation.PropertyId).Result.ToList();
+            var list = await ServiceRepository.FindAvailableDates(from, to, reservation.PropertyId);
+            
             foreach (var available in list.Where(available => roomIds!.Contains(available.RoomId)))
             {
                 available.Room = null; // Prevent automapper exception

@@ -115,13 +115,13 @@ namespace WebApp.ApiControllers._1._0
         [HttpPost]
         [Produces("application/json")]
         [Consumes("application/json")]
+        [Authorize(Roles = "host")]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(PropertyDTO))]
-        public ActionResult<PropertyDTO> PostProperty(PropertyDTO property)
+        public ActionResult<PropertyDTO> PostProperty(PropertyCreateDTO property)
         {
-            property.AppUserId = User.UserGuidId();
-            var entity = _mapper.Map(property);
-            _bll.Properties.Add(entity);
-            property.Id = entity.Id; 
+            var entity = _mapper.MapPropertyCreateView(property);
+            entity.AppUserId = User.UserGuidId();
+            entity = _bll.Properties.Add(entity);
             return CreatedAtAction("GetProperty", new { id = entity.Id }, entity);
         }
 
@@ -133,7 +133,7 @@ namespace WebApp.ApiControllers._1._0
         [HttpDelete("{id}")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PropertyDTO))]
-        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(MessageDTO))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(MessageDTO))]
         public async Task<ActionResult<PropertyDTO>> DeleteProperty(Guid id)
         {
             var property = await _bll.Properties.RemoveAsync(id);

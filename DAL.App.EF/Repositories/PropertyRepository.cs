@@ -37,12 +37,12 @@ namespace DAL.App.EF.Repositories
 
             if (from is null && to is null)
             {
-                return (await query.Where(HasMatchWithInput(input)).ToListAsync()).Select(domainEntity => Mapper.Map(domainEntity));
+                return (await query.Where(HasMatchWithInput(input.ToLower())).ToListAsync()).Select(domainEntity => Mapper.Map(domainEntity));
             }
             
             return (await query.Include(p=>p.PropertyRooms)
                 .ThenInclude(r => r.RoomAvailabilities)
-                .Where(HasMatchWithInput(input))
+                .Where(HasMatchWithInput(input.ToLower()))
                 .Where(p => p.PropertyRooms!.Any(room => room.RoomAvailabilities!
                     .Any(a => (from >= a.From && to<=a.To)
                               || 
@@ -67,6 +67,8 @@ namespace DAL.App.EF.Repositories
 
 
         private static Expression<Func<Property, bool>> HasMatchWithInput(string input)
-            => x => x.Address!.Contains(input) || x.Name!.Contains(input) || x.Address!.Contains(input);
+            => x => x.Address!.ToLower()!.Contains(input) || 
+                    x.Name!.ToLower().Contains(input) || 
+                    x.Address!.ToLower().Contains(input);
     }
 }

@@ -109,7 +109,7 @@ namespace WebApp.ApiControllers
             if (!await _bll.Availabilities.ExistsAsync(reservation.CheckInDate, reservation.CheckOutDate,
                 reservation.RoomDtos!.Select(r=>r.RoomId).ToList()))
             {
-                return BadRequest(new MessageDTO("No dates available"));
+                return BadRequest(new MessageDTO("No dates available!"));
             }
 
             Reservation bllReservation = _mapper.MapCreateDto(reservation);
