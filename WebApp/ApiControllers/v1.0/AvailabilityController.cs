@@ -88,8 +88,9 @@ namespace WebApp.ApiControllers
          
             _bll.Availabilities.Add(entity);
             availability.Id = entity.Id;
-            
-            return CreatedAtAction("GetDates", new { id = availability.Id }, availability);
+
+            return Ok(entity);
+            // return CreatedAtAction("GetDates", new { id = availability.Id }, availability);
         }
         
         /// <summary>

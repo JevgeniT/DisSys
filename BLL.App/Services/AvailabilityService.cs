@@ -21,7 +21,7 @@ namespace BLL.App.Services
 
         public async  Task<IEnumerable<Availability>> AllAsync(Guid? roomId)
         {
-             return (await ServiceRepository.AllAsync(roomId)).Select( dalEntity => Mapper.Map(dalEntity) );
+             return (await ServiceRepository.AllAsync(roomId)).Select(dalEntity => Mapper.Map(dalEntity) );
         }
         
         public async Task<IEnumerable<Availability>> FindAvailableDates(DateTime from, DateTime to, Guid propertyId)

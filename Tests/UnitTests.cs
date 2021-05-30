@@ -176,7 +176,7 @@ namespace Tests
                PropertyId = propertyId,
                 CheckInDate = DateTime.Now,
                 CheckOutDate = DateTime.Now.AddDays(5),
-                ReservationRooms = new List<ReservationRooms>() {new ReservationRooms(){RoomId = roomId}},
+                ReservationRooms = new List<ReservationRooms>() {new () {RoomId = roomId}},
                 Adults = 0,
                 Children = 0,
                 Status = Status.Active,

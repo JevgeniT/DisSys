@@ -1,10 +1,8 @@
 using System;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Text.Json;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
@@ -24,7 +22,7 @@ namespace Tests
     public class IntegrationTests: IClassFixture<CustomWebApplicationFactory<Startup>>
     {
         
-        private readonly CustomWebApplicationFactory<WebApp.Startup> _factory;
+        private readonly CustomWebApplicationFactory<Startup> _factory;
         private readonly HttpClient _client;
         private readonly ITestOutputHelper _testOutputHelper;
 
@@ -38,12 +36,7 @@ namespace Tests
                 {
                     builder.UseSetting("TestDB", Guid.NewGuid().ToString());
                 })
-                .CreateClient(new WebApplicationFactoryClientOptions()
-                    {
-                        // dont follow redirects
-                        AllowAutoRedirect = false
-                    }
-                );
+                .CreateClient(new WebApplicationFactoryClientOptions {AllowAutoRedirect = false});
         }
 
         [Fact]
@@ -177,14 +170,14 @@ namespace Tests
             Assert.NotNull(property);
             
             var propertyId = property?.Id;
-            var putResponse =  _client.PutAsJsonAsync($"/api/v1/property/{propertyId}", new PropertyCreateDTO());
+            var putResponse =  _client.PutAsJsonAsync($"/api/v1/property/{propertyId}", new PropertyCreateDTO() { Id = propertyId });
             var deleteResponse =  _client.DeleteAsync($"/api/v1/property/{propertyId}");
             var ensureNotDeleted = _client.GetAsync($"/api/v1/property/{propertyId}");
             
             await Task.WhenAll(putResponse, deleteResponse, ensureNotDeleted);
 
-            putResponse.Result.StatusCode.Should().Be(StatusCodes.Status401Unauthorized);
-            deleteResponse.Result.StatusCode.Should().Be(StatusCodes.Status401Unauthorized);
+            putResponse.Result.StatusCode.Should().Be(StatusCodes.Status403Forbidden);
+            deleteResponse.Result.StatusCode.Should().Be(StatusCodes.Status403Forbidden);
             ensureNotDeleted.Result.EnsureSuccessStatusCode();
         }
         
@@ -228,16 +221,16 @@ namespace Tests
 
             var postDates = await _client.PostAsJsonAsync("/api/v1/availability", new AvailabilityDTO
             {
-                From = DateTime.Now,
-                To = DateTime.Now.AddDays(5),
+                From = DateTime.Now.AddDays(9),
+                To = DateTime.Now.AddDays(10),
                 RoomId = room!.Id.Value,
-                PolicyDtos = null,
                 Active = true,
                 PricePerNightForAdult = 10,
                 PricePerNightForChild = 10,
                 PricePerPerson = false,
                 RoomsAvailable = 2
             });
+            _testOutputHelper.WriteLine(postDates!.ReasonPhrase);
             postDates.EnsureSuccessStatusCode();
             var dates = JsonConvert.DeserializeObject<AvailabilityDTO>(await postDates.Content.ReadAsStringAsync());
             Assert.NotNull(dates);
@@ -257,8 +250,6 @@ namespace Tests
             
             var propertyView = await _client.GetAsync($"/api/v1/property/{property!.Id}");
             
-            // var dates = await _client.GetAsync($"/api/v1/availability/check?from={DateTime.Now.Date}&to={DateTime.Now.AddDays(2).Date}&pId={property!.Id}");
-
             propertyView.EnsureSuccessStatusCode();
 
             var propertyFound = JsonConvert.DeserializeObject<RoomDTO[]>(await available.Content.ReadAsStringAsync())![0];

@@ -20,6 +20,7 @@ namespace WebApp.ApiControllers._1._0
     [ApiController]
     [ApiVersion( "1.0" )]
     [Produces("application/json")]
+    [Authorize(Roles = "host")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     
